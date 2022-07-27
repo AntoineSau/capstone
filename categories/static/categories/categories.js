@@ -34,21 +34,27 @@ function offline_view() {
 
 function generate_letter() {
     
-    // Test to retrieve list of checked checkboxes
+    // Retrive list of checked checkboxes
     var inputs = document.getElementsByTagName("input");
     var checked = [];
+    var timer = 60;
     for (var i = 0; i < inputs.length; i++) {
         if (inputs[i].type == "checkbox") {
             if (inputs[i].checked) {
                 checked.push(inputs[i].value);
             }
         }
+        // Retrieve timer
+        if (inputs[i].type == "number") {
+            timer = inputs[i].value;
+        }
+        
     }
-    
-    document.getElementById('print_test').innerHTML = `${checked}`;
 
-    // Generate a random letter from selected lsit only
-    // OK let letters_available = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+    document.getElementById('print_test').innerHTML = `${checked} with timer of "${timer}"`;
+
+    // Generate a random letter from selected list only
     let letters_available = checked
     let random_letter = letters_available[Math.floor(Math.random() * letters_available.length)]
     document.getElementById('letter_to_play').innerHTML = `=> ${random_letter}`;

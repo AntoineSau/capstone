@@ -11,64 +11,43 @@
 
 
 			<p><i>(offline)</i></p>
-			<!-- Adding a list of letters to use to generate a radom one -->
+			<!-- Offering the user a list of letters from which they can exclude from random generation-->
 			Please select the letters that you would like to avoid, if any:
 			<div>
-				<form action="#" onsubmit="generate_letter();return false">
-					<input type="checkbox" checked value="A">
-					<label>A</label>
-					<input type="checkbox" checked value="B">
-					<label>B</label>
-					<input type="checkbox" checked value="C">
-					<label>C</label>
-					<input type="checkbox" checked value="D">
-					<label>D</label>
-					<input type="checkbox" checked value="E">
-					<label>E</label>
-					<input type="checkbox" checked value="F">
-					<label>F</label>
-					<input type="checkbox" checked value="G">
-					<label>G</label>
-					<input type="checkbox" checked value="H">
-					<label>H</label>
-					<input type="checkbox" checked value="I">
-					<label>I</label>
-					<input type="checkbox" checked value="J">
-					<label>J</label>
-					<input type="checkbox" checked value="K">
-					<label>K</label>
-					<input type="checkbox" checked value="L">
-					<label>L</label>
-					<input type="checkbox" checked value="M">
-					<label>M</label>
-					<input type="checkbox" checked value="N">
-					<label>N</label>
-					<input type="checkbox" checked value="O">
-					<label>O</label>
-					<input type="checkbox" checked value="P">
-					<label>P</label>
-					<input type="checkbox" checked value="Q">
-					<label>Q</label>
-					<input type="checkbox" checked value="R">
-					<label>R</label>
-					<input type="checkbox" checked value="S">
-					<label>S</label>
-					<input type="checkbox" checked value="T">
-					<label>T</label>
-					<input type="checkbox" checked value="U">
-					<label>U</label>
-					<input type="checkbox" checked value="V">
-					<label>V</label>
-					<input type="checkbox" checked value="W">
-					<label>W</label>
-					<input type="checkbox" checked value="X">
-					<label>X</label>
-					<input type="checkbox" checked value="Y">
-					<label>Y</label>
-					<input type="checkbox" checked value="Z">
-					<label>Z</label>
-				
-					<button type="submit" id="letter_generator" class="btn btn-primary mb-2">Generate a random letter form active letters above</button>
+				<form onsubmit="generate_letter();return false;">
+					<input type="checkbox" checked value="A"><label>A</label>
+					<input type="checkbox" checked value="B"><label>B</label>
+					<input type="checkbox" checked value="C"><label>C</label>
+					<input type="checkbox" checked value="D"><label>D</label>
+					<input type="checkbox" checked value="E"><label>E</label>
+					<input type="checkbox" checked value="F"><label>F</label>
+					<input type="checkbox" checked value="G"><label>G</label>
+					<input type="checkbox" checked value="H"><label>H</label>
+					<input type="checkbox" checked value="I"><label>I</label>
+					<input type="checkbox" checked value="J"><label>J</label>
+					<input type="checkbox" checked value="K"><label>K</label>
+					<input type="checkbox" checked value="L"><label>L</label>
+					<input type="checkbox" checked value="M"><label>M</label>
+					<input type="checkbox" checked value="N"><label>N</label>
+					<input type="checkbox" checked value="O"><label>O</label>
+					<input type="checkbox" checked value="P"><label>P</label>
+					<input type="checkbox" checked value="Q"><label>Q</label>
+					<input type="checkbox" checked value="R"><label>R</label>
+					<input type="checkbox" checked value="S"><label>S</label>
+					<input type="checkbox" checked value="T"><label>T</label>
+					<input type="checkbox" checked value="U"><label>U</label>
+					<input type="checkbox" checked value="V"><label>V</label>
+					<input type="checkbox" checked value="W"><label>W</label>
+					<input type="checkbox" checked value="X"><label>X</label>
+					<input type="checkbox" checked value="Y"><label>Y</label>
+					<input type="checkbox" checked value="Z"><label>Z</label>
+
+					<br>
+					<label for="timer">Type the time you want to play in seconds or use the default one</label>
+					<br>
+					<input required id="timer" name="timer" type="number" value="60">
+					<br>
+					<button id="letter_generator" class="btn btn-primary mb-2">Generate a random letter form active letters above</button>
 					<div id="letter_to_play"></div>
 				</form>
 			</div>
@@ -76,10 +55,8 @@
 			<div id="print_test">TEST (!)</div>
 
 			<br>
-			<p>-> Choose a letter to exclude TODO</p>
-			<p>Random letter with exclusions</p>
 			<p>Select duration for each round</p>
-			
+			<p>Limit letters to minimum 5?</p>
 			<p>Select categories</p>
 			<p>Number of rounds</p>
 
