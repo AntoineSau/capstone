@@ -12,7 +12,7 @@
 
 			<p><i>(offline)</i></p>
 			<!-- Offering the user a list of letters from which they can exclude from random generation-->
-			Please select the letters that you would like to avoid, if any:
+			<h3>1. Please select the letters that you would like to avoid, if any:
 			<div>
 				<form onsubmit="generate_letter();return false;">
 					<input type="checkbox" checked value="A"><label>A</label>
@@ -43,15 +43,18 @@
 					<input type="checkbox" checked value="Z"><label>Z</label>
 
 					<br>
-					<label for="timer">Type the time you want to play in seconds or use the default one</label>
+					
+					<label for="timer">2. Type the time you want to play in seconds or use the default one</label>
 					<br>
-					<input required id="timer" name="timer" type="number" value="60">
+					<input required id="timer" name="timer" type="number" value="60" min="1">
 					<br>
 					<button id="letter_generator" class="btn btn-primary mb-2">Generate a random letter form active letters above</button>
-					<div id="letter_to_play"></div>
+					
 				</form>
 			</div>
-
+		</h3>
+			<h1><b><div id="letter_to_play"></b></div></h1>
+			<div id="print_timer">Here is the timer (!)</div>
 			<div id="print_test">TEST (!)</div>
 
 			<br>
