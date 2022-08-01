@@ -35,7 +35,10 @@ function offline_view() {
 
 
 async function generate_letter() {
-    
+    // Lock Button in order to avoid having 2 timers running at the same time
+    document.getElementById("letter_generator").innerHTML = 'Wait until the end of the timer';
+    document.getElementById("letter_generator").disabled = true;
+
     // Retrive list of checked checkboxes
     var inputs = document.getElementsByTagName("input");
     var checked = [];
@@ -53,7 +56,6 @@ async function generate_letter() {
         
     }
 
-
     document.getElementById('print_test').innerHTML = `<h3><i>PRINT CHECK: -> ${checked} with timer of "${timer}"</i></h3>`;
 
     // Generate a random letter from selected list only
@@ -63,15 +65,33 @@ async function generate_letter() {
 
     // Display the total amount of seconds the user wants to play
     for (var i = timer; i > 0; i--) {
-        timer--;
+        
         console.log(`Timer is ${timer}`);
         document.getElementById('print_timer').innerHTML = `${timer}`;
-        // call Sleep fucntion for delay
+        // call Sleep function for delay
         await sleep(1000);
+        timer--;
 
     }
     // Tell user that time is up
     document.getElementById('print_timer').innerHTML = 'Time is up!';
+
+    // Animation to show easily that time is up
+    document.body.style.backgroundColor = "black";
+    await sleep(1000);
+    document.body.style.backgroundColor = "white";
+    await sleep(1000);
+    document.body.style.backgroundColor = "black";
+    await sleep(1000);
+    document.body.style.backgroundColor = "white";
+
+    // Put gneerate timer button back
+    document.getElementById("letter_generator").innerHTML = 'Generate a random letter and set timer';
+    document.getElementById("letter_generator").disabled = false;
+    
+    // Test sound alert if user doesn´t look at screen
+    var alert_timer = new Audio('categories/alert.mp3');
+    alert_timer();
     
     // Test sleep function
     function sleep(ms) {
