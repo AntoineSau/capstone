@@ -32,14 +32,9 @@ function offline_view() {
 
 };
 
-
-
 async function generate_letter() {
-    // Lock Button in order to avoid having 2 timers running at the same time
-    document.getElementById("letter_generator").innerHTML = 'Wait until the end of the timer';
-    document.getElementById("letter_generator").disabled = true;
 
-    // Retrive list of checked checkboxes
+    // Retrieve list of checked checkboxes
     var inputs = document.getElementsByTagName("input");
     var checked = [];
     var timer
@@ -56,7 +51,20 @@ async function generate_letter() {
         
     }
 
-    document.getElementById('print_test').innerHTML = `<h3><i>PRINT CHECK: -> ${checked} with timer of "${timer}"</i></h3>`;
+    // Count the amount of checked boxes
+    var checked_boxes = checked.length;
+
+    // Cancel if amount of letters selected is below 5 (test below 26)
+    if (checked_boxes < 5) {
+        alert(`Please select more than 4 letters`);
+        return false;
+    }
+
+    document.getElementById('print_test').innerHTML = `<h3><i>PRINT CHECK: -> ${checked} with timer of "${timer}". LENGTH = ${checked_boxes}</i></h3>`;
+
+    // Lock Button in order to avoid having 2 timers running at the same time
+    document.getElementById("letter_generator").innerHTML = 'Wait until the end of the timer';
+    document.getElementById("letter_generator").disabled = true;
 
     // Generate a random letter from selected list only
     let letters_available = checked
@@ -80,16 +88,12 @@ async function generate_letter() {
     document.body.style.backgroundColor = "black";
     await sleep(1000);
     document.body.style.backgroundColor = "white";
-    await sleep(1000);
-    document.body.style.backgroundColor = "black";
-    await sleep(1000);
-    document.body.style.backgroundColor = "white";
 
-    // Put gneerate timer button back
+    // Put generate timer button back
     document.getElementById("letter_generator").innerHTML = 'Generate a random letter and set timer';
     document.getElementById("letter_generator").disabled = false;
     
-    // Test sound alert if user doesn´t look at screen
+    // TODO Test sound alert if user doesn´t look at screen
     var alert_timer = new Audio('categories/alert.mp3');
     alert_timer();
     
