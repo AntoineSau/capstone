@@ -8,9 +8,19 @@
 		
 		<div id="offline_content">
 
+			<!-- CONTENT CREATED 
+				Here the users will see the letter genretad and the timer + print test if needed
+			-->
+			<h1><b><div id="letter_to_play"></b></div></h1>
+			<div id="print_timer"></div>
+			<div id="print_test"></div>
+
 			<p><i>(offline)</i></p>
-			<!-- Offering the user a list of letters from which they can exclude from random generation-->
-			<h3>1. Please select the letters that you would like to avoid, if any:
+			<!-- LETTERS
+			Offering the user a list of letters from which they can exclude from random generation 
+			-->
+			<h3>1. Please unselect the letters that you would like to avoid, if any. <br>
+				You must keep a <u>minimum of 5 letters:</u>
 			<div>
 				<form onsubmit="generate_letter();return false;">
 					<input type="checkbox" checked value="A"><label>A</label>
@@ -41,26 +51,35 @@
 					<input type="checkbox" checked value="Z"><label>Z</label>
 
 					<br>
-					
+					<br>
+					<!-- TIMER
+						Let the player use the default timing or type the time in seconds
+					-->
 					<label for="timer">2. Type the time you want to play in seconds or use the default one</label>
 					<br>
 					<input required id="timer" name="timer" type="number" value="60" min="1">
 					<br>
+					<br>
+
+					<!-- CATEGORIES
+						WIP / Add drag and drop?
+					-->
+					3. Select your categories:<br>
+					
+					<div id="categories_web"></div>
+					<br>
 					<button id="letter_generator" class="btn btn-primary mb-2">Generate a random letter and set timer</button>
 					
+					<br><br>
+					Generate a new letter with same timer and categories
+
 				</form>
 			</div>
 		</h3>
-			<h1><b><div id="letter_to_play"></b></div></h1>
-			<div id="print_timer">Here is the timer (!)</div>
-			<div id="print_test">TEST (!)</div>
 
 			<br>
-			<p>Limit letters to minimum 5?</p>
 			<p>Select categories</p>
 			<p>Number of rounds</p>
-
-
 			
 		</div>
 		<div id="online_content">

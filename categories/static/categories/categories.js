@@ -8,7 +8,32 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#offline_button').addEventListener('click', offline_view);
     document.querySelector('#online_button').addEventListener('click', online_view);
 
+    // Populate list of categories with unique IDs LOOP?
+    
+    var categories = ["First Name", "Song Name", "Band", "Country", "Item in this room",
+    "Things than can make you fired", "Word ending with this letter", "Way of dying", 
+    "Animal", "Profession", "Movie Title", "Celebrity", "Book title"];
+
+    // Shuffle the array of categories
+    categories = categories.sort(() => Math.random() - 0.5)
+    
+    var length_categories = categories.length
+    for (var i = 0; i < length_categories; i++) {
+        // Select (green) by default only the first 5 items, else unselected (red)
+        if (i < 5) {
+            document.getElementById('categories_web').innerHTML += `<button id="${i}" type="button" onclick="switch_color(${i})" class="btn btn-success mb-2">${categories[i]}</button> `;
+        }
+        else {
+            document.getElementById('categories_web').innerHTML += `<button id="${i}" type="button" onclick="switch_color(${i})" class="btn btn-danger mb-2">${categories[i]}</button> `;
+        }
+    }
+
 });
+
+// WIP TODO
+function switch_color(this_button) {
+    console.log(`You want to change button ${this_button}`);
+}
 
 function online_view() {
 
@@ -60,7 +85,8 @@ async function generate_letter() {
         return false;
     }
 
-    document.getElementById('print_test').innerHTML = `<h3><i>PRINT CHECK: -> ${checked} with timer of "${timer}". LENGTH = ${checked_boxes}</i></h3>`;
+    // Print check
+    // document.getElementById('print_test').innerHTML = `<h3><i>PRINT CHECK: -> ${checked} with timer of "${timer}". LENGTH = ${checked_boxes}</i></h3>`;
 
     // Lock Button in order to avoid having 2 timers running at the same time
     document.getElementById("letter_generator").innerHTML = 'Wait until the end of the timer';
@@ -102,7 +128,6 @@ async function generate_letter() {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    // Display proper timer
 
     // Add it to DOM
     console.log(random_letter)

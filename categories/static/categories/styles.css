@@ -2,3 +2,18 @@ body {
     padding: 10px;
     align-content: center;
 }
+
+#print_timer letter_to_play  {
+    color: darkblue;
+}
+
+#letter_to_play {
+    color: darkblue;
+    align-content: center;
+    
+}
+
+#print_test {
+    color: grey;
+}
+
