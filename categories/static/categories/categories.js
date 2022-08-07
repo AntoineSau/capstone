@@ -33,6 +33,19 @@ document.addEventListener('DOMContentLoaded', function() {
 // WIP TODO
 function switch_color(this_button) {
     console.log(`You want to change button ${this_button}`);
+    var button_to_change = document.getElementById(`${this_button}`);
+    // If button is selected, unselect it
+    if (button_to_change.className == "btn btn-success mb-2") {
+        button_to_change.className = "btn btn-danger mb-2";
+    }
+    
+    // If button is unselected, select it
+    else if (button_to_change.className == "btn btn-danger mb-2") {
+        button_to_change.className = "btn btn-success mb-2";
+    }
+
+    let cat = document.getElementById(this_button).innerHTML;
+    console.log(`You want to change ${cat}`);
 }
 
 function online_view() {
@@ -63,6 +76,7 @@ async function generate_letter() {
     var inputs = document.getElementsByTagName("input");
     var checked = [];
     var timer
+    
     for (var i = 0; i < inputs.length; i++) {
         if (inputs[i].type == "checkbox") {
             if (inputs[i].checked) {
@@ -72,8 +86,7 @@ async function generate_letter() {
         // Retrieve timer
         if (inputs[i].type == "number") {
             timer = inputs[i].value;
-        }
-        
+        }   
     }
 
     // Count the amount of checked boxes
@@ -85,8 +98,20 @@ async function generate_letter() {
         return false;
     }
 
+    var all_buttons = document.getElementsByTagName("button");
+    var categories_selected = [];
+    // Retrieve selected (GREEN) categories
+    for (var i = 0; i < all_buttons.length; i++) {
+        if (all_buttons[i].className == "btn btn-success mb-2") {
+            categories_selected.push(all_buttons[i].innerHTML);
+            console.log(`CAT ${i}: ${categories_selected[i]} `);
+        }
+    }
+
     // Print check
-    // document.getElementById('print_test').innerHTML = `<h3><i>PRINT CHECK: -> ${checked} with timer of "${timer}". LENGTH = ${checked_boxes}</i></h3>`;
+    document.getElementById('print_test').innerHTML = `<h3><i>PRINT CHECK: -> ${checked} with timer of "${timer}". 
+    LENGTH = ${checked_boxes}</i></h3>
+    CATEGORIES: ${categories_selected}`;
 
     // Lock Button in order to avoid having 2 timers running at the same time
     document.getElementById("letter_generator").innerHTML = 'Wait until the end of the timer';
