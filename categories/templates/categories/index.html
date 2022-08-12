@@ -2,26 +2,45 @@
 
 {% block body %}
 
-		<h1>Welcome to categories!<h1>
-        <button id="offline_button" class="btn btn-secondary mb-2">PLAY OFFLINE</button> 
-		<button id="online_button" class="btn btn-secondary mb-2">PLAY ONLINE</button>
+		<!-- Intorduction block to let the users choose the mode they wnat ot play -->
+		<div id="intro_block">
+			<h1>Welcome to categories!<h1>
+			<br>
+			<h2>How would you like to play today?</h2>
+			<br>
+			<h3>I want to play online <b>against other players,</b> or <b>train with bots</b></h3>
+			<br>
+			<button id="online_button" class="btn btn-secondary mb-2 btn-lg">PLAY ONLINE</button>
+			<br><br>
+			<h3>I just need randomly generated letters and a timer </h3>
+			<br>
+			<button id="offline_button" class="btn btn-secondary mb-2 btn-lg">PLAY OFFLINE</button>
+			<br><br>
+
+		</div>
+		
 		
 		<div id="offline_content">
 
 			<!-- CONTENT CREATED 
 				Here the users will see the letter genretad and the timer + print test if needed
 			-->
-			<h1><b><div id="letter_to_play"></b></div></h1>
+			<p><i>You are viewing the offline mode, click <a href="javascript:online_view();">here if you want to play online</a></i></p>
+
+			<h1><b><div id="letter_to_play"></b></div></h1>	
 			<div id="print_timer"></div>
 			<div id="print_test"></div>
+			<div id="print_categories"></div>
 
-			<p><i>(offline)</i></p>
+
 			<!-- LETTERS
 			Offering the user a list of letters from which they can exclude from random generation 
 			-->
-			<h3>1. Please unselect the letters that you would like to avoid, if any. <br>
-				You must keep a <u>minimum of 5 letters:</u>
-			<div>
+			
+			<div id="form_generate_letter">
+				<h3>1. Please unselect the letters that you would like to avoid, if any. <br>
+					You must keep a <u>minimum of 5 letters:</u>
+					<br><br>
 				<form onsubmit="generate_letter();return false;">
 					<input type="checkbox" checked value="A"><label>A</label>
 					<input type="checkbox" checked value="B"><label>B</label>
@@ -70,21 +89,15 @@
 					<br>
 					<button id="letter_generator" class="btn btn-primary mb-2">Generate a random letter and set timer</button>
 					
-					<br><br>
-					Generate a new letter with same timer and categories
 
 				</form>
 			</div>
 		</h3>
-
-			<br>
-			<p>Select categories</p>
-			<p>Number of rounds</p>
 			
 		</div>
 		<div id="online_content">
-			<p><i>(online)</i></p>
-			<p>TODO</p>
+			<p><i>You are viewing the online mode, click <a href="javascript:offline_view();">here if you want to play offline</a></i></p>
+			<p id="wip">WORK IN PROGESS</p>
 		</div>
 
 {% endblock %}

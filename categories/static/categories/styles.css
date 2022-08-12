@@ -1,19 +1,25 @@
 body {
     padding: 10px;
     align-content: center;
+    text-align: center;
 }
 
-#print_timer letter_to_play  {
+#print_timer {
     color: darkblue;
+    font-size: 150px;
 }
 
 #letter_to_play {
     color: darkblue;
-    align-content: center;
-    
+    font-size: 150px;
 }
 
 #print_test {
     color: grey;
+}
+
+#wip {
+    color: darkgray;
+    font-size: 150px;
 }
 

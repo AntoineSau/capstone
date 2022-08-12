@@ -1,16 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    // hide off and onlien cotnent at the beginning
+    // hide off and online cotnent at the beginning
     document.querySelector('#online_content').style.display = 'none';
     document.querySelector('#offline_content').style.display = 'none';
-
     // Use buttons to toggle between views
     document.querySelector('#offline_button').addEventListener('click', offline_view);
     document.querySelector('#online_button').addEventListener('click', online_view);
 
     // Populate list of categories with unique IDs LOOP?
     
-    var categories = ["First Name", "Song Name", "Band", "Country", "Item in this room",
+    var categories = ["Things that Paulina likes", "First Name", "Song Name", "Band", "Country", "Item in this room",
     "Things than can make you fired", "Word ending with this letter", "Way of dying", 
     "Animal", "Profession", "Movie Title", "Celebrity", "Book title"];
 
@@ -30,9 +29,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-// WIP TODO
+// Selecting or unselecting categories to play
 function switch_color(this_button) {
-    console.log(`You want to change button ${this_button}`);
+    // Print Check 
+    // console.log(`You want to change button ${this_button}`);
     var button_to_change = document.getElementById(`${this_button}`);
     // If button is selected, unselect it
     if (button_to_change.className == "btn btn-success mb-2") {
@@ -44,34 +44,45 @@ function switch_color(this_button) {
         button_to_change.className = "btn btn-success mb-2";
     }
 
-    let cat = document.getElementById(this_button).innerHTML;
-    console.log(`You want to change ${cat}`);
+    // let cat = document.getElementById(this_button).innerHTML;
+    // Print Check 
+    // console.log(`You want to change ${cat}`);
 }
 
 function online_view() {
+
+    // Hide introduction block
+    document.getElementById('intro_block').style.display = "none";
 
     // Show relevant content div
     document.querySelector('#online_content').style.display = 'block';
     document.querySelector('#offline_content').style.display = 'none';
     
     // Check LOG
-    console.log('online clicked');
+    // console.log('online clicked');
 
 };
 
 function offline_view() {
 
+    // Hide introduction block
+    document.getElementById('intro_block').style.display = "none";
+ 
     // Show relevant content div
     document.querySelector('#offline_content').style.display = 'block';
     document.querySelector('#online_content').style.display = 'none';
 
     // Check LOG
-    console.log('offline clicked');
+    // console.log('offline clicked');
 
 };
 
 async function generate_letter() {
 
+    // Hide the whole Generate letter form to focus on relevant content
+    document.getElementById('form_generate_letter').style.display = "none";
+    
+    
     // Retrieve list of checked checkboxes
     var inputs = document.getElementsByTagName("input");
     var checked = [];
@@ -92,7 +103,7 @@ async function generate_letter() {
     // Count the amount of checked boxes
     var checked_boxes = checked.length;
 
-    // Cancel if amount of letters selected is below 5 (test below 26)
+    // Cancel if amount of letters selected is below 5
     if (checked_boxes < 5) {
         alert(`Please select more than 4 letters`);
         return false;
@@ -104,14 +115,33 @@ async function generate_letter() {
     for (var i = 0; i < all_buttons.length; i++) {
         if (all_buttons[i].className == "btn btn-success mb-2") {
             categories_selected.push(all_buttons[i].innerHTML);
-            console.log(`CAT ${i}: ${categories_selected[i]} `);
+            //console.log(`CAT ${i}: ${categories_selected[i]} `);
         }
     }
 
+    // Cancel if amount of categories selected is below 3
+    if (categories_selected.length < 3) {
+        alert(`Please select more than 2 categories`);
+        return false;
+    }
+
     // Print check
-    document.getElementById('print_test').innerHTML = `<h3><i>PRINT CHECK: -> ${checked} with timer of "${timer}". 
-    LENGTH = ${checked_boxes}</i></h3>
-    CATEGORIES: ${categories_selected}`;
+    // document.getElementById('print_test').innerHTML = `<h3><i>PRINT CHECK: -> ${checked} with timer of "${timer}". 
+    // LENGTH = ${checked_boxes}</i></h3>
+    // CATEGORIES: ${categories_selected}`;
+
+    
+
+    // Print test length categories
+    document.getElementById('print_test').innerHTML = `Your ${categories_selected.length} categories are:`;
+
+    // Print test categories
+
+    for (var i = 0 ; i < categories_selected.length; i++) {
+        
+        document.getElementById('print_categories').innerHTML += `${[i+1]}: ${categories_selected[i]}<br>`;
+
+    }
 
     // Lock Button in order to avoid having 2 timers running at the same time
     document.getElementById("letter_generator").innerHTML = 'Wait until the end of the timer';
@@ -125,15 +155,24 @@ async function generate_letter() {
     // Display the total amount of seconds the user wants to play
     for (var i = timer; i > 0; i--) {
         
-        console.log(`Timer is ${timer}`);
-        document.getElementById('print_timer').innerHTML = `${timer}`;
+        // console.log(`Timer is ${timer}`);
+        
+        let current_timer = document.getElementById('print_timer');
+        current_timer.innerHTML = `${timer}`;
         // call Sleep function for delay
         await sleep(1000);
         timer--;
 
     }
+
     // Tell user that time is up
     document.getElementById('print_timer').innerHTML = 'Time is up!';
+
+    // Create button to Go back to form TODO
+    
+
+    // TODO
+    // document.getElementById('form_generate_letter').style.display = "block";
 
     // Animation to show easily that time is up
     document.body.style.backgroundColor = "black";
@@ -145,7 +184,7 @@ async function generate_letter() {
     document.getElementById("letter_generator").disabled = false;
     
     // TODO Test sound alert if user doesn´t look at screen
-    var alert_timer = new Audio('categories/alert.mp3');
+    var alert_timer = new Audio('alert.mp3');
     alert_timer();
     
     // Test sleep function
@@ -153,10 +192,8 @@ async function generate_letter() {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-
     // Add it to DOM
     console.log(random_letter)
-
 
 };
 
