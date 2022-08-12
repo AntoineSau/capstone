@@ -7,8 +7,15 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#offline_button').addEventListener('click', offline_view);
     document.querySelector('#online_button').addEventListener('click', online_view);
 
-    // Populate list of categories with unique IDs LOOP?
-    
+    // Generate dynamically alphabet with pre-selected checkboxes
+    var alphabet_js = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",]
+    let alphabet_generated = document.getElementById('alphabet');
+    for (var i = 0; i < alphabet_js.length; i++) {    
+        alphabet_generated.innerHTML += `<input type="checkbox" checked value="${alphabet_js[i]}"><label>${alphabet_js[i]}</label> `;
+    }
+
+
+    // Populate list of categories
     var categories = ["Things that Paulina likes", "First Name", "Song Name", "Band", "Country", "Item in this room",
     "Things than can make you fired", "Word ending with this letter", "Way of dying", 
     "Animal", "Profession", "Movie Title", "Celebrity", "Book title"];
