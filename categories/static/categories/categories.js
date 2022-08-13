@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#online_button').addEventListener('click', online_view);
 
     // Generate dynamically alphabet with pre-selected checkboxes
-    var alphabet_js = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",]
+    var alphabet_js = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
     let alphabet_generated = document.getElementById('alphabet');
     for (var i = 0; i < alphabet_js.length; i++) {    
         alphabet_generated.innerHTML += `<input type="checkbox" checked value="${alphabet_js[i]}"><label>${alphabet_js[i]}</label> `;
@@ -21,16 +21,17 @@ document.addEventListener('DOMContentLoaded', function() {
     "Animal", "Profession", "Movie Title", "Celebrity", "Book title"];
 
     // Shuffle the array of categories
-    categories = categories.sort(() => Math.random() - 0.5)
+    categories = categories.sort(() => Math.random() - 0.5);
     
-    var length_categories = categories.length
+    var length_categories = categories.length;
+    var categories_html = document.getElementById('categories_web');
     for (var i = 0; i < length_categories; i++) {
         // Select (green) by default only the first 5 items, else unselected (red)
         if (i < 5) {
-            document.getElementById('categories_web').innerHTML += `<button id="${i}" type="button" onclick="switch_color(${i})" class="btn btn-success mb-2">${categories[i]}</button> `;
+            categories_html.innerHTML += `<button id="${i}" type="button" onclick="switch_color(${i})" class="btn btn-success mb-2">${categories[i]}</button> `;
         }
         else {
-            document.getElementById('categories_web').innerHTML += `<button id="${i}" type="button" onclick="switch_color(${i})" class="btn btn-danger mb-2">${categories[i]}</button> `;
+            categories_html.innerHTML += `<button id="${i}" type="button" onclick="switch_color(${i})" class="btn btn-danger mb-2">${categories[i]}</button> `;
         }
     }
 
@@ -79,21 +80,14 @@ function offline_view() {
     document.querySelector('#offline_content').style.display = 'block';
     document.querySelector('#online_content').style.display = 'none';
 
-    // Check LOG
-    // console.log('offline clicked');
-
 };
 
 async function generate_letter() {
-
-    // Hide the whole Generate letter form to focus on relevant content
-    document.getElementById('form_generate_letter').style.display = "none";
-    
     
     // Retrieve list of checked checkboxes
     var inputs = document.getElementsByTagName("input");
     var checked = [];
-    var timer
+    var timer;
     
     for (var i = 0; i < inputs.length; i++) {
         if (inputs[i].type == "checkbox") {
@@ -112,7 +106,7 @@ async function generate_letter() {
 
     // Cancel if amount of letters selected is below 5
     if (checked_boxes < 5) {
-        alert(`Please select more than 4 letters`);
+        alert(`Please select at least 5 letters`);
         return false;
     }
 
@@ -128,7 +122,7 @@ async function generate_letter() {
 
     // Cancel if amount of categories selected is below 3
     if (categories_selected.length < 3) {
-        alert(`Please select more than 2 categories`);
+        alert(`Please select at least 3 categories`);
         return false;
     }
 
@@ -137,34 +131,35 @@ async function generate_letter() {
     // LENGTH = ${checked_boxes}</i></h3>
     // CATEGORIES: ${categories_selected}`;
 
-    
+    // Hide the whole Generate letter form to focus on relevant content
+    document.getElementById('form_generate_letter').style.display = "none";
 
     // Print test length categories
-    document.getElementById('print_test').innerHTML = `Your ${categories_selected.length} categories are:`;
+    document.getElementById('print_test').innerHTML = `Your <b>${categories_selected.length}</b> categories are:`;
 
     // Print test categories
-
+    var print_categories = document.getElementById('print_categories');
     for (var i = 0 ; i < categories_selected.length; i++) {
         
-        document.getElementById('print_categories').innerHTML += `${[i+1]}: ${categories_selected[i]}<br>`;
+        print_categories.innerHTML += `${[i+1]}: ${categories_selected[i]}<br>`;
 
     }
 
     // Lock Button in order to avoid having 2 timers running at the same time
-    document.getElementById("letter_generator").innerHTML = 'Wait until the end of the timer';
-    document.getElementById("letter_generator").disabled = true;
+    var letter_generator = document.getElementById("letter_generator");
+    letter_generator.innerHTML = 'Wait until the end of the timer';
+    letter_generator.disabled = true;
 
     // Generate a random letter from selected list only
-    let letters_available = checked
-    let random_letter = letters_available[Math.floor(Math.random() * letters_available.length)]
+    let letters_available = checked;
+    let random_letter = letters_available[Math.floor(Math.random() * letters_available.length)];
     document.getElementById('letter_to_play').innerHTML = `${random_letter}`;
 
     // Display the total amount of seconds the user wants to play
+    let current_timer = document.getElementById('print_timer');
     for (var i = timer; i > 0; i--) {
         
         // console.log(`Timer is ${timer}`);
-        
-        let current_timer = document.getElementById('print_timer');
         current_timer.innerHTML = `${timer}`;
         // call Sleep function for delay
         await sleep(1000);
@@ -173,10 +168,10 @@ async function generate_letter() {
     }
 
     // Tell user that time is up
-    document.getElementById('print_timer').innerHTML = 'Time is up!';
-
-    // Create button to Go back to form TODO
+    current_timer.innerHTML = 'Time is up!';
     
+    // Create button to Go back to form TODO
+
 
     // TODO
     // document.getElementById('form_generate_letter').style.display = "block";
@@ -186,9 +181,13 @@ async function generate_letter() {
     await sleep(1000);
     document.body.style.backgroundColor = "white";
 
+    // Give option to restart the timer
+    document.getElementById('print_timer').innerHTML += `<p><button>Restart timer TODO</button>`;
+
     // Put generate timer button back
-    document.getElementById("letter_generator").innerHTML = 'Generate a random letter and set timer';
-    document.getElementById("letter_generator").disabled = false;
+    var letter_generator = document.getElementById("letter_generator");
+    letter_generator.innerHTML = 'Generate a random letter and set timer';
+    letter_generator.disabled = false;
     
     // TODO Test sound alert if user doesn´t look at screen
     var alert_timer = new Audio('alert.mp3');
@@ -200,7 +199,7 @@ async function generate_letter() {
     }
 
     // Add it to DOM
-    console.log(random_letter)
+    console.log(random_letter);
 
 };
 

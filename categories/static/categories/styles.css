@@ -6,20 +6,26 @@ body {
 
 #print_timer {
     color: darkblue;
-    font-size: 150px;
+    font-size: 100px;
 }
 
 #letter_to_play {
     color: darkblue;
-    font-size: 150px;
+    font-size: 100px;
 }
 
 #print_test {
-    color: grey;
+    color: shadow;
+    font-size: 50px;
+}
+
+#print_categories { 
+    color: shadow;
+    font-size: 25px;
 }
 
 #wip {
-    color: darkgray;
-    font-size: 150px;
+    color: grey;
+    font-size: 25px;
 }
 
