@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    // hide off and online cotnent at the beginning
+    // hide off and online content at the beginning
     document.querySelector('#online_content').style.display = 'none';
     document.querySelector('#offline_content').style.display = 'none';
     // Use buttons to toggle between views
@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
     for (var i = 0; i < alphabet_js.length; i++) {    
         alphabet_generated.innerHTML += `<input type="checkbox" checked value="${alphabet_js[i]}"><label>${alphabet_js[i]}</label> `;
     }
-
 
     // Populate list of categories
     var categories = ["Things that Paulina likes", "First Name", "Song Name", "Band", "Country", "Item in this room",
@@ -71,6 +70,19 @@ function online_view() {
 
 };
 
+function postgame_view () {
+    // Clean up categories field if users want to change variables
+    document.getElementById('letter_to_play').innerHTML = "";
+    document.getElementById('print_timer').innerHTML = "";
+    document.getElementById('print_test').innerHTML = "";
+    document.getElementById('print_categories').innerHTML = "";
+    document.getElementById('stop_timer').innerHTML = "";
+
+    // Show again the 'Generate letter' so the users cna modify data
+    document.getElementById('form_generate_letter').style.display = "block";
+
+}
+
 function offline_view() {
 
     // Hide introduction block
@@ -84,6 +96,14 @@ function offline_view() {
 
 async function generate_letter() {
     
+    // Give the possibility to the users to stop the timer while it´s running
+    let stop_timer = document.getElementById('stop_timer');
+    stop_timer.innerHTML = `<button type="button" class="btn btn-warning">Stop timer</button>`
+
+    // Clean up categories field if users restarts timer
+    document.getElementById('print_test').innerHTML = "";
+    document.getElementById('print_categories').innerHTML = "";
+
     // Retrieve list of checked checkboxes
     var inputs = document.getElementsByTagName("input");
     var checked = [];
@@ -167,11 +187,16 @@ async function generate_letter() {
 
     }
 
-    // Tell user that time is up
-    current_timer.innerHTML = 'Time is up!';
-    
-    // Create button to Go back to form TODO
+    // Tell user that time is up and add button to start again
+    current_timer.innerHTML = `Time is up! 
+    <p><button onclick="generate_letter()" class="btn btn-info mb-2 btn-lg">Play again</button>
+    <button onclick="postgame_view()" class="btn btn-light mb-2 btn-lg">Change data</button>`;
 
+    // Clean up categories field if users restarts timer
+    document.getElementById('print_test').innerHTML = "You played with:";
+
+    // Hide stop timer button
+    document.getElementById('stop_timer').innerHTML = "";
 
     // TODO
     // document.getElementById('form_generate_letter').style.display = "block";
@@ -180,9 +205,6 @@ async function generate_letter() {
     document.body.style.backgroundColor = "black";
     await sleep(1000);
     document.body.style.backgroundColor = "white";
-
-    // Give option to restart the timer
-    document.getElementById('print_timer').innerHTML += `<p><button>Restart timer TODO</button>`;
 
     // Put generate timer button back
     var letter_generator = document.getElementById("letter_generator");
