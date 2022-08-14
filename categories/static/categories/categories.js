@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var alphabet_js = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
     let alphabet_generated = document.getElementById('alphabet');
     for (var i = 0; i < alphabet_js.length; i++) {    
-        alphabet_generated.innerHTML += `<input type="checkbox" checked value="${alphabet_js[i]}"><label>${alphabet_js[i]}</label> `;
+        alphabet_generated.innerHTML += `<button id="${alphabet_js[i]}" type="button" onclick="switch_color('${alphabet_js[i]}')" class="btn btn-outline-success">${alphabet_js[i]}</button> `;
     }
 
     // Populate list of categories
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
             categories_html.innerHTML += `<button id="${i}" type="button" onclick="switch_color(${i})" class="btn btn-success mb-2">${categories[i]}</button> `;
         }
         else {
-            categories_html.innerHTML += `<button id="${i}" type="button" onclick="switch_color(${i})" class="btn btn-danger mb-2">${categories[i]}</button> `;
+            categories_html.innerHTML += `<button id="${i}" type="button" onclick="switch_color(${i})" class="btn btn-dark mb-2">${categories[i]}</button> `;
         }
     }
 
@@ -39,16 +39,24 @@ document.addEventListener('DOMContentLoaded', function() {
 // Selecting or unselecting categories to play
 function switch_color(this_button) {
     // Print Check 
-    // console.log(`You want to change button ${this_button}`);
+    console.log(`You want to change button ${this_button}`);
     var button_to_change = document.getElementById(`${this_button}`);
     // If button is selected, unselect it
     if (button_to_change.className == "btn btn-success mb-2") {
-        button_to_change.className = "btn btn-danger mb-2";
+        button_to_change.className = "btn btn-dark mb-2";
     }
     
     // If button is unselected, select it
-    else if (button_to_change.className == "btn btn-danger mb-2") {
+    else if (button_to_change.className == "btn btn-dark mb-2") {
         button_to_change.className = "btn btn-success mb-2";
+    }
+
+    // Same for letters
+    else if (button_to_change.className == "btn btn-outline-success") {
+        button_to_change.className = "btn btn-outline-dark";
+    }
+    else if (button_to_change.className == "btn btn-outline-dark") {
+        button_to_change.className = "btn btn-outline-success";
     }
 
     // let cat = document.getElementById(this_button).innerHTML;
@@ -105,27 +113,30 @@ async function generate_letter() {
     document.getElementById('print_categories').innerHTML = "";
 
     // Retrieve list of checked checkboxes
+    var all_buttons = document.getElementsByTagName("button");
     var inputs = document.getElementsByTagName("input");
-    var checked = [];
+    var selected_letters = [];
     var timer;
     
+    // Retrieve letters selected
+    for (var i = 0; i < all_buttons.length; i++) {
+        if (all_buttons[i].className == "btn btn-outline-success") {
+            selected_letters.push(all_buttons[i].innerHTML);
+        } 
+    }
+
+    // Retrieve timer
     for (var i = 0; i < inputs.length; i++) {
-        if (inputs[i].type == "checkbox") {
-            if (inputs[i].checked) {
-                checked.push(inputs[i].value);
-            }
-        }
-        // Retrieve timer
         if (inputs[i].type == "number") {
             timer = inputs[i].value;
-        }   
+        }
     }
 
     // Count the amount of checked boxes
-    var checked_boxes = checked.length;
+    var amount_of_letters = selected_letters.length;
 
     // Cancel if amount of letters selected is below 5
-    if (checked_boxes < 5) {
+    if (amount_of_letters < 5) {
         alert(`Please select at least 5 letters`);
         return false;
     }
@@ -171,7 +182,7 @@ async function generate_letter() {
     letter_generator.disabled = true;
 
     // Generate a random letter from selected list only
-    let letters_available = checked;
+    let letters_available = selected_letters;
     let random_letter = letters_available[Math.floor(Math.random() * letters_available.length)];
     document.getElementById('letter_to_play').innerHTML = `${random_letter}`;
 
