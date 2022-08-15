@@ -70,7 +70,7 @@ function switch_color(this_button) {
 function online_view() {
 
     // Hide introduction block
-    document.getElementById('intro_block').style.display = "none";
+    document.getElementById('intro_block').style.display = 'none';
 
     // Show relevant content div
     document.querySelector('#online_content').style.display = 'block';
@@ -89,14 +89,14 @@ function postgame_view () {
     document.getElementById('print_categories').innerHTML = "";
 
     // Show again the 'Generate letter' so the users cna modify data
-    document.getElementById('form_generate_letter').style.display = "block";
+    document.getElementById('form_generate_letter').style.display = 'block';
 
 }
 
 function offline_view() {
 
     // Hide introduction block
-    document.getElementById('intro_block').style.display = "none";
+    document.getElementById('intro_block').style.display = 'none';
  
     // Show relevant content div
     document.querySelector('#offline_content').style.display = 'block';
@@ -116,6 +116,10 @@ async function generate_letter() {
     var inputs = document.getElementsByTagName("input");
     var selected_letters = [];
     var timer;
+
+    // Put timer to blue
+    let current_timer = document.getElementById('print_timer');
+    current_timer.style.color = "blue";
     
     // Retrieve letters selected
     for (var i = 0; i < all_buttons.length; i++) {
@@ -164,13 +168,20 @@ async function generate_letter() {
     // CATEGORIES: ${categories_selected}`;
 
     // Hide the whole Generate letter form to focus on relevant content
-    document.getElementById('form_generate_letter').style.display = "none";
+    document.getElementById('form_generate_letter').style.display = 'none';
 
     // Print test length categories
-    document.getElementById('print_test').innerHTML = `Your <b>${categories_selected.length}</b> categories are:`;
+    var print_test  = document.getElementById('print_test');
+    print_test.innerHTML = `Your <b>${categories_selected.length}</b> categories are:`;
+    print_test.style.color = "black";
+
+
+    var print_test = document.getElementById('print_test');
+    print_test.style.color = "black";
 
     // Print test categories
     var print_categories = document.getElementById('print_categories');
+    print_categories.style.color = "black";
     for (var i = 0 ; i < categories_selected.length; i++) {
         print_categories.innerHTML += `${[i+1]}: ${categories_selected[i]}<br>`;
     }
@@ -183,10 +194,11 @@ async function generate_letter() {
     // Generate a random letter from selected list only
     let letters_available = selected_letters;
     let random_letter = letters_available[Math.floor(Math.random() * letters_available.length)];
-    document.getElementById('letter_to_play').innerHTML = `${random_letter}`;
+    let letter_to_play = document.getElementById('letter_to_play');
+    letter_to_play.style.color = "blue";
+    letter_to_play.innerHTML = `${random_letter}`;
 
     // Display the total amount of seconds the user wants to play
-    let current_timer = document.getElementById('print_timer');
     for (var i = timer; i > 0; i--) {
         console.log(`Timer is ${timer}`);
 
@@ -202,33 +214,43 @@ async function generate_letter() {
         timer--;
     }
 
-    // Tell user that time is up and add button to start again
-    current_timer.innerHTML = `Time is up! 
-    <p><button onclick="generate_letter()" class="btn btn-info mb-2 btn-lg">Play again</button>
-    <button onclick="postgame_view()" class="btn btn-light mb-2 btn-lg">Change data</button>`;
+    // Sound alert if user doesn´t look at screen
+    var audio = new Audio('static/categories/Alert Categories project.mp3');
+    audio.play();
 
-    // Clean up categories field if users restarts timer
-    document.getElementById('print_test').innerHTML = "You played with:";
+    // Tell user that time is up and add button to start again
+    current_timer.innerHTML = `Time is up!`;
 
     // Hide stop timer button
     document.getElementById('stop_timer').innerHTML = "";
 
-    // TODO
-    // document.getElementById('form_generate_letter').style.display = "block";
-
-    // Animation to show easily that time is up
+    // Animation to show easily that time is up (background to black and texts to white, and back)
     document.body.style.backgroundColor = "black";
+    letter_to_play.style.color = "white";
+    current_timer.style.color = "white";
+    print_categories.style.display = 'none';
+    print_test.style.display = 'none';
     await sleep(1000);
     document.body.style.backgroundColor = "white";
+    letter_to_play.style.color = "grey";
+    current_timer.style.color = "grey";
+    print_categories.style.color = "grey";
+    print_categories.style.display = 'block';
+    print_test.style.display = 'block';
+
+    current_timer.innerHTML += `<p><button onclick="generate_letter()" class="btn btn-info mb-2 btn-lg">Play again</button>
+    <button onclick="postgame_view()" class="btn btn-light mb-2 btn-lg">Change data</button>`;
+
+    // Clean up categories field if users restarts timer
+    print_test.style.color = "grey";
+    print_test.innerText = "You played with";
 
     // Put generate timer button back
     var letter_generator = document.getElementById("letter_generator");
     letter_generator.innerHTML = 'Generate a random letter and set timer';
     letter_generator.disabled = false;
     
-    // TODO Test sound alert if user doesn´t look at screen
-    var alert_timer = new Audio('alert.mp3');
-    alert_timer();
+    
     
     // Test sleep function
     function sleep(ms) {
