@@ -29,6 +29,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (i < 5) {
             categories_html.innerHTML += `<button id="${i}" type="button" onclick="switch_color(${i})" class="btn btn-success mb-2">${categories[i]}</button> `;
         }
+        else if (i == 5) {
+            categories_html.innerHTML += `<br>`;     
+        }
         else {
             categories_html.innerHTML += `<button id="${i}" type="button" onclick="switch_color(${i})" class="btn btn-dark mb-2">${categories[i]}</button> `;
         }
@@ -84,7 +87,6 @@ function postgame_view () {
     document.getElementById('print_timer').innerHTML = "";
     document.getElementById('print_test').innerHTML = "";
     document.getElementById('print_categories').innerHTML = "";
-    document.getElementById('stop_timer').innerHTML = "";
 
     // Show again the 'Generate letter' so the users cna modify data
     document.getElementById('form_generate_letter').style.display = "block";
@@ -98,16 +100,13 @@ function offline_view() {
  
     // Show relevant content div
     document.querySelector('#offline_content').style.display = 'block';
+
     document.querySelector('#online_content').style.display = 'none';
 
 };
 
 async function generate_letter() {
     
-    // Give the possibility to the users to stop the timer while it´s running
-    let stop_timer = document.getElementById('stop_timer');
-    stop_timer.innerHTML = `<button type="button" class="btn btn-warning">Stop timer</button>`
-
     // Clean up categories field if users restarts timer
     document.getElementById('print_test').innerHTML = "";
     document.getElementById('print_categories').innerHTML = "";
@@ -135,12 +134,6 @@ async function generate_letter() {
     // Count the amount of checked boxes
     var amount_of_letters = selected_letters.length;
 
-    // Cancel if amount of letters selected is below 5
-    if (amount_of_letters < 5) {
-        alert(`Please select at least 5 letters`);
-        return false;
-    }
-
     var all_buttons = document.getElementsByTagName("button");
     var categories_selected = [];
     // Retrieve selected (GREEN) categories
@@ -151,8 +144,16 @@ async function generate_letter() {
         }
     }
 
+    // Cancel if amount of categories selected is below 3 and letters selected below 3
+    if (categories_selected.length < 3 && amount_of_letters < 5) {
+        alert(`Please select at least 5 letters and 3 categories`);
+        return false;
+    } else if (amount_of_letters < 5) {
+        alert(`Please select at least 5 letters`);
+        return false;
+    }
     // Cancel if amount of categories selected is below 3
-    if (categories_selected.length < 3) {
+    else if (categories_selected.length < 3) {
         alert(`Please select at least 3 categories`);
         return false;
     }
@@ -171,9 +172,7 @@ async function generate_letter() {
     // Print test categories
     var print_categories = document.getElementById('print_categories');
     for (var i = 0 ; i < categories_selected.length; i++) {
-        
         print_categories.innerHTML += `${[i+1]}: ${categories_selected[i]}<br>`;
-
     }
 
     // Lock Button in order to avoid having 2 timers running at the same time
@@ -189,13 +188,18 @@ async function generate_letter() {
     // Display the total amount of seconds the user wants to play
     let current_timer = document.getElementById('print_timer');
     for (var i = timer; i > 0; i--) {
-        
-        // console.log(`Timer is ${timer}`);
+        console.log(`Timer is ${timer}`);
+
+        // Give the possibility to the users to stop the timer while it´s running
+        let stop_timer = document.getElementById('stop_timer');
+        stop_timer.innerHTML = `<button id="button_stop_timer" class="btn btn-warning">Stop timer</button>`;
+        document.querySelector('#button_stop_timer').addEventListener('click', function () {i = 0});
+
         current_timer.innerHTML = `${timer}`;
         // call Sleep function for delay
         await sleep(1000);
+        
         timer--;
-
     }
 
     // Tell user that time is up and add button to start again
