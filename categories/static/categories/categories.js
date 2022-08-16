@@ -1,16 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     // hide off and online content at the beginning
-    document.querySelector('#online_content').style.display = 'none';
-    document.querySelector('#offline_content').style.display = 'none';
+    const online_content = document.querySelector('#online_content');
+    online_content.style.display = 'none';
+    const offline_content = document.querySelector('#offline_content');
+    offline_content.style.display = 'none';
     // Use buttons to toggle between views
     document.querySelector('#offline_button').addEventListener('click', offline_view);
     document.querySelector('#online_button').addEventListener('click', online_view);
 
     // Generate dynamically alphabet with pre-selected checkboxes
-    var alphabet_js = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-    let alphabet_generated = document.getElementById('alphabet');
-    for (var i = 0; i < alphabet_js.length; i++) {    
+    const alphabet_js = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+    const alphabet_generated = document.getElementById('alphabet');
+    for (let i = 0; i < alphabet_js.length; i++) {    
         alphabet_generated.innerHTML += `<button id="${alphabet_js[i]}" type="button" onclick="switch_color('${alphabet_js[i]}')" class="btn btn-outline-success">${alphabet_js[i]}</button> `;
     }
 
@@ -22,9 +24,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Shuffle the array of categories
     categories = categories.sort(() => Math.random() - 0.5);
     
-    var length_categories = categories.length;
-    var categories_html = document.getElementById('categories_web');
-    for (var i = 0; i < length_categories; i++) {
+    const length_categories = categories.length;
+    const categories_html = document.getElementById('categories_web');
+    for (let i = 0; i < length_categories; i++) {
         // Select (green) by default only the first 5 items, else unselected (red)
         if (i < 5) {
             categories_html.innerHTML += `<button id="${i}" type="button" onclick="switch_color(${i})" class="btn btn-success mb-2">${categories[i]}</button> `;
@@ -70,46 +72,37 @@ function switch_color(this_button) {
 function online_view() {
 
     // Hide introduction block
-    document.getElementById('intro_block').style.display = 'none';
+    const intro_block = document.getElementById('intro_block');
+    intro_block.style.display = 'none';
 
     // Show relevant content div
-    document.querySelector('#online_content').style.display = 'block';
-    document.querySelector('#offline_content').style.display = 'none';
+    online_content.style.display = 'block';
+    offline_content.style.display = 'none';
     
     // Check LOG
     // console.log('online clicked');
 
 };
 
-function postgame_view () {
-    // Clean up categories field if users want to change variables
-    document.getElementById('letter_to_play').innerHTML = "";
-    document.getElementById('print_timer').innerHTML = "";
-    document.getElementById('print_test').innerHTML = "";
-    document.getElementById('print_categories').innerHTML = "";
-
-    // Show again the 'Generate letter' so the users cna modify data
-    document.getElementById('form_generate_letter').style.display = 'block';
-
-}
-
 function offline_view() {
 
     // Hide introduction block
-    document.getElementById('intro_block').style.display = 'none';
+    intro_block.style.display = 'none';
  
     // Show relevant content div
-    document.querySelector('#offline_content').style.display = 'block';
+    offline_content.style.display = 'block';
 
-    document.querySelector('#online_content').style.display = 'none';
+    online_content.style.display = 'none';
 
 };
 
 async function generate_letter() {
     
     // Clean up categories field if users restarts timer
-    document.getElementById('print_test').innerHTML = "";
-    document.getElementById('print_categories').innerHTML = "";
+    const print_test = document.getElementById('print_test');
+    print_test .innerHTML = "";
+    const print_categories = document.getElementById('print_categories')
+    print_categories.innerHTML = "";
 
     // Retrieve list of checked checkboxes
     var all_buttons = document.getElementsByTagName("button");
@@ -118,18 +111,18 @@ async function generate_letter() {
     var timer;
 
     // Put timer to blue
-    let current_timer = document.getElementById('print_timer');
+    var current_timer = document.getElementById('print_timer');
     current_timer.style.color = "blue";
     
     // Retrieve letters selected
-    for (var i = 0; i < all_buttons.length; i++) {
+    for (let i = 0; i < all_buttons.length; i++) {
         if (all_buttons[i].className == "btn btn-outline-success") {
             selected_letters.push(all_buttons[i].innerHTML);
         } 
     }
 
     // Retrieve timer
-    for (var i = 0; i < inputs.length; i++) {
+    for (let i = 0; i < inputs.length; i++) {
         if (inputs[i].type == "number") {
             timer = inputs[i].value;
         }
@@ -138,10 +131,9 @@ async function generate_letter() {
     // Count the amount of checked boxes
     var amount_of_letters = selected_letters.length;
 
-    var all_buttons = document.getElementsByTagName("button");
     var categories_selected = [];
     // Retrieve selected (GREEN) categories
-    for (var i = 0; i < all_buttons.length; i++) {
+    for (let i = 0; i < all_buttons.length; i++) {
         if (all_buttons[i].className == "btn btn-success mb-2") {
             categories_selected.push(all_buttons[i].innerHTML);
             //console.log(`CAT ${i}: ${categories_selected[i]} `);
@@ -163,47 +155,41 @@ async function generate_letter() {
     }
 
     // Print check
-    // document.getElementById('print_test').innerHTML = `<h3><i>PRINT CHECK: -> ${checked} with timer of "${timer}". 
+    // print_test.innerHTML = `<h3><i>PRINT CHECK: -> ${checked} with timer of "${timer}". 
     // LENGTH = ${checked_boxes}</i></h3>
     // CATEGORIES: ${categories_selected}`;
 
     // Hide the whole Generate letter form to focus on relevant content
-    document.getElementById('form_generate_letter').style.display = 'none';
+    const form_generate_letter = document.getElementById('form_generate_letter');
+    form_generate_letter.style.display = 'none';
 
     // Print test length categories
-    var print_test  = document.getElementById('print_test');
     print_test.innerHTML = `Your <b>${categories_selected.length}</b> categories are:`;
     print_test.style.color = "black";
 
-
-    var print_test = document.getElementById('print_test');
-    print_test.style.color = "black";
-
     // Print test categories
-    var print_categories = document.getElementById('print_categories');
     print_categories.style.color = "black";
-    for (var i = 0 ; i < categories_selected.length; i++) {
+    for (let i = 0 ; i < categories_selected.length; i++) {
         print_categories.innerHTML += `${[i+1]}: ${categories_selected[i]}<br>`;
     }
 
     // Lock Button in order to avoid having 2 timers running at the same time
-    var letter_generator = document.getElementById("letter_generator");
+    const letter_generator = document.getElementById("letter_generator");
     letter_generator.innerHTML = 'Wait until the end of the timer';
     letter_generator.disabled = true;
 
     // Generate a random letter from selected list only
-    let letters_available = selected_letters;
-    let random_letter = letters_available[Math.floor(Math.random() * letters_available.length)];
-    let letter_to_play = document.getElementById('letter_to_play');
+    var random_letter = selected_letters[Math.floor(Math.random() * selected_letters.length)];
+    var letter_to_play = document.getElementById('letter_to_play');
     letter_to_play.style.color = "blue";
     letter_to_play.innerHTML = `${random_letter}`;
 
     // Display the total amount of seconds the user wants to play
-    for (var i = timer; i > 0; i--) {
+    for (let i = timer; i > 0; i--) {
         console.log(`Timer is ${timer}`);
 
         // Give the possibility to the users to stop the timer while it´s running
-        let stop_timer = document.getElementById('stop_timer');
+        const stop_timer = document.getElementById('stop_timer');
         stop_timer.innerHTML = `<button id="button_stop_timer" class="btn btn-warning">Stop timer</button>`;
         document.querySelector('#button_stop_timer').addEventListener('click', function () {i = 0});
 
@@ -215,14 +201,14 @@ async function generate_letter() {
     }
 
     // Sound alert if user doesn´t look at screen
-    var audio = new Audio('static/categories/Alert Categories project.mp3');
-    audio.play();
+    var alert_audio = new Audio('static/categories/Alert Categories project.mp3');
+    alert_audio.play();
 
     // Tell user that time is up and add button to start again
     current_timer.innerHTML = `Time is up!`;
 
     // Hide stop timer button
-    document.getElementById('stop_timer').innerHTML = "";
+    stop_timer.innerHTML = "";
 
     // Animation to show easily that time is up (background to black and texts to white, and back)
     document.body.style.backgroundColor = "black";
@@ -246,11 +232,8 @@ async function generate_letter() {
     print_test.innerText = "You played with";
 
     // Put generate timer button back
-    var letter_generator = document.getElementById("letter_generator");
     letter_generator.innerHTML = 'Generate a random letter and set timer';
     letter_generator.disabled = false;
-    
-    
     
     // Test sleep function
     function sleep(ms) {
@@ -262,3 +245,15 @@ async function generate_letter() {
 
 };
 
+function postgame_view () {
+    // Clean up categories field if users want to change variables
+    letter_to_play.innerHTML = "";
+    var current_timer = document.getElementById('print_timer');
+    current_timer.innerHTML = "";
+    print_test.innerHTML = "";
+    print_categories.innerHTML = "";
+
+    // Show again the 'Generate letter' so the users can modify data
+    form_generate_letter.style.display = 'block';
+
+}
