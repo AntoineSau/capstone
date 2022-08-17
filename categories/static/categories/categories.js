@@ -184,6 +184,12 @@ async function generate_letter() {
     letter_to_play.style.color = "blue";
     letter_to_play.innerHTML = `${random_letter}`;
 
+    // Avoid switching to online mode when timer is on TODO
+    var change_to_online_mode = document.getElementById('change_to_online_mode');
+    change_to_online_mode.innerHTML = `<i>Stop timer to go online</i>`;
+    change_to_online_mode.href = 'javascript:void(0)';
+
+
     // Display the total amount of seconds the user wants to play
     for (let i = timer; i > 0; i--) {
         console.log(`Timer is ${timer}`);
@@ -242,6 +248,10 @@ async function generate_letter() {
 
     // Add it to DOM
     console.log(random_letter);
+
+    // Give back possibility to switch mode
+    change_to_online_mode.innerText = 'Play online';
+    change_to_online_mode.href = 'javascript:online_view();';
 
 };
 

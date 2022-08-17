@@ -2,7 +2,7 @@
 
 {% block body %}
 
-		<!-- Intorduction block to let the users choose the mode they wnat ot play -->
+		<!-- Intorduction block to let the users choose the mode they want ot play -->
 		<div id="intro_block">
 			<h1>Welcome to categories!<h1>
 			<br>
@@ -38,27 +38,26 @@
 			
 			<div id="form_generate_letter">
 				<h3><b>1.</b> Please unselect the letters that you would like to avoid, if any. <br>
-					You must keep a <u>minimum of 5 letters:</u>
-					<br><br>
+				<h4><i>You must keep a <u>minimum of 5 letters:</u></i></h4>
+					<br>
 				<form onsubmit="generate_letter();return false;">
 					<div id="alphabet"></div>
-					<br>
+					<br><br>
 					<!-- TIMER
 						Let the player use the default timing or type the time in seconds
 					-->
-					<label for="timer"><b>2.</b> Type the time you want to play in seconds or use the default one</label>
-					<br>
-					<input required id="timer" name="timer" type="number" value="60" min="1">
-					<br>
-					<br>
+					<h3><label for="timer"><b>2.</b> Type the time you want to play in seconds or use the default online_button</label>
+					<br><br>
+					<input required id="timer" name="timer" type="number" value="60" min="1"></h3>
+					<br><br>
 
 					<!-- CATEGORIES
 						WIP / Add drag and drop?
 					-->
-					<b>3.</b> Select your categories:<br>
-					
-					<div id="categories_web"></div>
+					<h3><b>3.</b> Select your categories:<br></h3>
 					<br>
+					<div id="categories_web"></div>
+					<br><br>
 					<button id="letter_generator" class="btn btn-primary mb-2 btn-lg">Generate a random letter and start timer</button>
 
 				</form>
@@ -67,7 +66,7 @@
 			
 		</div>
 		<div id="online_content">
-			<p id="wip">WORK IN PROGRESS</p>
+			<p class="text-dark" id="wip">WORK IN PROGRESS</p>
 		</div>
 
 {% endblock %}
