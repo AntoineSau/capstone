@@ -1,10 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    // hide off and online content at the beginning
+    // hide off, online and rules content at the beginning
     const online_content = document.querySelector('#online_content');
     online_content.style.display = 'none';
     const offline_content = document.querySelector('#offline_content');
     offline_content.style.display = 'none';
+    const intro_block = document.getElementById('intro_block');
+    const rules_content = document.querySelector('#rules_content');
+    rules_content.style.display = 'none';
+
+    
+
     // Use buttons to toggle between views
     document.querySelector('#offline_button').addEventListener('click', offline_view);
     document.querySelector('#online_button').addEventListener('click', online_view);
@@ -72,15 +78,12 @@ function switch_color(this_button) {
 function online_view() {
 
     // Hide introduction block
-    const intro_block = document.getElementById('intro_block');
     intro_block.style.display = 'none';
 
     // Show relevant content div
     online_content.style.display = 'block';
     offline_content.style.display = 'none';
-    
-    // Check LOG
-    // console.log('online clicked');
+    rules_content.style.display = 'none';
 
 };
 
@@ -91,8 +94,20 @@ function offline_view() {
  
     // Show relevant content div
     offline_content.style.display = 'block';
-
     online_content.style.display = 'none';
+    rules_content.style.display = 'none';
+
+};
+
+function rules_view() {
+
+    // Hide introduction block
+    intro_block.style.display = 'none';
+
+    // Show relevant content div
+    online_content.style.display = 'none';
+    offline_content.style.display = 'none';
+    rules_content.style.display = 'block';
 
 };
 
@@ -184,12 +199,23 @@ async function generate_letter() {
     letter_to_play.style.color = "blue";
     letter_to_play.innerHTML = `${random_letter}`;
 
-    // Avoid switching to online mode when timer is on TODO
-    var change_to_online_mode = document.getElementById('change_to_online_mode');
-    change_to_online_mode.innerHTML = `<i>Stop timer to go online</i>`;
-    change_to_online_mode.href = 'javascript:void(0)';
+    // "Freeze whole menu when timer is running"
+    // Get all links in menu for further use
+    const all_menu_links = document.getElementsByClassName("nav-link");
 
-
+    // Loop over all of them adn disable them
+    const all_menu_links_length = all_menu_links.length;
+    for (let i = 0; i < all_menu_links_length; i++) {
+        if (i == 0) {
+            all_menu_links[i].className = "nav-link disabled";
+            all_menu_links[i].innerHTML = `<i>Timer must be finished or closed to switch view</i>`;
+        } else {
+            all_menu_links[i].className = "nav-link disabled";
+            all_menu_links[i].innerHTML = "";
+        }
+  
+    } 
+    
     // Display the total amount of seconds the user wants to play
     for (let i = timer; i > 0; i--) {
         console.log(`Timer is ${timer}`);
@@ -205,6 +231,15 @@ async function generate_letter() {
         
         timer--;
     }
+
+    // Loop over menu to reactivate each part
+    const menu_items = ['Play Online','Play Offline', 'How to Play'];
+    for (let i = 0; i < all_menu_links_length; i++) {
+        
+            all_menu_links[i].className = "nav-link";
+            all_menu_links[i].innerHTML = `${menu_items[i]}`;
+
+    } 
 
     // Sound alert if user doesn´t look at screen
     var alert_audio = new Audio('static/categories/Alert Categories project.mp3');
