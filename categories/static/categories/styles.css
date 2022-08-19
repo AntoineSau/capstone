@@ -4,6 +4,12 @@ body {
     text-align: center;
 }
 
+ol {
+    text-align: center;
+    list-style-position: inside;
+    list-style: inside;
+}
+
 #print_timer {
     color: darkblue;
     font-size: 100px;

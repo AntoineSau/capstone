@@ -9,8 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const rules_content = document.querySelector('#rules_content');
     rules_content.style.display = 'none';
 
-    
-
     // Use buttons to toggle between views
     document.querySelector('#offline_button').addEventListener('click', offline_view);
     document.querySelector('#online_button').addEventListener('click', online_view);
@@ -23,9 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Populate list of categories
-    var categories = ["Things that Paulina likes", "First Name", "Song Name", "Band", "Country", "Item in this room",
-    "Things than can make you fired", "Word ending with this letter", "Way of dying", 
-    "Animal", "Profession", "Movie Title", "Celebrity", "Book title"];
+    var categories = ["First Name", "Song title", "Band", "Country", "Item in this room", 
+    "Word ending with this letter", "Animal", "Profession", "Movie Title", "Celebrity", 
+    "Book title", "Five letter word"];
 
     // Shuffle the array of categories
     categories = categories.sort(() => Math.random() - 0.5);
@@ -36,9 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // Select (green) by default only the first 5 items, else unselected (red)
         if (i < 5) {
             categories_html.innerHTML += `<button id="${i}" type="button" onclick="switch_color(${i})" class="btn btn-success mb-2">${categories[i]}</button> `;
-        }
-        else if (i == 5) {
-            categories_html.innerHTML += `<br>`;     
         }
         else {
             categories_html.innerHTML += `<button id="${i}" type="button" onclick="switch_color(${i})" class="btn btn-dark mb-2">${categories[i]}</button> `;
@@ -214,7 +209,7 @@ async function generate_letter() {
             all_menu_links[i].innerHTML = "";
         }
   
-    } 
+    }
     
     // Display the total amount of seconds the user wants to play
     for (let i = timer; i > 0; i--) {
