@@ -7,7 +7,6 @@ body {
 ol {
     text-align: center;
     list-style-position: inside;
-    list-style: inside;
 }
 
 #print_timer {
@@ -16,6 +15,16 @@ ol {
 }
 
 #letter_to_play {
+    color: darkblue;
+    font-size: 100px;
+}
+
+#print_timer_off {
+    color: darkblue;
+    font-size: 100px;
+}
+
+#letter_to_play_off {
     color: darkblue;
     font-size: 100px;
 }

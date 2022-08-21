@@ -2,114 +2,102 @@
 
 {% block body %}
 
-		<!-- Intorduction block to let the users choose the mode they want ot play -->
-		<div id="intro_block">
-			<h1>Welcome to categories!<h1>
-			<br>
-			<h2>How would you like to play today?</h2>
-			<br>
-			<h3>Practice online by <b>playing against other players,</b> or <b>training with bots</b></h3>
-			<br>
-			<button id="online_button" class="btn btn-secondary mb-2 btn-lg">PLAY ONLINE</button>
-			<br><br>
-			<h3>Only generate <b>letters and a timer</b></h3>
-			<br>
-			<button id="offline_button" class="btn btn-secondary mb-2 btn-lg">PLAY OFFLINE</button>
-			<br><br>
-
-		</div>
-		
-		<div id="offline_content">
-
-			<!-- CONTENT CREATED 
-				Here the users will see the letter genretad and the timer + print test if needed
-			-->
-
-			<h1><b><div id="letter_to_play"></b></div></h1>	
-			<div id="print_timer"></div>
-			<div id="stop_timer"></div>
-			<div id="print_test"></div>
-			<div id="print_categories"></div>
-
-			<!-- LETTERS
-			Offering the user a list of letters from which they can exclude from random generation 
-			-->
-			
-			<div id="form_generate_letter">
-				<h3><b>1.</b> Please unselect the letters that you would like to avoid, if any. <br>
-				<h5><i>You must keep a <u>minimum of 5 letters:</u></i></h4>
-					<br>
-				<form onsubmit="generate_letter();return false;">
-					<div id="alphabet"></div>
-					<br><br>
-					<!-- TIMER
-						Let the player use the default timing or type the time in seconds
-					-->
-					<h3><label for="timer"><b>2.</b> Type the time you want to play in seconds or use the default online_button</label>
-					<br><br>
-					<input required id="timer" name="timer" type="number" value="60" min="1"></h3>
-					<br><br>
-
-					<!-- CATEGORIES
-						WIP / Add drag and drop?
-					-->
-					<h3><b>3.</b> Select your categories:<br></h3>
-					<br>
-					<div id="categories_web"></div>
-					<br><br>
-					<button id="letter_generator" class="btn btn-primary mb-2 btn-lg">Generate a random letter and start timer</button>
-
-				</form>
-			</div>
-		</h3>
-			
-		</div>
-		
-		<div id="online_content">
-
-			<!-- CONTENT CREATED 
-				Here the users will see the letter genretad and the timer + print test if needed
-			-->
-
-			<h1><b><div id="letter_to_play"></b></div></h1>	
-			<div id="print_timer"></div>
-			<div id="stop_timer"></div>
-			<div id="print_test"></div>
-			<div id="print_categories"></div>
-
-			<!-- LETTERS
-			Offering the user a list of letters from which they can exclude from random generation 
-			-->
-			
-			<div id="form_generate_letter">
-				<h3><b>1.</b> Please unselect the letters that you would like to avoid, if any. <br>
-				<h5><i>You must keep a <u>minimum of 5 letters:</u></i></h4>
-					<br>
-				<form onsubmit="generate_letter();return false;">
-					<div id="alphabet"></div>
-					<br><br>
-					<!-- TIMER
-						Let the player use the default timing or type the time in seconds
-					-->
-					<h3><label for="timer"><b>2.</b> Type the time you want to play in seconds or use the default online_button</label>
-					<br><br>
-					<input required id="timer" name="timer" type="number" value="60" min="1"></h3>
-					<br><br>
-
-					<!-- CATEGORIES
-						WIP / Add drag and drop?
-					-->
-					<h3><b>3.</b> Select your categories:<br></h3>
-					<br>
-					<div id="categories_web"></div>
-					<br><br>
-					<button id="letter_generator" class="btn btn-primary mb-2 btn-lg">Generate a random letter and start timer</button>
-
-				</form>
-			</div>
-		</h3>
-
+	<!-- Introduction block to let the users choose the mode they want ot play -->
+	<div id="intro_block">
+		<h1>Welcome to categories!<h1>
+		<br>
+		<h2>How would you like to play today?</h2>
+		<br>
+		<h3>Practice online by <b>playing against other players,</b> or <b>training with bots</b></h3>
+		<br>
+		<button id="online_button" class="btn btn-secondary mb-2 btn-lg">PLAY ONLINE</button>
+		<br><br>
+		<h3>Only generate <b>letters and a timer</b></h3>
+		<br>
+		<button id="offline_button" class="btn btn-secondary mb-2 btn-lg">PLAY OFFLINE</button>
+		<br><br>
 	</div>
+		
+	<div id="offline_content">
+		<!-- CONTENT CREATED 
+			Here the users will see the letter genretad and the timer + print test if needed
+		-->
+		<h1>
+		<div id="game_data_off">
+			<div id="letter_to_play_off"></div>
+			<div id="print_timer_off"></div>
+			<div id="stop_timer_off"></div>
+		</div>
+		</h1>
+		<!-- LETTERS
+		Offering the user a list of letters from which they can exclude from random generation 
+		-->
+		
+		<div id="form_offline_game">
+			<h3><b>1.</b> Please unselect the letters that you would like to avoid, if any. <br></h3>
+			<h5><i>You must keep a <u>minimum of 5 letters:</u></i></h5>
+			<h3><br>
+			<form onsubmit="offline_game();return false;">
+				<div id="alphabet_off"></div>
+				<br><br>
+				<!-- TIMER
+					Let the player use the default timing or type the time in seconds
+				-->
+				<label><b>2.</b> Type the time you want to play in seconds or use the default one</label>
+				<br><br>
+				<input required id="timer_off" name="timer_off" type="number" value="60" min="1">
+				<br><br>
+				<button id="offline_generator" class="btn btn-primary mb-2 btn-lg">Start timer!</button>
+			</form>
+		</div>
+	</h3>
+	</div>
+		
+	<div id="online_content">
+
+		<!-- CONTENT CREATED 
+			Here the users will see the letter generate and the timer + print test if needed
+		-->
+		<div id="game_data">
+			<div id="letter_to_play"></div>
+			<div id="print_timer"></div>
+			<div id="stop_timer"></div>
+			<div id="print_test"></div>
+			<div id="print_categories"></div>
+		</div>
+
+		<!-- LETTERS
+		Offering the user a list of letters from which they can exclude from random generation 
+		-->
+		
+		<div id="form_generate_letter">
+			<h3><b>1.</b> Please unselect the letters that you would like to avoid, if any. <br>
+			<h5><i>You must keep a <u>minimum of 5 letters:</u></i></h4>
+				<br>
+			<form onsubmit="generate_letter();return false;">
+				<div id="alphabet"></div>
+				<br><br>
+				<!-- TIMER
+					Let the player use the default timing or type the time in seconds
+				-->
+				<h3><label><b>2.</b> Type the time you want to play in seconds or use the default online_button</label>
+				<br><br>
+				<input required id="timer_on" name="timer" type="number" value="60" min="1"></h3>
+				<br><br>
+
+				<!-- CATEGORIES
+					WIP / Add drag and drop?
+				-->
+				<h3><b>3.</b> Select your categories:<br></h3>
+				<br>
+				<div id="categories_web"></div>
+				<br><br>
+				<button id="letter_generator" class="btn btn-primary mb-2 btn-lg">Generate a random letter and start timer</button>
+
+			</form>
+		</div>
+	</div>
+
 	<div id="rules_content">
 		<p class="text-dark" id="wip">How to play categories?</p>
 
