@@ -37,8 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Populate list of categories
     var categories = ["First Name", "Song title", "Band", "Country", "Item in this room", 
-    "Word ending with this letter", "Animal", "Profession", "Movie Title", "Celebrity", 
-    "Book title", "Five letter word"];
+    "Animal", "Profession", "Movie Title", "Celebrity", 
+    "Book title", "Serie title", "Five letter word"];
 
     // Shuffle the array of categories
     categories = categories.sort(() => Math.random() - 0.5);
@@ -200,13 +200,13 @@ async function generate_letter() {
     // CATEGORIES: ${categories_selected}`;
 
     // Print test length categories
-    print_test.innerHTML = `Your <b>${categories_selected.length}</b> categories are:`;
+    print_test.innerHTML = `Write your answers below for each one of the <b>${categories_selected.length}</b> categories:`;
     print_test.style.color = "black";
 
     // Print test categories
     print_categories.style.color = "black";
     for (let i = 0 ; i < categories_selected.length; i++) {
-        print_categories.innerHTML += `${[i+1]}: ${categories_selected[i]}<br>`;
+        print_categories.innerHTML += `${[i+1]} - ${categories_selected[i]} : <input id="answer" type="text"></input><p>`;
     }
 
     // Lock Button in order to avoid having 2 timers running at the same time

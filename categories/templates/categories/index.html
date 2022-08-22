@@ -34,9 +34,8 @@
 		-->
 		
 		<div id="form_offline_game">
-			<h3><b>1.</b> Please unselect the letters that you would like to avoid, if any. <br></h3>
-			<h5><i>You must keep a <u>minimum of 5 letters:</u></i></h5>
-			<h3><br>
+			<h3><b>1.</b> Please unselect the letters that you would like to avoid, if any. <br>
+			<br>
 			<form onsubmit="offline_game();return false;">
 				<div id="alphabet_off"></div>
 				<br><br>
@@ -49,8 +48,9 @@
 				<br><br>
 				<button id="offline_generator" class="btn btn-primary mb-2 btn-lg">Start timer!</button>
 			</form>
+			</h3>
 		</div>
-	</h3>
+	
 	</div>
 		
 	<div id="online_content">
@@ -71,29 +71,28 @@
 		-->
 		
 		<div id="form_generate_letter">
-			<h3><b>1.</b> Please unselect the letters that you would like to avoid, if any. <br>
-			<h5><i>You must keep a <u>minimum of 5 letters:</u></i></h4>
-				<br>
+			<h3><b>1.</b>Any letter you want to avoid? Unselect it :)
+			<br><br>
 			<form onsubmit="generate_letter();return false;">
 				<div id="alphabet"></div>
-				<br><br>
+				<br>
 				<!-- TIMER
 					Let the player use the default timing or type the time in seconds
 				-->
-				<h3><label><b>2.</b> Type the time you want to play in seconds or use the default online_button</label>
+				<label><b>2.</b> Type the time you want to play in seconds or use the default value</label>
 				<br><br>
-				<input required id="timer_on" name="timer" type="number" value="60" min="1"></h3>
+				<input required id="timer_on" name="timer" type="number" value="60" min="1">
 				<br><br>
 
 				<!-- CATEGORIES
 					WIP / Add drag and drop?
 				-->
-				<h3><b>3.</b> Select your categories:<br></h3>
+				<b>3.</b> Select your categories:<br>
 				<br>
 				<div id="categories_web"></div>
-				<br><br>
+				<br>
 				<button id="letter_generator" class="btn btn-primary mb-2 btn-lg">Generate a random letter and start timer</button>
-
+			</h3>
 			</form>
 		</div>
 	</div>
