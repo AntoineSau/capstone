@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    // hide off, online and rules content at the beginning
+    // hide off, onne and rules content at the beginning
     const online_content = document.querySelector('#online_content');
     online_content.style.display = 'none';
     const offline_content = document.querySelector('#offline_content');
@@ -205,10 +205,13 @@ async function generate_letter() {
 
     // Print test categories
     print_categories.style.color = "black";
-    for (let i = 0 ; i < categories_selected.length; i++) {
-        print_categories.innerHTML += `${[i+1]} - ${categories_selected[i]} : <input id="answer" type="text"></input><p>`;
-    }
 
+    // Create a form to submit the user´s answers TODO
+    for (let i = 0 ; i < categories_selected.length; i++) {
+        print_categories.innerHTML += `<p>${[i+1]} - ${categories_selected[i]} : <input name="${categories_selected[i]}" id="answer${[i+1]}" type="text"></input></p>`;
+    }
+    print_categories.innerHTML += `<input id="submit_online_game" type="submit">`;
+    
     // Lock Button in order to avoid having 2 timers running at the same time
     const letter_generator = document.getElementById("letter_generator");
     letter_generator.innerHTML = 'Wait until the end of the timer';
@@ -269,6 +272,17 @@ async function generate_letter() {
     // Tell user that time is up and add button to start again
     current_timer.innerHTML = `Time is up!`;
 
+    // Forbid user to submit online form after timer is stopped
+    const submit_online_game = document.getElementById("submit_online_game");
+    submit_online_game.disabled = true;
+    submit_online_game.innerText = 'Time is up';
+
+    // Forbid user to complete form after tiemr is stopped
+    for (let i = 0 ; i < categories_selected.length; i++) {
+        document.getElementById(`answer${[i+1]}`).disabled = true;
+        document.getElementById(`answer${[i+1]}`).style.color = "grey";
+    }
+
     // Hide stop timer button
     stop_timer.innerHTML = "";
 
@@ -291,7 +305,7 @@ async function generate_letter() {
 
     // Clean up categories field if users restarts timer
     print_test.style.color = "grey";
-    print_test.innerText = "You played with";
+    print_test.innerText = "Your answers";
 
     // Put generate timer button back
     letter_generator.innerHTML = 'Generate a random letter and set timer';
