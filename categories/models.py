@@ -20,4 +20,10 @@ class Answer(models.Model):
     answer = models.CharField(max_length=64)
 
     def __str__(self):
-        return f"{self.id}. {self.category_played} with {self.letter_played} -> {self.answer}"
+        return f"'{self.category_played.categoryname}' with '{self.letter_played.letter}' -> {self.answer}"
+
+class Test(models.Model):
+    entry = models.CharField(max_length=64)
+
+    def __str__(self):
+        return f"{self.entry}"

@@ -277,10 +277,28 @@ async function generate_letter() {
     submit_online_game.disabled = true;
     submit_online_game.innerText = 'Time is up';
 
-    // Forbid user to complete form after tiemr is stopped
+    // Forbid user to complete form after timer is stopped
     for (let i = 0 ; i < categories_selected.length; i++) {
-        document.getElementById(`answer${[i+1]}`).disabled = true;
-        document.getElementById(`answer${[i+1]}`).style.color = "grey";
+        var current_answer = document.getElementById(`answer${[i+1]}`);
+        current_answer.disabled = true;
+        current_answer.style.color = "grey";
+        if (current_answer.value == "") {
+            current_answer.value = 'Not answered';
+        }
+        // TEST API only if there is any answer
+        else {
+            fetch('/update', {
+                method: 'POST',
+                body: JSON.stringify({
+                    entry: current_answer.value
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                  // Print result
+                  console.log(result);
+            });
+        }
     }
 
     // Hide stop timer button
