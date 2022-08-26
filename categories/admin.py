@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import Category, Letter, Answer, Test
+from .models import Category, Letter, Answer, Test2
 
 # Register your models here.
 admin.site.register(Category)
 admin.site.register(Letter)
 admin.site.register(Answer)
-admin.site.register(Test)
+admin.site.register(Test2)

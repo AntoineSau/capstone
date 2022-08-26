@@ -22,8 +22,10 @@ class Answer(models.Model):
     def __str__(self):
         return f"'{self.category_played.categoryname}' with '{self.letter_played.letter}' -> {self.answer}"
 
-class Test(models.Model):
+class Test2(models.Model):
     entry = models.CharField(max_length=64)
+    letter = models.CharField(max_length=64)
+    category = models.CharField(max_length=64)
 
     def __str__(self):
-        return f"{self.entry}"
+        return f"'{self.category}' with letter '{self.letter}' -> {self.entry}"

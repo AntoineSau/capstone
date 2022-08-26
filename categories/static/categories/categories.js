@@ -36,8 +36,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     // Populate list of categories
-    var categories = ["First Name", "Song title", "Band", "Country", "Item in this room", 
-    "Animal", "Profession", "Movie Title", "Celebrity", 
+    var categories = ["First name", "Song title", "Band", "Country", "Item in this room", 
+    "Animal", "Profession", "Movie title", "Celebrity", 
     "Book title", "Serie title", "Five letter word"];
 
     // Shuffle the array of categories
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Selecting or unselecting categories to play
 function switch_color(this_button) {
     // Print Check 
-    console.log(`You want to change button ${this_button}`);
+    // console.log(`You want to change button ${this_button}`);
     var button_to_change = document.getElementById(`${this_button}`);
     // If button is selected, unselect it
     if (button_to_change.className == "btn btn-success mb-2") {
@@ -210,7 +210,10 @@ async function generate_letter() {
     for (let i = 0 ; i < categories_selected.length; i++) {
         print_categories.innerHTML += `<p>${[i+1]} - ${categories_selected[i]} : <input name="${categories_selected[i]}" id="answer${[i+1]}" type="text"></input></p>`;
     }
-    print_categories.innerHTML += `<input id="submit_online_game" type="submit">`;
+    // back up FORM
+    // print_categories.innerHTML += `<input id="submit_online_game" type="submit">`;
+    // convert form into a JS trigger
+    print_categories.innerHTML += `<button type="button" id="submit_online_game" class="btn btn-success">Submit answers</button>`;
     
     // Lock Button in order to avoid having 2 timers running at the same time
     const letter_generator = document.getElementById("letter_generator");
@@ -242,12 +245,14 @@ async function generate_letter() {
     
     // Display the total amount of seconds the user wants to play
     for (let i = timer; i > 0; i--) {
-        console.log(`Timer is ${timer}`);
+        // Print Check
+        // console.log(`Timer is ${timer}`);
 
         // Give the possibility to the users to stop the timer while it´s running
         const stop_timer = document.getElementById('stop_timer');
         stop_timer.innerHTML = `<button id="button_stop_timer" class="btn btn-warning">Stop timer</button>`;
         document.querySelector('#button_stop_timer').addEventListener('click', function () {i = 0});
+        document.querySelector('#submit_online_game').addEventListener('click', function () {i = 0});
 
         current_timer.innerHTML = `${timer}`;
         // call Sleep function for delay
@@ -274,8 +279,7 @@ async function generate_letter() {
 
     // Forbid user to submit online form after timer is stopped
     const submit_online_game = document.getElementById("submit_online_game");
-    submit_online_game.disabled = true;
-    submit_online_game.innerText = 'Time is up';
+    submit_online_game.style.display = 'none';
 
     // Forbid user to complete form after timer is stopped
     for (let i = 0 ; i < categories_selected.length; i++) {
@@ -290,7 +294,9 @@ async function generate_letter() {
             fetch('/update', {
                 method: 'POST',
                 body: JSON.stringify({
-                    entry: current_answer.value
+                    answer: current_answer.value,
+                    letter: random_letter, 
+                    category: current_answer.name
                 })
             })
             .then(response => response.json())
@@ -310,7 +316,7 @@ async function generate_letter() {
     current_timer.style.color = "white";
     print_categories.style.display = 'none';
     print_test.style.display = 'none';
-    await sleep(1000);
+    await sleep(500);
     document.body.style.backgroundColor = "white";
     letter_to_play.style.color = "grey";
     current_timer.style.color = "grey";
@@ -334,8 +340,8 @@ async function generate_letter() {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    // Add it to DOM
-    console.log(random_letter);
+    // Check Print letter
+    // console.log(random_letter);
 
 };
 
@@ -414,7 +420,8 @@ async function offline_game() {
     
     // Display the total amount of seconds the user wants to play
     for (let i = timer; i > 0; i--) {
-        console.log(`Timer is ${timer}`);
+        // Print Check 
+        // console.log(`Timer is ${timer}`);
 
         // Give the possibility to the users to stop the timer while it´s running
         const stop_timer_off = document.getElementById('stop_timer_off');
@@ -454,7 +461,7 @@ async function offline_game() {
     document.body.style.backgroundColor = "black";
     letter_to_play_off.style.color = "white";
     current_timer_off.style.color = "white";
-    await sleep(1000);
+    await sleep(500);
     document.body.style.backgroundColor = "white";
     letter_to_play_off.style.color = "grey";
     current_timer_off.style.color = "grey";
@@ -471,12 +478,8 @@ async function offline_game() {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    // Add it to DOM
-    console.log(random_letter);
-
-    // Give back possibility to switch mode
-    change_to_online_mode.innerText = 'Play online';
-    change_to_online_mode.href = 'javascript:online_view();';
+    // Check Print letter
+    // console.log(random_letter_off);
 
 };
 
