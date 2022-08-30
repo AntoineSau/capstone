@@ -11,6 +11,9 @@ from categories.models import Answer, Category, Letter, Test2
 def index(request):
 	return render(request, "categories/index.html")
 
+def test(request):
+	return render(request, "categories/test.html")
+
 @csrf_exempt
 def update(request):
 	# TO DO
