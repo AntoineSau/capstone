@@ -232,8 +232,8 @@ async function generate_letter() {
 
     // Loop over all of them adn disable them
     const all_menu_links_length = all_menu_links.length;
-    for (let i = 0; i < all_menu_links_length; i++) {
-        if (i == 0) {
+    for (let i = 1; i < all_menu_links_length; i++) {
+        if (i == 1) {
             all_menu_links[i].className = "nav-link disabled";
             all_menu_links[i].innerHTML = `<i>Timer must be finished or closed to switch view</i>`;
         } else {
@@ -246,7 +246,7 @@ async function generate_letter() {
     // Display the total amount of seconds the user wants to play
     for (let i = timer; i > 0; i--) {
         // Print Check
-        // console.log(`Timer is ${timer}`);
+        //console.log(`Timer is ${timer}`);
 
         // Give the possibility to the users to stop the timer while it´s running
         const stop_timer = document.getElementById('stop_timer');
@@ -263,10 +263,10 @@ async function generate_letter() {
 
     // Loop over menu to reactivate each part
     const menu_items = ['Play Online','Play Offline', 'How to Play'];
-    for (let i = 0; i < all_menu_links_length; i++) {
+    for (let i = 1; i < all_menu_links_length; i++) {
         
             all_menu_links[i].className = "nav-link";
-            all_menu_links[i].innerHTML = `${menu_items[i]}`;
+            all_menu_links[i].innerHTML = `${menu_items[i-1]}`;
 
     } 
 
@@ -280,6 +280,9 @@ async function generate_letter() {
     // Forbid user to submit online form after timer is stopped
     const submit_online_game = document.getElementById("submit_online_game");
     submit_online_game.style.display = 'none';
+
+    // Create a counter for answerss
+    let counter_answers = 0;
 
     // Forbid user to complete form after timer is stopped
     for (let i = 0 ; i < categories_selected.length; i++) {
@@ -304,6 +307,8 @@ async function generate_letter() {
                   // Print result
                   console.log(result);
             });
+            // Update answers counter
+            counter_answers++;
         }
     }
 
@@ -329,7 +334,10 @@ async function generate_letter() {
 
     // Clean up categories field if users restarts timer
     print_test.style.color = "grey";
-    print_test.innerText = "Your answers";
+    // Check how many answers were given na d percentage of right answers
+    let percentage_of_answers = counter_answers / categories_selected.length * 100; 
+    percentage_of_answers = parseFloat(percentage_of_answers.toFixed(2));
+    print_test.innerText = `Your answered to ${percentage_of_answers} % of the questions.`;
 
     // Put generate timer button back
     letter_generator.innerHTML = 'Generate a random letter and set timer';
@@ -405,10 +413,10 @@ async function offline_game() {
     // Get all links in menu for further use
     const all_menu_links = document.getElementsByClassName("nav-link");
 
-    // Loop over all of them and disable them
+    // Loop over all of them adn disable them
     const all_menu_links_length = all_menu_links.length;
-    for (let i = 0; i < all_menu_links_length; i++) {
-        if (i == 0) {
+    for (let i = 1; i < all_menu_links_length; i++) {
+        if (i == 1) {
             all_menu_links[i].className = "nav-link disabled";
             all_menu_links[i].innerHTML = `<i>Timer must be finished or closed to switch view</i>`;
         } else {
@@ -437,12 +445,12 @@ async function offline_game() {
 
     // Loop over menu to reactivate each part
     const menu_items = ['Play Online','Play Offline', 'How to Play'];
-    for (let i = 0; i < all_menu_links_length; i++) {
+    for (let i = 1; i < all_menu_links_length; i++) {
         
             all_menu_links[i].className = "nav-link";
-            all_menu_links[i].innerHTML = `${menu_items[i]}`;
+            all_menu_links[i].innerHTML = `${menu_items[i-1]}`;
 
-    } 
+    }
 
     // Sound alert if user doesn´t look at screen
     //var alert_audio = new Audio('static/categories/Alert Categories project.mp3');
