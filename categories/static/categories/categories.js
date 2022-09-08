@@ -334,10 +334,25 @@ async function generate_letter() {
 
     // Clean up categories field if users restarts timer
     print_test.style.color = "grey";
-    // Check how many answers were given na d percentage of right answers
+    // Check how many answers were given and percentage of right answers
     let percentage_of_answers = counter_answers / categories_selected.length * 100; 
     percentage_of_answers = parseFloat(percentage_of_answers.toFixed(2));
-    print_test.innerText = `Your answered to ${percentage_of_answers} % of the questions.`;
+
+    // Show the user how well they answered
+    print_test.innerText = `Your answered to ${percentage_of_answers}% of the questions.`;
+    // Add a specific content depending on the % answered
+    if (percentage_of_answers === 100) {
+        print_test.innerHTML += `<p>Impressive! Join our league and challenge the best players!`
+    }
+    else if (percentage_of_answers === 0) {
+        print_test.innerHTML += `<p>Keep practising!`
+    }
+    else if (0 < percentage_of_answers < 50) {
+        print_test.innerHTML += `<p>Have you tried playing against a bot to level up?`
+    }
+    else if (50 < percentage_of_answers < 100) {
+        print_test.innerHTML += `<p>Almost perfect! Practice agaisn a bot or anotehr player!`
+    }
 
     // Put generate timer button back
     letter_generator.innerHTML = 'Generate a random letter and set timer';
