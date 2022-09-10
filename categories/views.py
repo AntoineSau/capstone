@@ -1,7 +1,10 @@
 from cgi import test
 import json
 from unicodedata import category
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import HttpResponse, HttpResponseRedirect, render
 from django.shortcuts import render
+from django.urls import reverse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
@@ -10,6 +13,10 @@ from categories.models import Answer, Category, Letter, Test2
 # Create your views here.
 def index(request):
 	return render(request, "categories/index.html")
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("index"))
 
 def test(request):
 	return render(request, "categories/test.html")

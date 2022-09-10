@@ -15,10 +15,15 @@
 
             <div>
                 <ul class="navbar-nav mr-auto">
-
+                    {% if user.is_authenticated %}
                     <li  class="nav-item">
-                        <a class="nav-link" href="#"><b>Login / out</b></a>
+                        <a class="nav-link" href="{% url 'logout' %}"><b>Log out {{ user.username }}</b></a>
                     </li>
+                    {% else %}
+                    <li  class="nav-item">
+                        <a class="nav-link" href="#"><b>Log in</b></a>
+                    </li>
+                    {% endif %}
 
                     <li  class="nav-item">
                         <a class="nav-link" href="javascript:online_view();">Play Online</a>
