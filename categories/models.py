@@ -1,7 +1,15 @@
+import imghdr
 from tkinter import CASCADE
+from unicodedata import category
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# Create your models here.
+class User(AbstractUser):
+    pass
+
+    def __str__(self):
+        return f"User Name: {self.username}. User ID number: {self.id}."
+
 class Category(models.Model):
     categoryname = models.CharField(max_length=64)
 
