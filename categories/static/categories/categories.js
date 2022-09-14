@@ -206,14 +206,14 @@ async function generate_letter() {
     // Print test categories
     print_categories.style.color = "black";
 
-    // Create a form to submit the user´s answers TODO
+    // Create a form to submit the user´s answers
     for (let i = 0 ; i < categories_selected.length; i++) {
-        print_categories.innerHTML += `<p>${[i+1]} - ${categories_selected[i]} : <input name="${categories_selected[i]}" id="answer${[i+1]}" type="text"></input></p>`;
+        print_categories.innerHTML += `<p>${[i+1]} - ${categories_selected[i]} : <input required name="${categories_selected[i]}" id="answer${[i+1]}" type="text"></input></p>`;
     }
     // back up FORM
     // print_categories.innerHTML += `<input id="submit_online_game" type="submit">`;
     // convert form into a JS trigger
-    print_categories.innerHTML += `<button type="button" id="submit_online_game" class="btn btn-success">Submit answers</button>`;
+    print_categories.innerHTML += `<button disabled type="button" id="submit_online_game" class="btn btn-success">Submit answers</button>`;
     
     // Lock Button in order to avoid having 2 timers running at the same time
     const letter_generator = document.getElementById("letter_generator");
@@ -252,6 +252,30 @@ async function generate_letter() {
         const stop_timer = document.getElementById('stop_timer');
         stop_timer.innerHTML = `<button id="button_stop_timer" class="btn btn-warning">Stop timer</button>`;
         document.querySelector('#button_stop_timer').addEventListener('click', function () {i = 0});
+
+        // Count amount of avialable fields
+        console.log(`Amount of fields: ${categories_selected.length}`);
+        
+        // TODO WIP Test count how many fields are filled
+        let fields_filled = 0;
+        for (let i = categories_selected.length; i > 0; i--) {
+            let is_filled = document.getElementById(`answer${[i]}`);
+            if (is_filled.value.length != 0) {
+                fields_filled++;
+            }
+        }
+
+        console.log(`Amount of fields filled: ${fields_filled}`);
+        
+        // Whenever all fileds are filled, allow user to submit form
+        if (fields_filled == categories_selected.length) {
+            document.getElementById("submit_online_game").disabled = false;
+        }
+        // Else, avoid them to do so
+        else {
+            document.getElementById("submit_online_game").disabled = true;
+        }
+
         document.querySelector('#submit_online_game').addEventListener('click', function () {i = 0});
 
         current_timer.innerHTML = `${timer}`;
