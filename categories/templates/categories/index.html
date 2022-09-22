@@ -64,7 +64,7 @@
 			<p class="text-dark" id="wip">Online game</p>
 			<h3><b>1.</b> Any letter you want to avoid? Unselect it :)
 			<br><br>
-			<form">
+			<form onsubmit="online_game_bot();return false;">
 				<div id="alphabet_game"></div>
 				<br>
 				<!-- TIMER
@@ -72,25 +72,22 @@
 				-->
 				<label><b>2.</b> Type the time you want to play in seconds or use the default value</label>
 				<br><br>
-				<input required id="timer_on" name="timer" type="number" value="60" min="1">
+				<input required id="timer_game" name="timer_game"" type="number" value="60" min="1">
 				<br>
 				<br>
-
-				<!-- CATEGORIES
-					WIP / Add drag and drop?
-				-->
 				<b>3.</b> Select your categories:<br>
 				<br>
 				<div id="categories_game"></div>
 				<br>
 				<b>4.</b> Select rounds to play or use default value:<br>
 				<br>
-				<input required id="rounds" name="rounds" type="number" value="5" min="1">
+				<input required id="rounds_game" name="rounds_game" type="number" value="5" min="1">
 				<br>
 				<br>
-				<button id="letter_generator" class="btn btn-primary mb-2 btn-lg">To Do</button>
-			</h3>
+				<button id="game_game" class="btn btn-primary mb-2 btn-lg">To Do</button>
 			</form>
+			</h3>
+			
 		</div>
 	</div>
 

@@ -31,12 +31,12 @@ document.addEventListener('DOMContentLoaded', function() {
     for (let i = 0; i < alphabet_js.length; i++) {    
         alphabet_training.innerHTML += `<button id="${alphabet_js[i]}_training" type="button" onclick="switch_color('${alphabet_js[i]}_training')" class="btn btn-outline-success">${alphabet_js[i]}</button> `;
     }
-    // offline view
+    // Generate alphabet for offline view
     const alphabet_generated_off = document.getElementById('alphabet_off');
     for (let i = 0; i < alphabet_js.length; i++) {    
         alphabet_generated_off.innerHTML += `<button id="${alphabet_js[i]}_off" type="button" onclick="switch_color('${alphabet_js[i]}_off')" class="btn btn-outline-success btn-lg">${alphabet_js[i]}</button> `;
     }
-    // bot view
+    // Generate alphabet for bot view
     const alphabet_generated_game = document.getElementById('alphabet_game');
     for (let i = 0; i < alphabet_js.length; i++) {    
         alphabet_generated_game.innerHTML += `<button id="${alphabet_js[i]}_game" type="button" onclick="switch_color('${alphabet_js[i]}_game')" class="btn btn-outline-info">${alphabet_js[i]}</button> `;
@@ -610,4 +610,44 @@ function postgame_view_off () {
     // Show again the 'Generate letter' so the users can modify data
     form_offline_game.style.display = 'block';
 
+}
+
+function online_game_bot () {
+
+    // Define values to be passed in (context according to users' choices
+    let game_letters = [];
+    let game_timer = [];
+    let game_categories = [];
+    let game_rounds = [];
+
+    // Retrieve letters selected
+    var all_buttons = document.getElementsByTagName("button");
+    for (let i = 0; i < all_buttons.length; i++) {
+        if (all_buttons[i].className == "btn btn-outline-info") {
+            game_letters.push(all_buttons[i].innerHTML);
+        } 
+    }
+
+    // Retrieve timer
+    timer_game = document.getElementById('timer_game');
+    game_timer = timer_game.value;
+
+    // Retrieve categories
+    var all_buttons = document.getElementsByTagName("button");
+    for (let i = 0; i < all_buttons.length; i++) {
+        if (all_buttons[i].className == "btn btn-info mb-2") {
+            game_categories.push(all_buttons[i].innerHTML);
+            //console.log(`CAT ${i}: ${categories_selected[i]} `);
+        }
+    }
+
+    // Retrieve amount of rounds
+    amount_of_rounds = document.getElementById('rounds_game');
+    game_rounds = amount_of_rounds.value;
+
+    // Test Prints
+    console.log(`LETTERS: ${game_letters}`);
+    console.log(`TIMER: ${game_timer}`);
+    console.log(`CATEGORIES: ${game_categories}`);
+    console.log(`ROUNDS: ${game_rounds}`);
 }
