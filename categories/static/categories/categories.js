@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    // hide off, onne and rules content at the beginning
+    // hide off, one and rules content at the beginning
     const online_content = document.querySelector('#online_content');
     online_content.style.display = 'none';
     const offline_content = document.querySelector('#offline_content');
@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const intro_block = document.getElementById('intro_block');
     const rules_content = document.querySelector('#rules_content');
     rules_content.style.display = 'none';
+    const game_content = document.querySelector('#game_content');
+    game_content.style.display = 'none';
     // Hide the whole Generate letter and offline forms to focus on relevant content
     const form_offline_game = document.getElementById('form_offline_game');
     form_offline_game.style.display = 'block';
@@ -21,19 +23,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Use buttons to toggle between views
     document.querySelector('#offline_button').addEventListener('click', offline_view);
     document.querySelector('#online_button').addEventListener('click', online_view);
+    document.querySelector('#game_button').addEventListener('click', game_view);
 
     // Generate dynamically alphabet with pre-selected checkboxes
     const alphabet_js = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-    const alphabet_generated = document.getElementById('alphabet');
+    const alphabet_training = document.getElementById('alphabet');
     for (let i = 0; i < alphabet_js.length; i++) {    
-        alphabet_generated.innerHTML += `<button id="${alphabet_js[i]}" type="button" onclick="switch_color('${alphabet_js[i]}')" class="btn btn-outline-success">${alphabet_js[i]}</button> `;
+        alphabet_training.innerHTML += `<button id="${alphabet_js[i]}_training" type="button" onclick="switch_color('${alphabet_js[i]}_training')" class="btn btn-outline-success">${alphabet_js[i]}</button> `;
     }
     // offline view
     const alphabet_generated_off = document.getElementById('alphabet_off');
     for (let i = 0; i < alphabet_js.length; i++) {    
         alphabet_generated_off.innerHTML += `<button id="${alphabet_js[i]}_off" type="button" onclick="switch_color('${alphabet_js[i]}_off')" class="btn btn-outline-success btn-lg">${alphabet_js[i]}</button> `;
     }
-
+    // bot view
+    const alphabet_generated_game = document.getElementById('alphabet_game');
+    for (let i = 0; i < alphabet_js.length; i++) {    
+        alphabet_generated_game.innerHTML += `<button id="${alphabet_js[i]}_game" type="button" onclick="switch_color('${alphabet_js[i]}_game')" class="btn btn-outline-info">${alphabet_js[i]}</button> `;
+    }
 
     // Populate list of categories
     var categories = ["First name", "Song title", "Band", "Country", "Item in this room", 
@@ -44,6 +51,8 @@ document.addEventListener('DOMContentLoaded', function() {
     categories = categories.sort(() => Math.random() - 0.5);
     
     const length_categories = categories.length;
+    
+    // Populate training categories
     const categories_html = document.getElementById('categories_web');
     for (let i = 0; i < length_categories; i++) {
         // Select (green) by default only the first 5 items, else unselected (red)
@@ -55,6 +64,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Populate game categories
+    const categories_game = document.getElementById('categories_game');
+    for (let i = 0; i < length_categories; i++) {
+        // Select (green) by default only the first 5 items, else unselected (red)
+        if (i < 5) {
+            categories_game.innerHTML += `<button id="${i}_game" type="button" onclick="switch_color('${i}_game')" class="btn btn-info mb-2">${categories[i]}</button> `;
+        }
+        else {
+            categories_game.innerHTML += `<button id="${i}_game" type="button" onclick="switch_color('${i}_game')" class="btn btn-danger mb-2">${categories[i]}</button> `;
+        }
+    }
+
 });
 
 // Selecting or unselecting categories to play
@@ -62,6 +83,7 @@ function switch_color(this_button) {
     // Print Check 
     // console.log(`You want to change button ${this_button}`);
     var button_to_change = document.getElementById(`${this_button}`);
+    // Categories for training
     // If button is selected, unselect it
     if (button_to_change.className == "btn btn-success mb-2") {
         button_to_change.className = "btn btn-dark mb-2";
@@ -72,6 +94,17 @@ function switch_color(this_button) {
         button_to_change.className = "btn btn-success mb-2";
     }
 
+    // Categories for game
+    // If button is selected, unselect it
+    if (button_to_change.className == "btn btn-info mb-2") {
+        button_to_change.className = "btn btn-danger mb-2";
+    }
+    
+    // If button is unselected, select it
+    else if (button_to_change.className == "btn btn-danger mb-2") {
+        button_to_change.className = "btn btn-info mb-2";
+    }
+
     // Same for letters
     else if (button_to_change.className == "btn btn-outline-success") {
         button_to_change.className = "btn btn-outline-dark";
@@ -80,12 +113,20 @@ function switch_color(this_button) {
         button_to_change.className = "btn btn-outline-success";
     }
 
-    // Adaptation for OFFline leetrs
+    // Adaptation for OFFline letters
     else if (button_to_change.className == "btn btn-outline-success btn-lg") {
         button_to_change.className = "btn btn-outline-dark btn-lg";
     }
     else if (button_to_change.className == "btn btn-outline-dark btn-lg") {
         button_to_change.className = "btn btn-outline-success btn-lg";
+    }
+
+    // Adaptation for online game letters
+    else if (button_to_change.className == "btn btn-outline-info") {
+        button_to_change.className = "btn btn-outline-danger";
+    }
+    else if (button_to_change.className == "btn btn-outline-danger") {
+        button_to_change.className = "btn btn-outline-info";
     }
 
     // let cat = document.getElementById(this_button).innerHTML;
@@ -101,10 +142,10 @@ function online_view() {
 
     // Show relevant content div
     online_content.style.display = 'block';
+    game_content.style.display = 'none';
     offline_content.style.display = 'none';
     rules_content.style.display = 'none';
     form_generate_letter.style.display = 'block';
-    
     
 };
 
@@ -116,6 +157,7 @@ function offline_view() {
  
     // Show relevant content div
     offline_content.style.display = 'block';
+    game_content.style.display = 'none';
     online_content.style.display = 'none';
     rules_content.style.display = 'none';
     form_offline_game.style.display = 'block';
@@ -129,8 +171,24 @@ function rules_view() {
 
     // Show relevant content div
     online_content.style.display = 'none';
+    game_content.style.display = 'none';
     offline_content.style.display = 'none';
     rules_content.style.display = 'block';
+
+};
+
+function game_view() {
+
+    // Hide introduction block
+    intro_block.style.display = 'none';
+
+    // Show relevant content div
+    online_content.style.display = 'none';
+    offline_content.style.display = 'none';
+    rules_content.style.display = 'none';
+    game_content.style.display = 'block';
+    
+    /// BOT CONTENT
 
 };
 
@@ -286,7 +344,7 @@ async function generate_letter() {
     }
 
     // Loop over menu to reactivate each part
-    const menu_items = ['Play Online','Play Offline', 'How to Play'];
+    const menu_items = ['Online game','Online training','Play offline', 'How to play'];
     for (let i = 1; i < all_menu_links_length; i++) {
         
             all_menu_links[i].className = "nav-link";
@@ -483,7 +541,7 @@ async function offline_game() {
     }
 
     // Loop over menu to reactivate each part
-    const menu_items = ['Play Online','Play Offline', 'How to Play'];
+    menu_items = ['Play against bot','Online training','Play Offline', 'How to Play'];
     for (let i = 1; i < all_menu_links_length; i++) {
         
             all_menu_links[i].className = "nav-link";

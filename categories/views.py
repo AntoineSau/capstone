@@ -13,8 +13,12 @@ from django.views.decorators.csrf import csrf_exempt
 from categories.models import Answer, Category, Letter, Test2, User
 
 # Create your views here.
+
 def index(request):
 	return render(request, "categories/index.html")
+
+def botgame(request):
+	return render(request, "categories/botgame.html")
 
 def login_view(request):
     if request.method == "POST":

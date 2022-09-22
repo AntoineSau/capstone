@@ -8,9 +8,13 @@
 		<br>
 		<h2>How would you like to play today?</h2>
 		<br>
-		<h3>Practice online by <b>playing against other players,</b> or <b>training with bots</b></h3>
+		<h3>Play <b>against a bot or a player</b></h3>
 		<br>
-		<button id="online_button" class="btn btn-secondary mb-2 btn-lg">PLAY ONLINE</button>
+		<button id="game_button" class="btn btn-secondary mb-2 btn-lg">PLAY ONLINE</button>
+		<br><br>
+		<h3><b>Practice online</b> with your favourite categories</h3>
+		<br>
+		<button id="online_button" class="btn btn-secondary mb-2 btn-lg">PRACTICE ONLINE</button>
 		<br><br>
 		<h3>Only generate <b>letters and a timer</b></h3>
 		<br>
@@ -19,6 +23,7 @@
 	</div>
 		
 	<div id="offline_content">
+		<p class="text-dark" id="wip">Play offline</p>
 		<!-- CONTENT CREATED 
 			Here the users will see the letter genretad and the timer + print test if needed
 		-->
@@ -52,7 +57,43 @@
 		</div>
 	
 	</div>
+	
+	<div id="game_content">
 		
+		<div id="form_game">
+			<p class="text-dark" id="wip">Online game</p>
+			<h3><b>1.</b> Any letter you want to avoid? Unselect it :)
+			<br><br>
+			<form">
+				<div id="alphabet_game"></div>
+				<br>
+				<!-- TIMER
+					Let the player use the default timing or type the time in seconds
+				-->
+				<label><b>2.</b> Type the time you want to play in seconds or use the default value</label>
+				<br><br>
+				<input required id="timer_on" name="timer" type="number" value="60" min="1">
+				<br>
+				<br>
+
+				<!-- CATEGORIES
+					WIP / Add drag and drop?
+				-->
+				<b>3.</b> Select your categories:<br>
+				<br>
+				<div id="categories_game"></div>
+				<br>
+				<b>4.</b> Select rounds to play or use default value:<br>
+				<br>
+				<input required id="rounds" name="rounds" type="number" value="5" min="1">
+				<br>
+				<br>
+				<button id="letter_generator" class="btn btn-primary mb-2 btn-lg">To Do</button>
+			</h3>
+			</form>
+		</div>
+	</div>
+
 	<div id="online_content">
 
 		<!-- CONTENT CREATED 
@@ -74,6 +115,7 @@
 		-->
 		
 		<div id="form_generate_letter">
+			<p class="text-dark" id="wip">Online training</p>
 			<h3><b>1.</b> Any letter you want to avoid? Unselect it :)
 			<br><br>
 			<form onsubmit="generate_letter();return false;">
