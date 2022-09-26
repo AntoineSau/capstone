@@ -645,9 +645,15 @@ function online_game_bot () {
     amount_of_rounds = document.getElementById('rounds_game');
     game_rounds = amount_of_rounds.value;
 
+    // retrieve amount of bots
+    amount_extra_players = document.getElementById('extra_players_game');
+    game_extra_players = amount_extra_players.value;
+
+
     // Test Prints
     console.log(`LETTERS: ${game_letters}`);
     console.log(`TIMER: ${game_timer}`);
     console.log(`CATEGORIES: ${game_categories}`);
     console.log(`ROUNDS: ${game_rounds}`);
+    console.log(`EXTRA PLAYERS: ${game_extra_players}`);
 }
