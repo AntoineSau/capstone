@@ -10,6 +10,7 @@ from django.http import JsonResponse
 from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
 
+
 from categories.models import Answer, Category, Letter, Test2, User
 
 # Create your views here.
@@ -28,8 +29,7 @@ def botgame(request):
 
         # Retrieve dictionaries for letters and categories
         
-        
-        alphabet_game = "pending, letters"
+        alphabet_game = request.POST["alphabet_game"]
         categories_game = "pending, categories"
         
         #categories_game = []
@@ -118,7 +118,7 @@ def update(request):
 		letter = data.get("letter", "")
 		letter = Letter.objects.get(letter=letter)
 
-		# Convert answer to Capitalized format for better visibility and avoid duplciate of same words but differnet cpitaliztion
+		# Convert answer to Capitalized format for better visibility and avoid duplicate of same words but differnet cpitaliztion
 		answerok = answer.capitalize()
 
 		newanswer = Answer(
@@ -133,9 +133,9 @@ def update(request):
 			# Saving this answer if it is unique
 			newanswer.save()
         
-			return JsonResponse({"message": "answer saved."}, status=201)
+			return JsonResponse({"message": "answer saved","details":answerok}, status=201)
 
 		else:
-			return JsonResponse({"message": "answer not saved in database because it already exits"}, status=201)
+			return JsonResponse({"message": "answer not saved in database because it already exists","details":answerok}, status=201)
 
 		

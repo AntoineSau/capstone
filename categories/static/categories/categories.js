@@ -312,7 +312,7 @@ async function generate_letter() {
         document.querySelector('#button_stop_timer').addEventListener('click', function () {i = 0});
 
         // Count amount of avialable fields
-        console.log(`Amount of fields: ${categories_selected.length}`);
+        // console.log(`Amount of fields: ${categories_selected.length}`);
         
         // TODO WIP Test count how many fields are filled
         let fields_filled = 0;
@@ -323,7 +323,7 @@ async function generate_letter() {
             }
         }
 
-        console.log(`Amount of fields filled: ${fields_filled}`);
+        //console.log(`Amount of fields filled: ${fields_filled}`);
         
         // Whenever all fileds are filled, allow user to submit form
         if (fields_filled == categories_selected.length) {
