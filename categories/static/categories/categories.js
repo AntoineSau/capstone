@@ -656,4 +656,5 @@ function online_game_bot () {
     console.log(`CATEGORIES: ${game_categories}`);
     console.log(`ROUNDS: ${game_rounds}`);
     console.log(`EXTRA PLAYERS: ${game_extra_players}`);
+
 }

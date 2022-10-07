@@ -18,7 +18,35 @@ def index(request):
 	return render(request, "categories/index.html")
 
 def botgame(request):
-	return render(request, "categories/botgame.html")
+    
+    # Checking if user sent a post by POST method
+    if request.method == "POST":
+        # Retrieve form data
+        rounds_game = request.POST["rounds_game"]
+        timer_game = request.POST["timer_game"]
+        extra_players_game = request.POST["extra_players_game"]
+
+        # Retrieve dictionaries for letters and categories
+        
+        
+        alphabet_game = "pending, letters"
+        categories_game = "pending, categories"
+        
+        #categories_game = []
+        
+
+        return render(request, "categories/botgame.html", {
+            # Passing all posts from database (with latest first) to display them later
+            "rounds_game": rounds_game,
+            "timer_game": timer_game,
+            "extra_players_game": extra_players_game,
+            "alphabet_game": alphabet_game,
+            "categories_game": categories_game
+
+        })
+
+    else:
+	    return render(request, "categories/index.html")
 
 def login_view(request):
     if request.method == "POST":
