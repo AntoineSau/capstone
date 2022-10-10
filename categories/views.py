@@ -29,7 +29,7 @@ def botgame(request):
 
         # Retrieve dictionaries for letters and categories
         
-        alphabet_game = request.POST["alphabet_game"]
+        alphabet_game = request.POST["alphabet_game"].innerHTML
         categories_game = "pending, categories"
         
         #categories_game = []

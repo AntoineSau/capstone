@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     offline_content.style.display = 'none';
     const intro_block = document.getElementById('intro_block');
     const rules_content = document.querySelector('#rules_content');
+    const form_game = document.getElementById("form_game");
+    const game_confirmation = document.getElementById("game_confirmation");
     rules_content.style.display = 'none';
     const game_content = document.querySelector('#game_content');
     game_content.style.display = 'none';
@@ -189,6 +191,11 @@ function game_view() {
     game_content.style.display = 'block';
     
     /// BOT CONTENT
+    // Show form
+    form_game.style.display = 'block';
+
+    // Hide confirrmation request
+    game_confirmation.style.display = 'none';
 
 };
 
@@ -266,7 +273,7 @@ async function generate_letter() {
 
     // Create a form to submit the user´s answers
     for (let i = 0 ; i < categories_selected.length; i++) {
-        print_categories.innerHTML += `<p>${[i+1]} - ${categories_selected[i]} : <input required name="${categories_selected[i]}" id="answer${[i+1]}" type="text"></input></p>`;
+        print_categories.innerHTML += `<p id="field${[i+1]}">${[i+1]} - ${categories_selected[i]} : <input required name="${categories_selected[i]}" id="answer${[i+1]}" type="text"></input></p>`;
     }
     // back up FORM
     // print_categories.innerHTML += `<input id="submit_online_game" type="submit">`;
@@ -374,7 +381,7 @@ async function generate_letter() {
         if (current_answer.value == "") {
             current_answer.value = 'Not answered';
         }
-        // TEST API only if there is any answer
+        // API Update Database only if there is any answer
         else {
             fetch('/update', {
                 method: 'POST',
@@ -391,6 +398,12 @@ async function generate_letter() {
             });
             // Update answers counter
             counter_answers++;
+            // TODO GIVE POSSIBILITTY TO DELETE ANSWERS
+            var current_field = document.getElementById(`field${i+1}`);
+            var current_input = document.getElementById(`answer${i+1}`);
+            current_input.style.display = "none";
+            current_field.innerHTML += `${current_answer.value} <button type="button" onclick="delete_entry('${current_answer.value}')" class="btn btn-outline-warning">Delete this answer</button>`;
+
         }
     }
 
@@ -421,7 +434,7 @@ async function generate_letter() {
     percentage_of_answers = parseFloat(percentage_of_answers.toFixed(2));
 
     // Show the user how well they answered
-    print_test.innerText = `Your answered to ${percentage_of_answers}% of the questions.`;
+    print_test.innerText = `Your answered ${percentage_of_answers}% of the questions.`;
     // Add a specific content depending on the % answered
     if (percentage_of_answers === 100) {
         print_test.innerHTML += `<p>Impressive! Join our league and challenge the best players!`
@@ -650,11 +663,37 @@ function online_game_bot () {
     game_extra_players = amount_extra_players.value;
 
 
-    // Test Prints
-    console.log(`LETTERS: ${game_letters}`);
-    console.log(`TIMER: ${game_timer}`);
-    console.log(`CATEGORIES: ${game_categories}`);
-    console.log(`ROUNDS: ${game_rounds}`);
-    console.log(`EXTRA PLAYERS: ${game_extra_players}`);
+    // Hide form 
+    form_game.style.display = 'none';
 
+    // Display summary for user to confirm
+    game_confirmation.style.display = 'block';
+
+    // Display summary dor user to confirm
+    game_confirmation.innerHTML = `LETTERS: ${game_letters}<br>`;
+    game_confirmation.innerHTML += `TIMER: ${game_timer}<br>`;
+    game_confirmation.innerHTML += `CATEGORIES: ${game_categories}<br>`;
+    game_confirmation.innerHTML += `ROUNDS: ${game_rounds}<br>`;
+    game_confirmation.innerHTML += `EXTRA PLAYERS: ${game_extra_players}<br>`;
+    game_confirmation.innerHTML += `<button> Confirm data (Todo)</button>`;
+    game_confirmation.innerHTML += `<button onclick="revert_bot_game()"> Modify (Todo)</button>`;
+
+    // Test console only
+    //console.log(`LETTERS: ${game_letters}`);
+    //console.log(`TIMER: ${game_timer}`);
+    //console.log(`CATEGORIES: ${game_categories}`);
+    //console.log(`ROUNDS: ${game_rounds}`);
+    //console.log(`EXTRA PLAYERS: ${game_extra_players}`);
+
+}
+
+function revert_bot_game () {
+    form_game.style.display = 'block';
+
+    // Hide summary for user to confirm
+    game_confirmation.style.display = 'none';
+}
+
+function delete_entry(entry) {
+    console.log(`You want to delete ${entry} from the database`);
 }
