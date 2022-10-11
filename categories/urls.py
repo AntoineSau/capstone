@@ -11,5 +11,7 @@ urlpatterns = [
 
 	# API Routes
 	path("update", views.update, name="update"),
+	path("delete/<str:letter>/<str:category>/<str:entry>", views.delete, name="delete"),
+
 
 ]

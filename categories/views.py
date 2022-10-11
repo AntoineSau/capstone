@@ -102,7 +102,6 @@ def test(request):
 
 @csrf_exempt
 def update(request):
-	# TO DO
 
 	if request.method != "POST":
 		return JsonResponse({"error": "POST request required."}, status=400)
@@ -138,4 +137,24 @@ def update(request):
 		else:
 			return JsonResponse({"message": "answer not saved in database because it already exists","details":answerok}, status=201)
 
-		
+@csrf_exempt
+def delete(request, letter, category, entry):
+	# TO DO
+    
+    # Retrieve entry and its IDs
+    letter = letter
+    category = category
+    entry = entry
+
+    # TEST 
+    category = Category.objects.get(categoryname=category)
+    letter = Letter.objects.get(letter=letter)
+
+    try:
+        entry_to_delete = Answer.objects.filter(letter_played=letter, category_played=category, answer=entry)
+        entry_to_delete.delete() 
+        return JsonResponse({"message": "Entry found and deleted!"}, status=201)
+        
+    except Answer.DoesNotExist:
+        return JsonResponse({"error": "Entry not found."}, status=404)
+
