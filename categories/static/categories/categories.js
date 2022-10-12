@@ -201,7 +201,8 @@ function game_view() {
 
 // BACK UP for online game
 async function generate_letter() {
-    
+    // Scrolling up by default so that the user sees the letter to play
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
     // Clean up categories field if users restarts timer
     game_data.style.display = "block";
     const print_test = document.getElementById('print_test');
