@@ -402,7 +402,7 @@ async function generate_letter() {
             var current_field = document.getElementById(`field${i+1}`);
             var current_input = document.getElementById(`answer${i+1}`);
             current_input.style.display = "none";
-            current_field.innerHTML += `<i>Your answer was: ${current_answer.value}</i>  <button type="button" onclick="delete_entry('${current_answer.value}', '${random_letter}' , '${current_answer.name}')" class="btn btn-outline-warning">Delete this answer</button>`;
+            current_field.innerHTML += `<i>Your answer was: ${current_answer.value}</i>  <button id="button${i+1}" type="button" onclick="delete_entry('${current_answer.value}', '${random_letter}' , '${current_answer.name}', 'button${i+1}')" class="btn btn-outline-warning">Delete this answer</button>`;
 
         }
     }
@@ -694,9 +694,10 @@ function revert_bot_game () {
     game_confirmation.style.display = 'none';
 }
 
-function delete_entry(entry, letter, category) {
-    console.log(`You want to delete '${entry}' from the database, letter is '${letter}', category is '${category}'`);
+function delete_entry(entry, letter, category, button) {
+    console.log(`You want to delete '${entry}' from the database, letter is '${letter}', category is '${category}'. Button is ${button}`);
     
+
     // TODO I want to GET that specific entry and delete it
     // FETCH
     fetch(`/delete/${letter}/${category}/${entry}`)
@@ -708,6 +709,11 @@ function delete_entry(entry, letter, category) {
         // ... do something else with entries ...
     });
 
+    // Delete "delete" button
+    button_to_delete = document.getElementById(button);
+    button_to_delete.innerHTML = 'Answer successfully deleted';
+    button_to_delete.className = "btn btn-light";
+    button_to_delete.disabled = true;
     
         
 

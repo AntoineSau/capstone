@@ -141,17 +141,17 @@ def update(request):
 def delete(request, letter, category, entry):
 	# TO DO
     
-    # Retrieve entry and its IDs
+    # Retrieve entry and its IDs. Need to capitalize the answer/entry to avoid bugs
     letter = letter
     category = category
-    entry = entry
+    entry = entry.capitalize()
 
     # TEST 
     category = Category.objects.get(categoryname=category)
     letter = Letter.objects.get(letter=letter)
 
     try:
-        entry_to_delete = Answer.objects.filter(letter_played=letter, category_played=category, answer=entry)
+        entry_to_delete = Answer.objects.get(letter_played=letter, category_played=category, answer=entry)
         entry_to_delete.delete() 
         return JsonResponse({"message": "Entry found and deleted!"}, status=201)
         
