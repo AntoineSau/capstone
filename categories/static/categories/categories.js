@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#offline_button').addEventListener('click', offline_view);
     document.querySelector('#online_button').addEventListener('click', online_view);
     document.querySelector('#game_button').addEventListener('click', game_view);
+    document.querySelector('#rules_button').addEventListener('click', rules_view);
 
     // Generate dynamically alphabet with pre-selected checkboxes
     const alphabet_js = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];

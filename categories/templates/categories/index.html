@@ -2,24 +2,42 @@
 
 {% block body %}
 
-	<!-- Introduction block to let the users choose the mode they want ot play -->
+	<!-- Introduction block to let the users choose the mode they want to play -->
 	<div id="intro_block">
 		<h1>Welcome to categories!<h1>
 		<br>
 		<h2>How would you like to play today?</h2>
 		<br>
-		<h3>Play <b>against a bot or a player</b></h3>
-		<br>
-		<button id="game_button" class="btn btn-secondary mb-2 btn-lg">PLAY ONLINE</button>
-		<br><br>
-		<h3><b>Practice online</b> with your favourite categories</h3>
-		<br>
-		<button id="online_button" class="btn btn-secondary mb-2 btn-lg">PRACTICE ONLINE</button>
-		<br><br>
-		<h3>Only generate <b>letters and a timer</b></h3>
-		<br>
-		<button id="offline_button" class="btn btn-secondary mb-2 btn-lg">PLAY OFFLINE</button>
-		<br><br>
+
+		<!-- Responsive columns -->
+
+			<div class="container">
+				<div class="row">
+					<div class="col-sm">
+						<h3>Play <b>against a bot or a player</b></h3>
+						<br>
+						<button id="game_button" class="btn btn-secondary mb-2 btn-lg">PLAY ONLINE</button>
+					</div>
+					<div class="col-sm">
+						<h3>Start an <b>online training</b></h3>
+						<br>
+						<button id="online_button" class="btn btn-secondary mb-2 btn-lg">PRACTICE ONLINE</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm">
+						<h3>Only generate <b>letters and a timer</b></h3>
+						<br>
+						<button id="offline_button" class="btn btn-secondary mb-2 btn-lg">PLAY OFFLINE</button>
+					</div>
+					<div class="col-sm">
+						<h3>Check <b>how to play</b></h3>
+						<br>
+						<button id="rules_button" class="btn btn-secondary mb-2 btn-lg">CHECK RULES</button>
+					</div>
+					
+				</div>
+			</div>
 	</div>
 		
 	<div id="offline_content">
