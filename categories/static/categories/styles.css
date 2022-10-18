@@ -11,8 +11,16 @@ div {
     justify-content: center;
 }
 
-.col-sm {
+.col-md {
     background-color:gainsboro;
+    border-radius: 25px;
+    padding: 30px;
+    margin: 10px;
+}
+
+.col-lg {
+    border-style: ridge;
+    border-radius: 25px;
     padding: 30px;
     margin: 10px;
 }
@@ -54,7 +62,7 @@ ol {
 
 #wip {
     color: grey;
-    font-size: 100px;
+    font-size: 75px;
 }
 
 #navbar-brand-2 {
