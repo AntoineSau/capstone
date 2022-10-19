@@ -81,9 +81,7 @@
 		<div id="form_game">
 			<p class="text-dark" id="wip">Online game</p>
 			<h3><b>1.</b> Any letter you want to avoid? Unselect it :)
-			<br><br>
-			<!-- Python Post method 
-				<form action="{% url 'botgame' %}" method="post"> -->
+			<br><br> 
 				{% csrf_token %}
 				<form onsubmit="online_game_bot();return false;">
 				<div id="alphabet_game"></div>

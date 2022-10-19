@@ -664,7 +664,6 @@ function online_game_bot () {
     amount_extra_players = document.getElementById('extra_players_game');
     game_extra_players = amount_extra_players.value;
 
-
     // Hide form 
     form_game.style.display = 'none';
 
@@ -677,8 +676,25 @@ function online_game_bot () {
     game_confirmation.innerHTML += `CATEGORIES: ${game_categories}<br>`;
     game_confirmation.innerHTML += `ROUNDS: ${game_rounds}<br>`;
     game_confirmation.innerHTML += `EXTRA PLAYERS: ${game_extra_players}<br>`;
-    game_confirmation.innerHTML += `<button> Confirm data (Todo)</button>`;
-    game_confirmation.innerHTML += `<button onclick="revert_bot_game()"> Modify (Todo)</button>`;
+
+    // TODO We want to add a form here with all this data in hidden fields
+    // Test field rounds_game
+    game_confirmation.innerHTML += `
+    <form action="/botgame" method="post">
+        Letters: <input value="${game_letters}" id="game_letters" readonly>
+        Timer: <input value="${game_timer}" id="game_timer" readonly>
+        Categories: <input value="${game_categories}" id="game_categories" readonly>
+        Rounds: <input value="${game_rounds}" id="game_rounds" readonly>
+        Number of bots: <input value="${game_extra_players}" id="game_extra_players" readonly>
+        <input type="submit">
+    </form>
+    `;
+
+    // Back UP Button TDL
+    //game_confirmation.innerHTML += `<br><button class="btn btn-success btn-lg" onclick="confirm_bot_game()">Confirm data (Todo)</button>`;
+    
+    // BUtton to modify the data
+    game_confirmation.innerHTML += `<br><br><button class="btn btn-outline-warning btn-lg" onclick="revert_bot_game()">Modify the game data</button>`;
 
     // Test console only
     //console.log(`LETTERS: ${game_letters}`);
@@ -696,10 +712,15 @@ function revert_bot_game () {
     game_confirmation.style.display = 'none';
 }
 
+function confirm_bot_game () {
+    
+}
+
+
+
 function delete_entry(entry, letter, category, button) {
     console.log(`You want to delete '${entry}' from the database, letter is '${letter}', category is '${category}'. Button is ${button}`);
     
-
     // TODO I want to GET that specific entry and delete it
     // FETCH
     fetch(`/delete/${letter}/${category}/${entry}`)
@@ -716,7 +737,5 @@ function delete_entry(entry, letter, category, button) {
     button_to_delete.innerHTML = 'Answer successfully deleted';
     button_to_delete.className = "btn btn-light";
     button_to_delete.disabled = true;
-    
-        
 
 }

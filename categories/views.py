@@ -18,30 +18,38 @@ from categories.models import Answer, Category, Letter, Test2, User
 def index(request):
 	return render(request, "categories/index.html")
 
+@csrf_exempt
 def botgame(request):
     
     # Checking if user sent a post by POST method
     if request.method == "POST":
-        # Retrieve form data
-        rounds_game = request.POST["rounds_game"]
-        timer_game = request.POST["timer_game"]
-        extra_players_game = request.POST["extra_players_game"]
+        # Retrieve form data TO DO
+
+        game_rounds = request.POST['game_rounds']
+        
+
+
+
+
+        #game_rounds = request.POST["game_rounds"]
+        #game_timer = request.POST["game_timer"]
+        #game_extra_players = request.POST["game_extra_players"]
 
         # Retrieve dictionaries for letters and categories
         
-        alphabet_game = request.POST["alphabet_game"].innerHTML
-        categories_game = "pending, categories"
+        #game_letters = request.POST["game_letters"]
+        #game_categories = request.POST["game_categories"]
         
         #categories_game = []
-        
+
 
         return render(request, "categories/botgame.html", {
             # Passing all posts from database (with latest first) to display them later
-            "rounds_game": rounds_game,
-            "timer_game": timer_game,
-            "extra_players_game": extra_players_game,
-            "alphabet_game": alphabet_game,
-            "categories_game": categories_game
+            "game_rounds": game_rounds,
+            #"game_timer": game_timer,
+            #"game_extra_players": game_extra_players,
+            #"game_letters": game_letters,
+            #"game_categories": game_categories
 
         })
 
