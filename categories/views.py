@@ -110,14 +110,13 @@ def update(request):
 
 @csrf_exempt
 def delete(request, letter, category, entry):
-	# TO DO
     
     # Retrieve entry and its IDs. Need to capitalize the answer/entry to avoid bugs
     letter = letter
     category = category
     entry = entry.capitalize()
 
-    # TEST 
+    # Intermediary step to "translate" models
     category = Category.objects.get(categoryname=category)
     letter = Letter.objects.get(letter=letter)
 
@@ -129,3 +128,22 @@ def delete(request, letter, category, entry):
     except Answer.DoesNotExist:
         return JsonResponse({"error": "Entry not found."}, status=404)
 
+@csrf_exempt
+def retrieve(request, letter, category):
+
+    # Retrieve an entry with this specific letter and category
+    letter = letter
+    category = category
+
+    # Intermediary step to "translate" models
+    category = Category.objects.get(categoryname=category)
+    letter = Letter.objects.get(letter=letter)
+    
+    try:
+        # I am trying to retrieve the first entry only here
+        possible_answers = Answer.objects.filter(letter_played=letter, category_played=category).first()
+        possible_answers = possible_answers.answer
+        return JsonResponse({"message": "We found the following:","details":possible_answers}, status=201)
+        
+    except Answer.DoesNotExist:
+        return JsonResponse({"message": "Entry not found."}, status=201)

@@ -639,8 +639,6 @@ function delete_entry(entry, letter, category, button) {
     .then(result => {
         // Print emails
         console.log(result);
-
-        // ... do something else with entries ...
     });
 
     // Delete "delete" button
@@ -653,6 +651,9 @@ function delete_entry(entry, letter, category, button) {
 
 // Online Game (BOT)
 async function online_game_bot() {
+    // Declare and set as empty the bot answers
+    var bot_answers = document.getElementById('bot_answers');
+    bot_answers.innerHTML = '';
     // Scrolling up by default so that the user sees the letter to play
     document.body.scrollTop = document.documentElement.scrollTop = 0;
     // Hide Form Game
@@ -700,7 +701,6 @@ async function online_game_bot() {
             categories_selected_bot.push(all_buttons[i].innerHTML);
         }
     }
-
 
     // Cancel if amount of categories selected is below 3 and letters selected below 3
     if (categories_selected_bot.length < 3 && amount_of_letters_bot < 5) {
@@ -823,7 +823,7 @@ async function online_game_bot() {
         current_answer_bot.disabled = true;
         current_answer_bot.style.color = "grey";
         // TEST LOG
-        console.log(`answer is "${current_answer_bot.value}"`)
+        //console.log(`answer is "${current_answer_bot.value}"`)
         if (current_answer_bot.value == "") {
             current_answer_bot.value = 'Not answered';
         }
@@ -860,7 +860,6 @@ async function online_game_bot() {
     }
 
     // Display bot answers
-    var bot_answers = document.getElementById('bot_answers');
     bot_answers.innerHTML += 'Here is what the bot answered:<p>'
     // Loop over all answers
     for (let i = 0 ; i < categories_selected_bot.length; i++) {
@@ -868,7 +867,21 @@ async function online_game_bot() {
         // Retrieve category:
         var current_category = document.getElementById(`answer_bot${i+1}`);
         current_category = current_category.name
-        bot_answers.innerHTML += `<p>${[i+1]} - ${current_category}: TODO!</p>`
+        
+        // Field when no answer
+        bot_answers.innerHTML += `<p id="bot_answered${[i+1]}">${[i+1]} - ${current_category}: "Not Answered" </p>`
+        // Retrieve a bot answer if ti exists
+
+        fetch(`/retrieve/${random_letter_bot}/${current_category}`)
+        .then(response => response.json())
+        .then(result => {
+        // Print emails
+        console.log(result);
+        // ... do something else with entries ...
+        // HERE MODIFY DOM!
+        var to_modify = document.getElementById(`bot_answered${[i+1]}`);
+        to_modify.innerHTML = `<p id="bot_answered${[i+1]}">${[i+1]} - ${current_category}: "${result.details}" </p>` ;
+        });
     }
 
     // Hide stop timer button
