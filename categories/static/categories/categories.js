@@ -630,7 +630,7 @@ function postgame_view_off () {
 }
 
 function delete_entry(entry, letter, category, button) {
-    console.log(`You want to delete '${entry}' from the database, letter is '${letter}', category is '${category}'. Button is ${button}`);
+    console.log(`You are deleting '${entry}' from the database (letter is '${letter}', category is '${category}')`);
     
     // TODO I want to GET that specific entry and delete it
     // FETCH
@@ -860,7 +860,8 @@ async function online_game_bot() {
     }
 
     // Display bot answers
-    bot_answers.innerHTML += 'Here is what the bot answered:<p>'
+    bot_answers.innerHTML += `<hr>`;
+    bot_answers.innerHTML += 'Here is what the bot answered:<p>';
     // Loop over all answers
     for (let i = 0 ; i < categories_selected_bot.length; i++) {
         // Pick a bot answer form DB / pending (LETTER: ${random_letter_bot}
@@ -880,8 +881,13 @@ async function online_game_bot() {
         // ... do something else with entries ...
         // HERE MODIFY DOM!
         var to_modify = document.getElementById(`bot_answered${[i+1]}`);
-        to_modify.innerHTML = `<p id="bot_answered${[i+1]}">${[i+1]} - ${current_category}: "${result.details}" </p>` ;
+        var category_updated = document.getElementById(`answer_bot${[i+1]}`);
+        category_updated = category_updated.name;
+        // Add Bot answer if found and button to delete the entry if needed
+        to_modify.innerHTML = `<p id="bot_answered${[i+1]}">${[i+1]} - ${category_updated}: "${result.details}" <button id="button_bot${i+1}" type="button" onclick="delete_entry('${result.details}', '${random_letter_bot}' , '${category_updated}', 'button_bot${i+1}')" class="btn btn-outline-warning">Delete this bot answer</button></p>`;
+        // Add option to delete bot answer:
         });
+        
     }
 
     // Hide stop timer button
@@ -893,6 +899,7 @@ async function online_game_bot() {
     current_timer_bot.style.color = "white";
     print_categories_bot.style.display = 'none';
     print_test_bot.style.display = 'none';
+    bot_answers.style.display = 'none';
     await sleep(500);
     document.body.style.backgroundColor = "white";
     letter_to_play_bot.style.color = "grey";
@@ -900,16 +907,13 @@ async function online_game_bot() {
     print_categories_bot.style.color = "grey";
     print_categories_bot.style.display = 'block';
     print_test_bot.style.display = 'block';
+    bot_answers.style.display = 'block';
 
     current_timer_bot.innerHTML += `<p><button onclick="online_game_bot()" class="btn btn-info mb-2 btn-lg">Play again</button>
     <button onclick="postgame_view_bot()" class="btn btn-light mb-2 btn-lg">Change data</button>`;
 
     // Clean up categories field if users restarts timer
     print_test_bot.style.color = "grey";
-    
-    // TODO
-    // Add a specific content depending on the % answered
-    print_test_bot.innerHTML += `<p>Todo, show bot answers here?`
 
     // Put generate timer button back
     game_game.innerHTML = 'Play again against a bot!';

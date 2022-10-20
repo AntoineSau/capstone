@@ -138,6 +138,10 @@ def retrieve(request, letter, category):
     # Intermediary step to "translate" models
     category = Category.objects.get(categoryname=category)
     letter = Letter.objects.get(letter=letter)
+
+    # New option, counting results
+
+
     
     try:
         # I am trying to retrieve the first entry only here
@@ -146,4 +150,5 @@ def retrieve(request, letter, category):
         return JsonResponse({"message": "We found the following:","details":possible_answers}, status=201)
         
     except Answer.DoesNotExist:
-        return JsonResponse({"message": "Entry not found."}, status=201)
+        possible_answers = 'Rien de rien!'
+        return JsonResponse({"message": "We found the following:","details":possible_answers}, status=201)
