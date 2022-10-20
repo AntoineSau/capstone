@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
     form_generate_letter.style.display = 'block';
     const game_data = document.getElementById('game_data');
     game_data.style.display = "none";
+    const game_data_bot = document.getElementById('game_data_bot');
+    game_data_bot.style.display = "none";
     const game_data_off = document.getElementById('game_data_off');
     game_data_off.style.display = "none";
 
@@ -200,7 +202,7 @@ function game_view() {
 
 };
 
-// BACK UP for online game
+// Online training
 async function generate_letter() {
     // Scrolling up by default so that the user sees the letter to play
     document.body.scrollTop = document.documentElement.scrollTop = 0;
@@ -231,6 +233,8 @@ async function generate_letter() {
         } 
     }
 
+    console.log(selected_letters);
+
     // Retrieve timer
     timer_on = document.getElementById('timer_on');
     timer = timer_on.value;
@@ -243,9 +247,9 @@ async function generate_letter() {
     for (let i = 0; i < all_buttons.length; i++) {
         if (all_buttons[i].className == "btn btn-success mb-2") {
             categories_selected.push(all_buttons[i].innerHTML);
-            //console.log(`CAT ${i}: ${categories_selected[i]} `);
         }
     }
+
 
     // Cancel if amount of categories selected is below 3 and letters selected below 3
     if (categories_selected.length < 3 && amount_of_letters < 5) {
@@ -361,10 +365,6 @@ async function generate_letter() {
 
     } 
 
-    // Sound alert if user doesn´t look at screen
-    //var alert_audio = new Audio('static/categories/Alert Categories project.mp3');
-    //alert_audio.play();
-
     // Tell user that time is up and add button to start again
     current_timer.innerHTML = `Time is up!`;
 
@@ -372,7 +372,7 @@ async function generate_letter() {
     const submit_online_game = document.getElementById("submit_online_game");
     submit_online_game.style.display = 'none';
 
-    // Create a counter for answerss
+    // Create a counter for answers
     let counter_answers = 0;
 
     // Forbid user to complete form after timer is stopped
@@ -436,19 +436,19 @@ async function generate_letter() {
     percentage_of_answers = parseFloat(percentage_of_answers.toFixed(2));
 
     // Show the user how well they answered
-    print_test.innerText = `Your answered ${percentage_of_answers}% of the questions.`;
+    print_test.innerText = `You answered ${percentage_of_answers}% of the questions.`;
     // Add a specific content depending on the % answered
     if (percentage_of_answers === 100) {
-        print_test.innerHTML += `<p>Impressive! Join our league and challenge the best players!`
+        print_test.innerHTML += `<p>That's perfect! Play against a bot and take the lead of the ranking!`
     }
     else if (percentage_of_answers === 0) {
-        print_test.innerHTML += `<p>Keep practising!`
+        print_test.innerHTML += `<p>You can do it, keep practising!`
     }
     else if (0 < percentage_of_answers < 50) {
-        print_test.innerHTML += `<p>Have you tried playing against a bot to level up?`
+        print_test.innerHTML += `<p>Well done! Have you tried to play against a bot?`
     }
     else if (50 < percentage_of_answers < 100) {
-        print_test.innerHTML += `<p>Almost perfect! Practice agaisn a bot or anotehr player!`
+        print_test.innerHTML += `<p>Impressive! Challenge a bot and try to win!`
     }
 
     // Put generate timer button back
@@ -487,6 +487,8 @@ async function offline_game() {
             selected_letters_off.push(all_buttons[i].innerHTML);
         } 
     }
+
+    console.log(selected_letters_off);
 
     // Retrieve timer
     timer_off = document.getElementById('timer_off');
@@ -627,97 +629,6 @@ function postgame_view_off () {
 
 }
 
-function online_game_bot () {
-
-    // Define values to be passed in (context according to users' choices
-    let game_letters = [];
-    let game_timer = [];
-    let game_categories = [];
-    let game_rounds = [];
-
-    // Retrieve letters selected
-    var all_buttons = document.getElementsByTagName("button");
-    for (let i = 0; i < all_buttons.length; i++) {
-        if (all_buttons[i].className == "btn btn-outline-info") {
-            game_letters.push(all_buttons[i].innerHTML);
-        } 
-    }
-
-    // Retrieve timer
-    timer_game = document.getElementById('timer_game');
-    game_timer = timer_game.value;
-
-    // Retrieve categories
-    var all_buttons = document.getElementsByTagName("button");
-    for (let i = 0; i < all_buttons.length; i++) {
-        if (all_buttons[i].className == "btn btn-info mb-2") {
-            game_categories.push(all_buttons[i].innerHTML);
-            //console.log(`CAT ${i}: ${categories_selected[i]} `);
-        }
-    }
-
-    // Retrieve amount of rounds
-    amount_of_rounds = document.getElementById('rounds_game');
-    game_rounds = amount_of_rounds.value;
-
-    // retrieve amount of bots
-    amount_extra_players = document.getElementById('extra_players_game');
-    game_extra_players = amount_extra_players.value;
-
-    // Hide form 
-    form_game.style.display = 'none';
-
-    // Display summary for user to confirm
-    game_confirmation.style.display = 'block';
-
-    // Display summary dor user to confirm
-    game_confirmation.innerHTML = `LETTERS: ${game_letters}<br>`;
-    game_confirmation.innerHTML += `TIMER: ${game_timer}<br>`;
-    game_confirmation.innerHTML += `CATEGORIES: ${game_categories}<br>`;
-    game_confirmation.innerHTML += `ROUNDS: ${game_rounds}<br>`;
-    game_confirmation.innerHTML += `EXTRA PLAYERS: ${game_extra_players}<br>`;
-
-    // TODO We want to add a form here with all this data in hidden fields
-    // Test field rounds_game
-    game_confirmation.innerHTML += `
-    <form action="/botgame" method="post">
-        Letters: <input value="${game_letters}" id="game_letters" readonly>
-        Timer: <input value="${game_timer}" id="game_timer" readonly>
-        Categories: <input value="${game_categories}" id="game_categories" readonly>
-        Rounds: <input value="${game_rounds}" id="game_rounds" readonly>
-        Number of bots: <input value="${game_extra_players}" id="game_extra_players" readonly>
-        <input type="submit">
-    </form>
-    `;
-
-    // Back UP Button TDL
-    //game_confirmation.innerHTML += `<br><button class="btn btn-success btn-lg" onclick="confirm_bot_game()">Confirm data (Todo)</button>`;
-    
-    // BUtton to modify the data
-    game_confirmation.innerHTML += `<br><br><button class="btn btn-outline-warning btn-lg" onclick="revert_bot_game()">Modify the game data</button>`;
-
-    // Test console only
-    //console.log(`LETTERS: ${game_letters}`);
-    //console.log(`TIMER: ${game_timer}`);
-    //console.log(`CATEGORIES: ${game_categories}`);
-    //console.log(`ROUNDS: ${game_rounds}`);
-    //console.log(`EXTRA PLAYERS: ${game_extra_players}`);
-
-}
-
-function revert_bot_game () {
-    form_game.style.display = 'block';
-
-    // Hide summary for user to confirm
-    game_confirmation.style.display = 'none';
-}
-
-function confirm_bot_game () {
-    
-}
-
-
-
 function delete_entry(entry, letter, category, button) {
     console.log(`You want to delete '${entry}' from the database, letter is '${letter}', category is '${category}'. Button is ${button}`);
     
@@ -738,4 +649,278 @@ function delete_entry(entry, letter, category, button) {
     button_to_delete.className = "btn btn-light";
     button_to_delete.disabled = true;
 
+}
+
+// Online Game (BOT)
+async function online_game_bot() {
+    // Scrolling up by default so that the user sees the letter to play
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+    // Hide Form Game
+    form_game.style.display = 'none';
+    // Shows game data to play against bot
+    game_data_bot.style.display = "block";
+    const print_test_bot = document.getElementById('print_test_bot');
+    print_test_bot.innerHTML = "";
+    const print_categories_bot = document.getElementById('print_categories_bot')
+    print_categories_bot.innerHTML = "";
+    // Hide forms
+    form_generate_letter.style.display = 'none';
+    form_offline_game.style.display = 'none';
+
+    // Retrieve list of checked checkboxes
+    var all_buttons = document.getElementsByTagName("button");
+    var inputs = document.getElementsByTagName("input");
+    var selected_letters_bot = [];
+    var timer_bot;
+
+    // Put timer to blue
+    var current_timer_bot = document.getElementById('print_timer_bot');
+    current_timer_bot.style.color = "blue";
+    
+    // Retrieve letters selected
+    for (let i = 0; i < all_buttons.length; i++) {
+        if (all_buttons[i].className == "btn btn-outline-info") {
+            selected_letters_bot.push(all_buttons[i].innerHTML);
+        } 
+    }
+
+    console.log(selected_letters_bot);
+
+    // Retrieve timer
+    timer_bot = document.getElementById('timer_game');
+    timer_bot = timer_bot.value;
+
+    // Count the amount of checked boxes
+    var amount_of_letters_bot = selected_letters_bot.length;
+
+    var categories_selected_bot = [];
+    // Retrieve selected (BLUE) categories
+    for (let i = 0; i < all_buttons.length; i++) {
+        if (all_buttons[i].className == "btn btn-info mb-2") {
+            categories_selected_bot.push(all_buttons[i].innerHTML);
+        }
+    }
+
+
+    // Cancel if amount of categories selected is below 3 and letters selected below 3
+    if (categories_selected_bot.length < 3 && amount_of_letters_bot < 5) {
+        alert(`Please select at least 5 letters and 3 categories`);
+        return false;
+    } else if (amount_of_letters_bot < 5) {
+        alert(`Please select at least 5 letters`);
+        return false;
+    }
+    // Cancel if amount of categories selected is below 3
+    else if (categories_selected_bot.length < 3) {
+        alert(`Please select at least 3 categories`);
+        return false;
+    }
+
+    // Print test length categories
+    print_test_bot.innerHTML = `Write your answers below for each one of the <b>${categories_selected_bot.length}</b> categories:`;
+    print_test_bot.style.color = "black";
+
+    // Print test categories
+    print_categories_bot.style.color = "black";
+
+    // Create a form to submit the user´s answers
+    for (let i = 0 ; i < categories_selected_bot.length; i++) {
+        print_categories_bot.innerHTML += `<p id="field_bot${[i+1]}">${[i+1]} - ${categories_selected_bot[i]} : <input required name="${categories_selected_bot[i]}" id="answer_bot${[i+1]}" type="text"></input></p>`;
+    }
+   
+    // convert form into a JS trigger
+    print_categories_bot.innerHTML += `<button disabled type="button" id="submit_online_game_bot" class="btn btn-success">Submit answers</button>`;
+    
+    // Lock Button in order to avoid having 2 timers running at the same time
+    const game_game = document.getElementById("game_game");
+    game_game.innerHTML = 'Wait until the end of the timer';
+    game_game.disabled = true;
+
+    // Generate a random letter from selected list only
+    var random_letter_bot = selected_letters_bot[Math.floor(Math.random() * selected_letters_bot.length)];
+    var letter_to_play_bot = document.getElementById('letter_to_play_bot');
+    letter_to_play_bot.style.color = "blue";
+    letter_to_play_bot.innerHTML = `${random_letter_bot}`;
+
+    // "Freeze whole menu when timer is running"
+    // Get all links in menu for further use
+    const all_menu_links = document.getElementsByClassName("nav-link");
+
+    // Loop over all of them adn disable them
+    const all_menu_links_length = all_menu_links.length;
+    for (let i = 1; i < all_menu_links_length; i++) {
+        if (i == 1) {
+            all_menu_links[i].className = "nav-link disabled";
+            all_menu_links[i].innerHTML = `<i>Timer must be finished or closed to switch view</i>`;
+        } else {
+            all_menu_links[i].className = "nav-link disabled";
+            all_menu_links[i].innerHTML = "";
+        }
+  
+    }
+    
+    // Display the total amount of seconds the user wants to play
+    for (let i = timer_bot; i > 0; i--) {
+        // Print Check
+        //console.log(`Timer is ${timer}`);
+
+        // Give the possibility to the users to stop the timer while it´s running
+        const stop_timer_bot = document.getElementById('stop_timer_bot');
+        stop_timer_bot.innerHTML = `<button id="button_stop_timer_bot" class="btn btn-warning">Stop timer</button>`;
+        document.querySelector('#button_stop_timer_bot').addEventListener('click', function () {i = 0});
+
+        // Count amount of available fields
+        // console.log(`Amount of fields: ${categories_selected.length}`);
+        
+        // TODO WIP Test count how many fields are filled
+        let fields_filled_bot = 0;
+        for (let i = categories_selected_bot.length; i > 0; i--) {
+            let is_filled_bot = document.getElementById(`answer_bot${[i]}`);
+            if (is_filled_bot.value.length != 0) {
+                fields_filled_bot++;
+            }
+        }
+
+        //console.log(`Amount of fields filled: ${fields_filled}`);
+        
+        // Whenever all fileds are filled, allow user to submit form
+        if (fields_filled_bot == categories_selected_bot.length) {
+            document.getElementById("submit_online_game_bot").disabled = false;
+        }
+        // Else, avoid them to do so
+        else {
+            document.getElementById("submit_online_game_bot").disabled = true;
+        }
+
+        document.querySelector('#submit_online_game_bot').addEventListener('click', function () {i = 0});
+
+        current_timer_bot.innerHTML = `${timer_bot}`;
+        // call Sleep function for delay
+        await sleep(1000);
+        
+        timer_bot--;
+    }
+
+    // Loop over menu to reactivate each part
+    const menu_items = ['Online game','Online training','Play offline', 'How to play'];
+    for (let i = 1; i < all_menu_links_length; i++) {
+        
+            all_menu_links[i].className = "nav-link";
+            all_menu_links[i].innerHTML = `${menu_items[i-1]}`;
+
+    } 
+
+    // Tell user that time is up and add button to start again
+    current_timer_bot.innerHTML = `Time is up!`;
+
+    // Forbid user to submit online form after timer is stopped
+    const submit_online_game_bot = document.getElementById("submit_online_game_bot");
+    submit_online_game_bot.style.display = 'none';
+
+    // Forbid user to complete form after timer is stopped
+    for (let i = 0 ; i < categories_selected_bot.length; i++) {
+        var current_answer_bot = document.getElementById(`answer_bot${[i+1]}`);
+        current_answer_bot.disabled = true;
+        current_answer_bot.style.color = "grey";
+        // TEST LOG
+        console.log(`answer is "${current_answer_bot.value}"`)
+        if (current_answer_bot.value == "") {
+            current_answer_bot.value = 'Not answered';
+        }
+        // API Update Database only if there is any answer
+        else {
+            fetch('/update', {
+                method: 'POST',
+                body: JSON.stringify({
+                    answer: current_answer_bot.value,
+                    letter: random_letter_bot, 
+                    category: current_answer_bot.name
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                  // Print result
+                  console.log(result);
+            });
+            
+            // GIVE POSSIBILITTY TO DELETE ANSWERS
+            var current_field = document.getElementById(`field_bot${i+1}`);
+            var current_input = document.getElementById(`answer_bot${i+1}`);
+            current_input.style.display = "none";
+            current_field.innerHTML += `<i>Your answer was: ${current_answer_bot.value}</i>  <button id="button${i+1}" type="button" onclick="delete_entry('${current_answer_bot.value}', '${random_letter_bot}' , '${current_answer_bot.name}', 'button${i+1}')" class="btn btn-outline-warning">Delete this answer</button>`;
+
+        }
+        // TODO bot answer
+        var current_field = document.getElementById(`field_bot${[i+1]}`);
+        var current_cat = document.getElementById(`answer_bot${[i+1]}`)
+        current_cat = current_cat.name;
+        
+        // var current_answer = document.getElementById(`answer${[i+1]}`);
+
+    }
+
+    // Display bot answers
+    var bot_answers = document.getElementById('bot_answers');
+    bot_answers.innerHTML += 'Here is what the bot answered:<p>'
+    // Loop over all answers
+    for (let i = 0 ; i < categories_selected_bot.length; i++) {
+        // Pick a bot answer form DB / pending (LETTER: ${random_letter_bot}
+        // Retrieve category:
+        var current_category = document.getElementById(`answer_bot${i+1}`);
+        current_category = current_category.name
+        bot_answers.innerHTML += `<p>${[i+1]} - ${current_category}: TODO!</p>`
+    }
+
+    // Hide stop timer button
+    stop_timer_bot.innerHTML = "";
+
+    // Animation to show easily that time is up (background to black and texts to white, and back)
+    document.body.style.backgroundColor = "black";
+    letter_to_play_bot.style.color = "white";
+    current_timer_bot.style.color = "white";
+    print_categories_bot.style.display = 'none';
+    print_test_bot.style.display = 'none';
+    await sleep(500);
+    document.body.style.backgroundColor = "white";
+    letter_to_play_bot.style.color = "grey";
+    current_timer_bot.style.color = "grey";
+    print_categories_bot.style.color = "grey";
+    print_categories_bot.style.display = 'block';
+    print_test_bot.style.display = 'block';
+
+    current_timer_bot.innerHTML += `<p><button onclick="online_game_bot()" class="btn btn-info mb-2 btn-lg">Play again</button>
+    <button onclick="postgame_view_bot()" class="btn btn-light mb-2 btn-lg">Change data</button>`;
+
+    // Clean up categories field if users restarts timer
+    print_test_bot.style.color = "grey";
+    
+    // TODO
+    // Add a specific content depending on the % answered
+    print_test_bot.innerHTML += `<p>Todo, show bot answers here?`
+
+    // Put generate timer button back
+    game_game.innerHTML = 'Play again against a bot!';
+    game_game.disabled = false;
+    
+    // Test sleep function
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    // Check Print letter
+    // console.log(random_letter);
+
+};
+
+function postgame_view_bot () {
+    // Clean up categories field if users want to change variables
+    letter_to_play_bot.innerHTML = "";
+    var current_timer_bot = document.getElementById('print_timer_bot');
+    current_timer_bot.innerHTML = "";
+
+    // Show again the form so the users can modify data
+    form_game.style.display = 'block';
+
+    // Hide sumamry
+    game_data_bot.style.display = "none";
 }

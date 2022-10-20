@@ -50,12 +50,37 @@ ol {
     font-size: 100px;
 }
 
+#print_timer_bot {
+    color: darkblue;
+    font-size: 100px;
+}
+
+#letter_to_play_bot {
+    color: darkblue;
+    font-size: 100px;
+}
+
 #print_test {
     color: shadow;
     font-size: 50px;
 }
 
 #print_categories { 
+    color: shadow;
+    font-size: 25px;
+}
+
+#print_test_bot {
+    color: shadow;
+    font-size: 50px;
+}
+
+#print_categories_bot { 
+    color: shadow;
+    font-size: 25px;
+}
+
+#bot_answers { 
     color: shadow;
     font-size: 25px;
 }

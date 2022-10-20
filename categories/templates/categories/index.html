@@ -14,7 +14,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md">
-						<h3>Play <b>against a bot or a player</b></h3>
+						<h3>Play <b>against a bot</b></h3>
 						<br>
 						<button id="game_button" class="btn btn-secondary mb-2 btn-lg">PLAY ONLINE</button>
 					</div>
@@ -78,6 +78,20 @@
 	
 	<div id="game_content">
 		
+		<!-- CONTENT CREATED (BOT)
+			Here the users will see the letter generate and the timer + print test if needed
+		-->
+		<div id="game_data_bot">
+			<div id="letter_to_play_bot"></div>
+			<div id="print_timer_bot"></div>
+			<div id="stop_timer_bot"></div>
+			<div id="print_test_bot"></div>
+			<!-- Add empty form-->
+			<form id="print_categories_bot">
+			</form>
+			<div id="bot_answers"></div>
+		</div>
+
 		<div id="form_game">
 			<p class="text-dark" id="wip">Online game</p>
 			<h3><b>1.</b> Any letter you want to avoid? Unselect it :)
@@ -98,17 +112,7 @@
 				<br>
 				<div id="categories_game"></div>
 				<br>
-				<b>4.</b> Select rounds to play or use default value:<br>
-				<br>
-				<input required id="rounds_game" name="rounds_game" type="number" value="5" min="1">
-				<br>
-				<br>
-				<b>5.</b> Type amount of bots or use default value:<br>
-				<br>
-				<input required id="extra_players_game" name="extra_players_game" type="number" value="1" min="1">
-				<br>
-				<br>
-				<button id="game_game" class="btn btn-primary mb-2 btn-lg">Play against bot(s)</button>
+				<button id="game_game" class="btn btn-primary mb-2 btn-lg">Play against a bot!</button>
 			</form>
 			</h3>
 		</div>
@@ -160,7 +164,7 @@
 				<br>
 				<div id="categories_web"></div>
 				<br>
-				<button id="letter_generator" class="btn btn-primary mb-2 btn-lg">Generate a random letter and start timer</button>
+				<button id="letter_generator" class="btn btn-primary mb-2 btn-lg">Start online training!</button>
 			</h3>
 			</form>
 		</div>
