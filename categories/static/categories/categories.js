@@ -405,7 +405,6 @@ async function generate_letter() {
             var current_input = document.getElementById(`answer${i+1}`);
             current_input.style.display = "none";
             current_field.innerHTML += `<i>Your answer was: ${current_answer.value}</i>  <button id="button${i+1}" type="button" onclick="delete_entry('${current_answer.value}', '${random_letter}' , '${current_answer.name}', 'button${i+1}')" class="btn btn-outline-warning">Delete this answer</button>`;
-
         }
     }
 
@@ -651,6 +650,13 @@ function delete_entry(entry, letter, category, button) {
 
 // Online Game (BOT)
 async function online_game_bot() {
+    // Declare counters for game and result:
+    var counter_points_user = 0;
+    var counter_points_bot = 0;
+    var game_result = `<b>That's a draw</b>, try again!`;
+    // Declare and set as empty the bot answers
+    var game_summary = document.getElementById('game_summary');
+    game_summary.innerHTML = '';
     // Declare and set as empty the bot answers
     var bot_answers = document.getElementById('bot_answers');
     bot_answers.innerHTML = '';
@@ -847,6 +853,8 @@ async function online_game_bot() {
             var current_field = document.getElementById(`field_bot${i+1}`);
             var current_input = document.getElementById(`answer_bot${i+1}`);
             current_input.style.display = "none";
+            // Update user's points
+            counter_points_user++;
             current_field.innerHTML += `<i>Your answer was: ${current_answer_bot.value}</i>  <button id="button${i+1}" type="button" onclick="delete_entry('${current_answer_bot.value}', '${random_letter_bot}' , '${current_answer_bot.name}', 'button${i+1}')" class="btn btn-outline-warning">Delete this answer</button>`;
 
         }
@@ -861,10 +869,10 @@ async function online_game_bot() {
 
     // Display bot answers
     bot_answers.innerHTML += `<hr>`;
-    bot_answers.innerHTML += 'Here is what the bot answered:<p>';
+    bot_answers.innerHTML += '<b>Here is what the bot answered:</b><p>';
     // Loop over all answers
     for (let i = 0 ; i < categories_selected_bot.length; i++) {
-        // Pick a bot answer form DB / pending (LETTER: ${random_letter_bot}
+        // Pick a bot answer from DB / pending (LETTER: ${random_letter_bot}
         // Retrieve category:
         var current_category = document.getElementById(`answer_bot${i+1}`);
         current_category = current_category.name
@@ -885,7 +893,8 @@ async function online_game_bot() {
         category_updated = category_updated.name;
         // Add Bot answer if found and button to delete the entry if needed
         to_modify.innerHTML = `<p id="bot_answered${[i+1]}">${[i+1]} - ${category_updated}: "${result.details}" <button id="button_bot${i+1}" type="button" onclick="delete_entry('${result.details}', '${random_letter_bot}' , '${category_updated}', 'button_bot${i+1}')" class="btn btn-outline-warning">Delete this bot answer</button></p>`;
-        // Add option to delete bot answer:
+        // Update bot points
+        counter_points_bot++;
         });
         
     }
@@ -899,6 +908,7 @@ async function online_game_bot() {
     current_timer_bot.style.color = "white";
     print_categories_bot.style.display = 'none';
     print_test_bot.style.display = 'none';
+    print_test_bot.innerHTML = "Your answers were:"
     bot_answers.style.display = 'none';
     await sleep(500);
     document.body.style.backgroundColor = "white";
@@ -927,6 +937,22 @@ async function online_game_bot() {
     // Check Print letter
     // console.log(random_letter);
 
+    // Scrolling up bagain to show game results
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+    // Update game result if vicotry or defeat
+    if (counter_points_user < counter_points_bot) {
+        game_result = `<b>You lost</b> this game, try again!`;
+        game_summary.style.color = "red";
+    }
+    if (counter_points_user > counter_points_bot) {
+        game_result = `<b>You won</b>, congratulations!!`;
+        game_summary.style.color = "green";
+    }
+
+    // Fill in game summary
+    game_summary.innerHTML = `Your score is "${counter_points_user}" and the Bot achieved "${counter_points_bot}".
+    <p>${game_result}`;
 };
 
 function postgame_view_bot () {

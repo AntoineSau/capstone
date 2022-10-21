@@ -139,13 +139,9 @@ def retrieve(request, letter, category):
     category = Category.objects.get(categoryname=category)
     letter = Letter.objects.get(letter=letter)
 
-    # New option, counting results
-
-
-    
     try:
-        # I am trying to retrieve the first entry only here
-        possible_answers = Answer.objects.filter(letter_played=letter, category_played=category).first()
+        # Retrieving a RANDOM existingentry
+        possible_answers = Answer.objects.filter(letter_played=letter, category_played=category).order_by('?').first()
         possible_answers = possible_answers.answer
         return JsonResponse({"message": "We found the following:","details":possible_answers}, status=201)
         

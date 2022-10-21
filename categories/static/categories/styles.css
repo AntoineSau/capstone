@@ -93,3 +93,8 @@ ol {
 #navbar-brand-2 {
     color: lightblue;
 }
+
+#game_summary {
+    color: darkblue;
+    font-size: 50px;
+}
