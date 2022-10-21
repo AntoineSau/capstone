@@ -657,6 +657,7 @@ async function online_game_bot() {
     // Declare and set as empty the bot answers
     var game_summary = document.getElementById('game_summary');
     game_summary.innerHTML = '';
+    game_summary.style.color = "blue";
     // Declare and set as empty the bot answers
     var bot_answers = document.getElementById('bot_answers');
     bot_answers.innerHTML = '';
@@ -940,19 +941,42 @@ async function online_game_bot() {
     // Scrolling up bagain to show game results
     document.body.scrollTop = document.documentElement.scrollTop = 0;
 
-    // Update game result if vicotry or defeat
+    // Update game result if victory or defeat
+    // Create variable for "outcome" (DB format)
+    var outcome = ''; 
+
     if (counter_points_user < counter_points_bot) {
         game_result = `<b>You lost</b> this game, try again!`;
         game_summary.style.color = "red";
+        outcome = 'Defeat';
+        // Console log Checks before udpate Botgame Model
+        console.log(`User has scored '${counter_points_user}' out of '${categories_selected_bot.length}' point. Result is '${outcome}'`);
     }
-    if (counter_points_user > counter_points_bot) {
+    else if (counter_points_user > counter_points_bot) {
         game_result = `<b>You won</b>, congratulations!!`;
         game_summary.style.color = "green";
+        outcome = 'Victory';
+        // Console log Checks before udpate Botgame Model
+        console.log(`User has scored '${counter_points_user}' out of '${categories_selected_bot.length}' point. Result is '${outcome}'`);
     }
+    else {
+        outcome = 'Draw';
+        // Console log Checks before udpate Botgame Model
+        console.log(`User has scored '${counter_points_user}' out of '${categories_selected_bot.length}' point. Result is '${outcome}'`);
+    }
+
 
     // Fill in game summary
     game_summary.innerHTML = `Your score is "${counter_points_user}" and the Bot achieved "${counter_points_bot}".
     <p>${game_result}`;
+
+    // TODO Udpate DB
+    fetch(`/botgame/${outcome}/${counter_points_user}/${categories_selected_bot.length}`)
+    .then(response => response.json())
+    .then(result => {
+        // Print emails
+        console.log(result);
+    });
 };
 
 function postgame_view_bot () {

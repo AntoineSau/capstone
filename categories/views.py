@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime
 
 
 from categories.models import Answer, Category, Letter, Test2, User, Possible_result, Botgame
@@ -148,3 +149,26 @@ def retrieve(request, letter, category):
     except Answer.DoesNotExist:
         possible_answers = 'Rien de rien!'
         return JsonResponse({"message": "We found the following:","details":possible_answers}, status=201)
+
+@csrf_exempt
+def botgame(request, outcome, score, maxscore):
+
+    # Retrieve an entry with this specific letter and category
+    outcome = outcome
+    score = score
+    maxscore = maxscore
+    player = request.user
+    date = datetime.now()
+
+    # Intermediary step to "translate" models
+    outcome = Possible_result.objects.get(outcome=outcome)
+
+    # Attempt to add record of a botgame
+    try:
+        botgame = Botgame(player=player,date=date,result=outcome,score=score,maximumscore=maxscore)
+        botgame.save()
+        return JsonResponse({"message": "game save","Result":outcome,"Player":player}, status=201)
+    except IntegrityError:
+        return render(request, "categories/index.html", {
+            "message": "cannot save botgame"
+        })
