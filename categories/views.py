@@ -11,7 +11,7 @@ from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
 
 
-from categories.models import Answer, Category, Letter, Test2, User, Possible_result
+from categories.models import Answer, Category, Letter, Test2, User, Possible_result, Botgame
 
 # Create your views here.
 

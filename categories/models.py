@@ -44,3 +44,12 @@ class Possible_result(models.Model):
     def __str__(self):
         return f"Potential result nº'{self.id}' is '{self.outcome}'"
 
+class Botgame(models.Model):
+    player = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user", default=1)
+    date = models.DateTimeField(auto_now_add=True)
+    result = models.ForeignKey(Possible_result, on_delete=models.CASCADE, related_name="final_result")
+    score = models.IntegerField(default=0)
+    maximumscore = models.IntegerField(default=3)
+
+    def __str__(self):
+        return f"'{self.player}' played on '{self.date}'. Result was '{self.result}' ({self.score} on {self.maximumscore} possible points.)"
