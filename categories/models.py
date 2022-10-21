@@ -37,3 +37,10 @@ class Test2(models.Model):
 
     def __str__(self):
         return f"'{self.category}' with letter '{self.letter}' -> {self.entry}"
+
+class Possible_result(models.Model):
+    outcome = models.CharField(max_length=7)
+
+    def __str__(self):
+        return f"Potential result nº'{self.id}' is '{self.outcome}'"
+
