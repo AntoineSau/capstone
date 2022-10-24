@@ -12,6 +12,7 @@ from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 from django.db.models import Count
+from random import randrange
 
 
 from categories.models import Answer, Category, Letter, Test2, User, Possible_result, Botgame
@@ -151,18 +152,25 @@ def retrieve(request, letter, category):
     category = Category.objects.get(categoryname=category)
     letter = Letter.objects.get(letter=letter)
 
-    try:
-        # Retrieving a RANDOM existing entry
-        possible_answers = Answer.objects.filter(letter_played=letter, category_played=category).order_by('?').first()
-        try:
-            possible_answers = possible_answers.answer
-            return JsonResponse({"message": "We found the following:","details":possible_answers}, status=201)
-        except AttributeError:
-            return JsonResponse({"message": "Nothing here","details":"Not able to retrieve any bot answer"}, status=201)
+    # Implementation of "v1" algorithm
+    random_int = randrange(10)
 
-    # Not needed anymore in theory, because I'm filtering answers, not trying to "get" one specific entry
-    except Answer.DoesNotExist:
-        return JsonResponse({"error": "Not answered"}, status=400)
+    if random_int > 4:
+        try:
+            # Retrieving a RANDOM existing entry
+            possible_answers = Answer.objects.filter(letter_played=letter, category_played=category).order_by('?').first()
+            try:
+                possible_answers = possible_answers.answer
+                return JsonResponse({"message": "We found the following:","details":possible_answers}, status=201)
+            except AttributeError:
+                return JsonResponse({"message": "Nothing here","details":"Not able to retrieve any bot answer"}, status=201)
+
+        # Not needed anymore in theory, because I'm filtering answers, not trying to "get" one specific entry
+        except Answer.DoesNotExist:
+            return JsonResponse({"error": "Not answered"}, status=400)
+    else:
+        return JsonResponse({"message": "There is potentially an answer, but it would be rejected by algorithm :)","details":"Not able to retrieve any bot answer"}, status=201)
+
 
 @csrf_exempt
 def botgame(request, outcome, score, maxscore):
