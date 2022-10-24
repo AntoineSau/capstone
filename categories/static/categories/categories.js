@@ -192,6 +192,7 @@ function game_view() {
     offline_content.style.display = 'none';
     rules_content.style.display = 'none';
     game_content.style.display = 'block';
+    game_data_bot.style.display = 'none';
     
     /// BOT CONTENT
     // Show form
@@ -404,7 +405,7 @@ async function generate_letter() {
             var current_field = document.getElementById(`field${i+1}`);
             var current_input = document.getElementById(`answer${i+1}`);
             current_input.style.display = "none";
-            current_field.innerHTML += `<i>Your answer was: ${current_answer.value}</i>  <button id="button${i+1}" type="button" onclick="delete_entry('${current_answer.value}', '${random_letter}' , '${current_answer.name}', 'button${i+1}')" class="btn btn-outline-warning">Delete this answer</button>`;
+            current_field.innerHTML += `<i>Your answer was "${current_answer.value}"</i>  <button id="button${i+1}" type="button" onclick="delete_entry('${current_answer.value}', '${random_letter}' , '${current_answer.name}', 'button${i+1}')" class="btn btn-outline-warning">Delete this answer</button>`;
         }
     }
 
@@ -666,7 +667,7 @@ async function online_game_bot() {
     // Hide Form Game
     form_game.style.display = 'none';
     // Shows game data to play against bot
-    game_data_bot.style.display = "block";
+    game_data_bot.style.display = 'block';
     const print_test_bot = document.getElementById('print_test_bot');
     print_test_bot.innerHTML = "";
     const print_categories_bot = document.getElementById('print_categories_bot')
@@ -856,7 +857,7 @@ async function online_game_bot() {
             current_input.style.display = "none";
             // Update user's points
             counter_points_user++;
-            current_field.innerHTML += `<i>Your answer was: ${current_answer_bot.value}</i>  <button id="button${i+1}" type="button" onclick="delete_entry('${current_answer_bot.value}', '${random_letter_bot}' , '${current_answer_bot.name}', 'button${i+1}')" class="btn btn-outline-warning">Delete this answer</button>`;
+            current_field.innerHTML += `<i>Your answer was "${current_answer_bot.value}"</i>  <button id="button${i+1}" type="button" onclick="delete_entry('${current_answer_bot.value}', '${random_letter_bot}' , '${current_answer_bot.name}', 'button${i+1}')" class="btn btn-outline-warning">Delete this answer</button>`;
 
         }
         // TODO bot answer
@@ -879,7 +880,7 @@ async function online_game_bot() {
         current_category = current_category.name
         
         // Field when no answer
-        bot_answers.innerHTML += `<p id="bot_answered${[i+1]}">${[i+1]} - ${current_category}: "Not Answered" </p>`
+        bot_answers.innerHTML += `<p id="bot_answered${[i+1]}">${[i+1]} - ${current_category}: <i>Not Answered</i></p>`
         // Retrieve a bot answer if ti exists
 
         fetch(`/retrieve/${random_letter_bot}/${current_category}`)
@@ -888,15 +889,21 @@ async function online_game_bot() {
         // Print emails
         console.log(result);
         // ... do something else with entries ...
-        // HERE MODIFY DOM!
         var to_modify = document.getElementById(`bot_answered${[i+1]}`);
         var category_updated = document.getElementById(`answer_bot${[i+1]}`);
         category_updated = category_updated.name;
-        // Add Bot answer if found and button to delete the entry if needed
-        to_modify.innerHTML = `<p id="bot_answered${[i+1]}">${[i+1]} - ${category_updated}: "${result.details}" <button id="button_bot${i+1}" type="button" onclick="delete_entry('${result.details}', '${random_letter_bot}' , '${category_updated}', 'button_bot${i+1}')" class="btn btn-outline-warning">Delete this bot answer</button></p>`;
-        // Update bot points
-        counter_points_bot++;
-        });
+        if (result.details === 'Not able to retrieve any bot answer')  {
+            counter_points_bot = counter_points_bot;
+            console.log("We didn't find any answer, so we don't update bot points!")
+        }
+
+        // HERE MODIFY DOM!
+        else {
+            // Add Bot answer if found and button to delete the entry if needed
+            to_modify.innerHTML = `<p id="bot_answered${[i+1]}">${[i+1]} - ${category_updated}: "${result.details}" <button id="button_bot${i+1}" type="button" onclick="delete_entry('${result.details}', '${random_letter_bot}' , '${category_updated}', 'button_bot${i+1}')" class="btn btn-outline-warning">Delete this bot answer</button></p>`;
+            // Update bot points
+            counter_points_bot++;
+        }});
         
     }
 

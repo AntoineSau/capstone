@@ -35,7 +35,15 @@
 						<br>
 						<button id="rules_button" class="btn btn-secondary mb-2 btn-lg">CHECK RULES</button>
 					</div>
-					
+				</div>
+				<div class="row">
+					<div class="col-md">
+						<h3><b>Ranking</b></h3>
+						{% for ranking_victorie in ranking_victories %}
+						<h6>{{ ranking_victorie }} -> {{ ranking_victorie.total }}</h6><br>
+						{% endfor %}
+						
+					</div>x
 				</div>
 			</div>
 	</div>

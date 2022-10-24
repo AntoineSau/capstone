@@ -52,4 +52,4 @@ class Botgame(models.Model):
     maximumscore = models.IntegerField(default=3)
 
     def __str__(self):
-        return f"'{self.player.username}' played on '{self.date}'. Result was '{self.result.outcome}' ({self.score} on {self.maximumscore} possible points.)"
+        return f"'{self.player}' played on '{self.date}'. Result was '{self.result.outcome}' ({self.score} on {self.maximumscore} possible points.)"

@@ -1,6 +1,7 @@
 from cgi import test
 import json
 from unicodedata import category
+from unittest import result
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import HttpResponse, HttpResponseRedirect, render
@@ -10,6 +11,7 @@ from django.http import JsonResponse
 from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
+from django.db.models import Count
 
 
 from categories.models import Answer, Category, Letter, Test2, User, Possible_result, Botgame
@@ -17,7 +19,16 @@ from categories.models import Answer, Category, Letter, Test2, User, Possible_re
 # Create your views here.
 
 def index(request):
-	return render(request, "categories/index.html")
+    # Retrieve current player´s ranking
+    # Retrieve all games which had "Victory" as a result (1)
+    ranking_victories = Botgame.objects.filter(result='1')
+    # Group by player
+    
+
+    return render(request, "categories/index.html", {
+        "ranking_victories":ranking_victories
+    })
+
 
 
 def login_view(request):
@@ -127,7 +138,7 @@ def delete(request, letter, category, entry):
         return JsonResponse({"message": "Entry found and deleted!"}, status=201)
         
     except Answer.DoesNotExist:
-        return JsonResponse({"error": "Entry not found."}, status=404)
+        return JsonResponse({"message": "Not found"}, status=201)
 
 @csrf_exempt
 def retrieve(request, letter, category):
@@ -141,14 +152,17 @@ def retrieve(request, letter, category):
     letter = Letter.objects.get(letter=letter)
 
     try:
-        # Retrieving a RANDOM existingentry
+        # Retrieving a RANDOM existing entry
         possible_answers = Answer.objects.filter(letter_played=letter, category_played=category).order_by('?').first()
-        possible_answers = possible_answers.answer
-        return JsonResponse({"message": "We found the following:","details":possible_answers}, status=201)
-        
+        try:
+            possible_answers = possible_answers.answer
+            return JsonResponse({"message": "We found the following:","details":possible_answers}, status=201)
+        except AttributeError:
+            return JsonResponse({"message": "Nothing here","details":"Not able to retrieve any bot answer"}, status=201)
+
+    # Not needed anymore in theory, because I'm filtering answers, not trying to "get" one specific entry
     except Answer.DoesNotExist:
-        possible_answers = 'Rien de rien!'
-        return JsonResponse({"message": "We found the following:","details":possible_answers}, status=201)
+        return JsonResponse({"error": "Not answered"}, status=400)
 
 @csrf_exempt
 def botgame(request, outcome, score, maxscore):
@@ -162,13 +176,13 @@ def botgame(request, outcome, score, maxscore):
 
     # Intermediary step to "translate" models
     outcome = Possible_result.objects.get(outcome=outcome)
+    # Converting result to see it in JsonResponse
+    msg = outcome.outcome
 
-    # Attempt to add record of a botgame
+    # Attempt to add record of a botgame, abort if user not logged in
     try:
         botgame = Botgame(player=player,date=date,result=outcome,score=score,maximumscore=maxscore)
         botgame.save()
-        return JsonResponse({"message": "game save","Result":outcome,"Player":player}, status=201)
-    except IntegrityError:
-        return render(request, "categories/index.html", {
-            "message": "cannot save botgame"
-        })
+        return JsonResponse({"message": "game saved","details":msg}, status=201)
+    except ValueError:
+        return JsonResponse({"message": "Not saving this botgame because user is not logged in"}, status=201)
