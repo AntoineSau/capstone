@@ -213,9 +213,6 @@ async function generate_letter() {
     print_test.innerHTML = "";
     const print_categories = document.getElementById('print_categories')
     print_categories.innerHTML = "";
-    // Hide forms
-    form_generate_letter.style.display = 'none';
-    form_offline_game.style.display = 'none';
 
     // Retrieve list of checked checkboxes
     var all_buttons = document.getElementsByTagName("button");
@@ -264,6 +261,10 @@ async function generate_letter() {
         alert(`Please select at least 3 categories`);
         return false;
     }
+
+    // Hide forms
+    form_generate_letter.style.display = 'none';
+    form_offline_game.style.display = 'none';
 
     // Print check
     // print_test.innerHTML = `<h3><i>PRINT CHECK: -> ${checked} with timer of "${timer}". 
@@ -499,7 +500,6 @@ async function offline_game() {
     // Cancel if amount of letters selected below 3
     if (amount_of_letters_off < 5) {
         alert(`Please select at least 5 letters`);
-        form_offline_game.style.display = 'block';
         return false;
     }
    
@@ -663,17 +663,13 @@ async function online_game_bot() {
     bot_answers.innerHTML = '';
     // Scrolling up by default so that the user sees the letter to play
     document.body.scrollTop = document.documentElement.scrollTop = 0;
-    // Hide Form Game
-    form_game.style.display = 'none';
+    
     // Shows game data to play against bot
     game_data_bot.style.display = 'block';
     const print_test_bot = document.getElementById('print_test_bot');
     print_test_bot.innerHTML = "";
     const print_categories_bot = document.getElementById('print_categories_bot')
     print_categories_bot.innerHTML = "";
-    // Hide forms
-    form_generate_letter.style.display = 'none';
-    form_offline_game.style.display = 'none';
 
     // Retrieve list of checked checkboxes
     var all_buttons = document.getElementsByTagName("button");
@@ -722,6 +718,12 @@ async function online_game_bot() {
         alert(`Please select at least 3 categories`);
         return false;
     }
+
+    // Hide forms
+    form_generate_letter.style.display = 'none';
+    form_offline_game.style.display = 'none';
+    // Hide Form Game
+    form_game.style.display = 'none';
 
     // Print test length categories
     print_test_bot.innerHTML = `Write your answers below for each one of the <b>${categories_selected_bot.length}</b> categories:`;
