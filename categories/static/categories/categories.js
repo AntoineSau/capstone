@@ -633,7 +633,14 @@ function delete_entry(entry, letter, category, button) {
     
     // TODO I want to GET that specific entry and delete it
     // FETCH
-    fetch(`/delete/${letter}/${category}/${entry}`)
+    fetch(`/delete/${letter}/${category}/${entry}`, {
+        method: 'POST',
+        body: JSON.stringify({
+            letter: letter,
+            category: category, 
+            entry: entry
+        })
+    })
     .then(response => response.json())
     .then(result => {
         // Print emails
@@ -978,8 +985,15 @@ async function online_game_bot() {
     game_summary.innerHTML = `Your score is "${counter_points_user}" and the Bot achieved "${counter_points_bot}".
     <p>${game_result}`;
 
-    // Udpate DB
-    fetch(`/botgame/${outcome}/${counter_points_user}/${categories_selected_bot.length}`)
+    // Udpate DB with Psot method
+    fetch(`/botgame/${outcome}/${counter_points_user}/${categories_selected_bot.length}`, {
+        method: 'POST',
+        body: JSON.stringify({
+            outcome: outcome,
+            counter_points_user: counter_points_user, 
+            categories_selected_bot: categories_selected_bot.length
+        })
+    })
     .then(response => response.json())
     .then(result => {
         // Print emails

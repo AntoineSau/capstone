@@ -40,7 +40,7 @@
 					<div class="col-md">
 						<h3><b>Ranking Victories:</b></h3>
 						{% for x in ranking_victories %}
-						<h6>{{ x }} -> {{ x.player }} -> {{ x.total }} victories</h6><br>
+						<h6>{{ x }} -> {{ x.player.username }} -> {{ x.total }} victories</h6><br>
 						{% endfor %}
 						<!-- Show current user's "Record" (Vicotries / Defeats / Draws) unless user nol logged in -->
 						{% if user.is_anonymous %}
@@ -198,42 +198,46 @@
 				<div class="row">
 					<div class="col-lg">
 						<b>1. Categories</b><br><br>
-						All players initially agree on different <b>"categories"</b> that they want to play with (names, countries, cities, objects, ...).
+						Players initially agree on different <b>"categories"</b> that they want to play with (names, countries, cities, objects, ...).
 					</div>
 					<div class="col-lg">
 						<b>2. Duration</b><br><br>
-						They define a <b>duration</b> to play each round, and the total amount of rounds that they want to play.
+						Players define a <b>duration</b> to play the game <i>(alternatively, players can chose an amount of rounds to play a game).</i>
 					</div>
 					<div class="col-lg">
 						<b>3. Letter</b><br><br>
-						They play each round with a specific <b>letter</b>, which can be chosen randomly by a player or by our website.
+						A <b>letter</b> is chosen randomly by a player or by our website to play the game.
 					</div>
 				</div>
 				<div class="row">	
 					<div class="col-lg">
 						<b>4. Playing</b><br><br>
-						During each round, all the players need to find one word per category. 
-						These words need to start with the letter chosen for the round.
+						When the timer starts, all the players need to find as quickly as possible one word per category. 
+						Each word needs to start with the letter chosen for this specific game.
 					</div>
 					<div class="col-lg">
-						<b>5. End of round</b><br><br>
-						Each round stops at the end of the timer, or if one of the players found one word for each category before the end.
+						<b>5. End of the game</b><br><br>
+						The game stops at the end of the timer, or if one of the players found one word for each category before the end of the timer.<br>
+						In this case, this player can decide to "stop" the timer.
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-lg">
 						<b>6. Counting points</b><br><br>
-						At the end of each round, the players count their points as below, for each combination of word and category:
-						<h5>- When players have a unique word, they get 2 points<br>
-						- When players have a repeated word (played by someone else in the same round), they get 1 point.<br>
-						- When players don't have any word, they don't get any point
-						</h5>
+						At the end of each game (or round), the players count their points as below, for each combination of word and category:<br>
+						- When players found a word, they score 1 point<br>
+						- When they dont, they do not score any point.<br><br>
+						<h5><i>If there are more than two players, this method can be adapted as below:<br>
+						- When players have a <b>unique</b> word, they score 2 points<br>
+						- When players have a <b>repeated</b> word (played by someone else in the same game/round and category), they get 1 point.<br>
+						- When players don't have any word, they don't receive any point
+						</i></h5>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-lg">
 						<b>7. Final score</b><br><br>
-						When all rounds are finished, all players sum all their point.<br>
+						When games or rounds are finished, all players sum all their points.<br>
 						The player with the highest amount of point wins!
 					</div>
 				</div>

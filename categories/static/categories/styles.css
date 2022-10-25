@@ -5,6 +5,12 @@ body {
     justify-content: center;
 }
 
+.navbar-collapse {
+    align-content: left;
+    text-align: left;
+    justify-content: left;
+}
+
 div {
     align-content: center;
     text-align: center;

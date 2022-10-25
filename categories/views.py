@@ -1,4 +1,5 @@
 from cgi import test
+from ftplib import all_errors
 import json
 from unicodedata import category
 from unittest import result
@@ -21,13 +22,14 @@ from categories.models import Answer, Category, Letter, Test2, User, Possible_re
 def index(request):
     # Retrieve current player´s ranking
     # Group by player
-    ranking_victories = Botgame.objects.filter(result='1').values('player','result').annotate(total=Sum('result'))
-    
+    # BACKUPranking_victories = Botgame.objects.filter(result='1').values('player_id').annotate(total=Sum('result')).order_by('-total')
+    ranking_victories = Botgame.objects.filter(result='1').annotate(total=Sum('player')).order_by('-total')    
+
     # retrieve current user in order to dispay its perosnal records
     current_user = request.user 
 
     # TO DO need to join tables here?
-    # Information on personal record for CURRENT player (now test hardocdes with Harry)
+    # Information on personal record for CURRENT player
     victories_current_player = Botgame.objects.filter(player=current_user.id,result='1').count()
     defeats_current_player = Botgame.objects.filter(player=current_user.id,result='2').count()
     draws_current_player = Botgame.objects.filter(player=current_user.id,result='3').count()
@@ -133,22 +135,26 @@ def update(request):
 @csrf_exempt
 def delete(request, letter, category, entry):
     
-    # Retrieve entry and its IDs. Need to capitalize the answer/entry to avoid bugs
-    letter = letter
-    category = category
-    entry = entry.capitalize()
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
+    
+    else:
+        # Retrieve entry and its IDs. Need to capitalize the answer/entry to avoid bugs
+        letter = letter
+        category = category
+        entry = entry.capitalize()
 
-    # Intermediary step to "translate" models
-    category = Category.objects.get(categoryname=category)
-    letter = Letter.objects.get(letter=letter)
+        # Intermediary step to "translate" models
+        category = Category.objects.get(categoryname=category)
+        letter = Letter.objects.get(letter=letter)
 
-    try:
-        entry_to_delete = Answer.objects.get(letter_played=letter, category_played=category, answer=entry)
-        entry_to_delete.delete() 
-        return JsonResponse({"message": "Entry found and deleted!"}, status=201)
-        
-    except Answer.DoesNotExist:
-        return JsonResponse({"message": "Not found"}, status=201)
+        try:
+            entry_to_delete = Answer.objects.get(letter_played=letter, category_played=category, answer=entry)
+            entry_to_delete.delete() 
+            return JsonResponse({"message": "Entry found and deleted!"}, status=201)
+            
+        except Answer.DoesNotExist:
+            return JsonResponse({"message": "Not found"}, status=201)
 
 @csrf_exempt
 def retrieve(request, letter, category):
@@ -198,22 +204,26 @@ def retrieve(request, letter, category):
 @csrf_exempt
 def botgame(request, outcome, score, maxscore):
 
-    # Retrieve an entry with this specific letter and category
-    outcome = outcome
-    score = score
-    maxscore = maxscore
-    player = request.user
-    date = datetime.now()
+    if request.method != "POST":
+        return JsonResponse({"error": "POST request required."}, status=400)
 
-    # Intermediary step to "translate" models
-    outcome = Possible_result.objects.get(outcome=outcome)
-    # Converting result to see it in JsonResponse
-    msg = outcome.outcome
+    else:
+        # Retrieve an entry with this specific letter and category
+        outcome = outcome
+        score = score
+        maxscore = maxscore
+        player = request.user
+        date = datetime.now()
 
-    # Attempt to add record of a botgame, abort if user not logged in
-    try:
-        botgame = Botgame(player=player,date=date,result=outcome,score=score,maximumscore=maxscore)
-        botgame.save()
-        return JsonResponse({"message": "game saved","details":msg}, status=201)
-    except ValueError:
-        return JsonResponse({"message": "Not saving this botgame because user is not logged in"}, status=201)
+        # Intermediary step to "translate" models
+        outcome = Possible_result.objects.get(outcome=outcome)
+        # Converting result to see it in JsonResponse
+        msg = outcome.outcome
+
+        # Attempt to add record of a botgame, abort if user not logged in
+        try:
+            botgame = Botgame(player=player,date=date,result=outcome,score=score,maximumscore=maxscore)
+            botgame.save()
+            return JsonResponse({"message": "game saved","details":msg}, status=201)
+        except ValueError:
+            return JsonResponse({"message": "Not saving this botgame because user is not logged in"}, status=201)
