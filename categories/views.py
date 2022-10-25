@@ -14,7 +14,6 @@ from datetime import datetime
 from django.db.models import Count, Sum
 from random import randrange
 
-
 from categories.models import Answer, Category, Letter, Test2, User, Possible_result, Botgame
 
 # Create your views here.
@@ -33,9 +32,6 @@ def index(request):
     defeats_current_player = Botgame.objects.filter(player=current_user.id,result='2').count()
     draws_current_player = Botgame.objects.filter(player=current_user.id,result='3').count()
 
-    
-    
-
     return render(request, "categories/index.html", {
         "current_user":current_user,
         "ranking_victories":ranking_victories,
@@ -44,8 +40,6 @@ def index(request):
         "draws_current_player":draws_current_player
 
     })
-
-
 
 def login_view(request):
     if request.method == "POST":
@@ -167,10 +161,24 @@ def retrieve(request, letter, category):
     category = Category.objects.get(categoryname=category)
     letter = Letter.objects.get(letter=letter)
 
-    # Implementation of "v1" algorithm
+    # Implementation of "v1" algorithm (simplest version -> 50%/50%)
     random_int = randrange(10)
 
-    if random_int > 4:
+    # Test with "v2" algorithm
+    # retrieve current user in order to dispay its personal records
+    current_user = request.user 
+    # Information on personal record for CURRENT player (now test hardocdes with Harry)
+    victories_from_user = Botgame.objects.filter(player=current_user.id,result='1').count()
+    games_from_user = Botgame.objects.filter(player=current_user.id).count()
+    player_level = victories_from_user / games_from_user * 10
+    player_level = int(player_level)
+
+    # If a player has a high level, it menas that it wins during the majority of the time
+    # So, we want to make the bot better than average
+    # On the other end, if the player has a low rate of victory, we want to bot to play worse
+    # That is what I am trying to build below
+
+    if player_level > random_int:
         try:
             # Retrieving a RANDOM existing entry
             possible_answers = Answer.objects.filter(letter_played=letter, category_played=category).order_by('?').first()
@@ -184,8 +192,8 @@ def retrieve(request, letter, category):
         except Answer.DoesNotExist:
             return JsonResponse({"error": "Not answered"}, status=400)
     else:
-        return JsonResponse({"message": "There is potentially an answer, but it would be rejected by algorithm :)","details":"Not able to retrieve any bot answer"}, status=201)
-
+        return JsonResponse({"message":player_level,"details":"Not able to retrieve any bot answer"}, status=201)
+        # BACK UP V1 return JsonResponse({"message": "There is potentially an answer, but it would be rejected by algorithm :)","details":"Not able to retrieve any bot answer"}, status=201)
 
 @csrf_exempt
 def botgame(request, outcome, score, maxscore):

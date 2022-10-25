@@ -978,13 +978,14 @@ async function online_game_bot() {
     game_summary.innerHTML = `Your score is "${counter_points_user}" and the Bot achieved "${counter_points_bot}".
     <p>${game_result}`;
 
-    // TODO Udpate DB
+    // Udpate DB
     fetch(`/botgame/${outcome}/${counter_points_user}/${categories_selected_bot.length}`)
     .then(response => response.json())
     .then(result => {
         // Print emails
         console.log(result);
     });
+
 };
 
 function postgame_view_bot () {
