@@ -251,7 +251,6 @@ async function generate_letter() {
         }
     }
 
-
     // Cancel if amount of categories selected is below 3 and letters selected below 3
     if (categories_selected.length < 3 && amount_of_letters < 5) {
         alert(`Please select at least 5 letters and 3 categories`);

@@ -11,7 +11,7 @@ from django.http import JsonResponse
 from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
-from django.db.models import Count
+from django.db.models import Count, Sum
 from random import randrange
 
 
@@ -21,13 +21,28 @@ from categories.models import Answer, Category, Letter, Test2, User, Possible_re
 
 def index(request):
     # Retrieve current player´s ranking
-    # Retrieve all games which had "Victory" as a result (1)
-    ranking_victories = Botgame.objects.filter(result='1')
     # Group by player
+    ranking_victories = Botgame.objects.filter(result='1').values('player','result').annotate(total=Sum('result'))
+    
+    # retrieve current user in order to dispay its perosnal records
+    current_user = request.user 
+
+    # TO DO need to join tables here?
+    # Information on personal record for CURRENT player (now test hardocdes with Harry)
+    victories_current_player = Botgame.objects.filter(player=current_user.id,result='1').count()
+    defeats_current_player = Botgame.objects.filter(player=current_user.id,result='2').count()
+    draws_current_player = Botgame.objects.filter(player=current_user.id,result='3').count()
+
+    
     
 
     return render(request, "categories/index.html", {
-        "ranking_victories":ranking_victories
+        "current_user":current_user,
+        "ranking_victories":ranking_victories,
+        "victories_current_player":victories_current_player,
+        "defeats_current_player":defeats_current_player,
+        "draws_current_player":draws_current_player
+
     })
 
 

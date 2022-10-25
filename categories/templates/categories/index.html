@@ -38,12 +38,21 @@
 				</div>
 				<div class="row">
 					<div class="col-md">
-						<h3><b>Ranking</b></h3>
-						{% for ranking_victorie in ranking_victories %}
-						<h6>{{ ranking_victorie }} -> {{ ranking_victorie.total }}</h6><br>
+						<h3><b>Ranking Victories:</b></h3>
+						{% for x in ranking_victories %}
+						<h6>{{ x }} -> {{ x.player }} -> {{ x.total }} victories</h6><br>
 						{% endfor %}
+						<!-- Show current user's "Record" (Vicotries / Defeats / Draws) unless user nol logged in -->
+						<h3><b>Your personal record:</b></h3>
+						{% if user.is_anonymous %}
+							<h6>You need to <a href="{% url 'login' %}"><b>Log in</b></a> in order to start saving and diplaying your personal reuslts!</h6>
+						{% else %}
+							<h6>Victories: {{ victories_current_player }} - Defeats: {{ defeats_current_player }} - Draws: {{ draws_current_player }}</h6><br>
+						{% endif %}
+
 						
-					</div>x
+						
+					</div>
 				</div>
 			</div>
 	</div>
