@@ -95,7 +95,6 @@ def register(request):
 def test(request):
 	return render(request, "categories/test.html")
 
-@csrf_exempt
 def update(request):
 
 	if request.method != "POST":
@@ -132,7 +131,6 @@ def update(request):
 		else:
 			return JsonResponse({"message": "answer not saved in database because it already exists","details":answerok}, status=201)
 
-@csrf_exempt
 def delete(request, letter, category, entry):
     
     if request.method != "POST":
@@ -158,7 +156,7 @@ def delete(request, letter, category, entry):
 
 @csrf_exempt
 def retrieve(request, letter, category):
-
+   
     # Retrieve an entry with this specific letter and category
     letter = letter
     category = category
@@ -201,9 +199,7 @@ def retrieve(request, letter, category):
         return JsonResponse({"message":player_level,"details":"Not able to retrieve any bot answer"}, status=201)
         # BACK UP V1 return JsonResponse({"message": "There is potentially an answer, but it would be rejected by algorithm :)","details":"Not able to retrieve any bot answer"}, status=201)
 
-@csrf_exempt
 def botgame(request, outcome, score, maxscore):
-
     if request.method != "POST":
         return JsonResponse({"error": "POST request required."}, status=400)
 
@@ -214,6 +210,7 @@ def botgame(request, outcome, score, maxscore):
         maxscore = maxscore
         player = request.user
         date = datetime.now()
+
 
         # Intermediary step to "translate" models
         outcome = Possible_result.objects.get(outcome=outcome)

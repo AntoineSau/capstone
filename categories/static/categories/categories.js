@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-
     // hide off, one and rules content at the beginning
     const online_content = document.querySelector('#online_content');
     online_content.style.display = 'none';
@@ -386,13 +385,17 @@ async function generate_letter() {
         }
         // API Update Database only if there is any answer
         else {
+            // Retrieve CSRF Token
+            const csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
             fetch('/update', {
                 method: 'POST',
                 body: JSON.stringify({
                     answer: current_answer.value,
                     letter: random_letter, 
                     category: current_answer.name
-                })
+                }),
+                headers: { "X-CSRFToken": csrftoken },
+                credentials : "same-origin"
             })
             .then(response => response.json())
             .then(result => {
@@ -633,13 +636,17 @@ function delete_entry(entry, letter, category, button) {
     
     // TODO I want to GET that specific entry and delete it
     // FETCH
+    // Retrieve CSRF Token
+    const csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
     fetch(`/delete/${letter}/${category}/${entry}`, {
         method: 'POST',
         body: JSON.stringify({
             letter: letter,
             category: category, 
             entry: entry
-        })
+        }),
+        headers: { "X-CSRFToken": csrftoken },
+        credentials : "same-origin"
     })
     .then(response => response.json())
     .then(result => {
@@ -845,13 +852,17 @@ async function online_game_bot() {
         }
         // API Update Database only if there is any answer
         else {
+            // Retrieve CSRF Token
+            const csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
             fetch('/update', {
                 method: 'POST',
                 body: JSON.stringify({
                     answer: current_answer_bot.value,
                     letter: random_letter_bot, 
                     category: current_answer_bot.name
-                })
+                }),
+                headers: { "X-CSRFToken": csrftoken },
+                credentials : "same-origin"
             })
             .then(response => response.json())
             .then(result => {
@@ -890,7 +901,6 @@ async function online_game_bot() {
         // Field when no answer
         bot_answers.innerHTML += `<p id="bot_answered${[i+1]}">${[i+1]} - ${current_category}: <i>Not Answered</i></p>`
         // Retrieve a bot answer if ti exists
-
         fetch(`/retrieve/${random_letter_bot}/${current_category}`)
         .then(response => response.json())
         .then(result => {
@@ -985,14 +995,18 @@ async function online_game_bot() {
     game_summary.innerHTML = `Your score is "${counter_points_user}" and the Bot achieved "${counter_points_bot}".
     <p>${game_result}`;
 
-    // Udpate DB with Psot method
+    // Udpate DB with Post method
+    // Retrieve CSRF Token
+    const csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
     fetch(`/botgame/${outcome}/${counter_points_user}/${categories_selected_bot.length}`, {
         method: 'POST',
         body: JSON.stringify({
             outcome: outcome,
             counter_points_user: counter_points_user, 
             categories_selected_bot: categories_selected_bot.length
-        })
+        }),
+        headers: { "X-CSRFToken": csrftoken },
+        credentials : "same-origin"
     })
     .then(response => response.json())
     .then(result => {
