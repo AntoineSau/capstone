@@ -174,8 +174,13 @@ def retrieve(request, letter, category):
     # Information on personal record for CURRENT player (now test hardocdes with Harry)
     victories_from_user = Botgame.objects.filter(player=current_user.id,result='1').count()
     games_from_user = Botgame.objects.filter(player=current_user.id).count()
-    player_level = victories_from_user / games_from_user * 10
-    player_level = int(player_level)
+
+    # Creating a condition if user is not logged in or if they never played, they are considered as average user (5)
+    if (games_from_user == 0):
+        player_level = 5
+    else:
+        player_level = victories_from_user / games_from_user * 10
+        player_level = int(player_level)
 
     # If a player has a high level, it menas that it wins during the majority of the time
     # So, we want to make the bot better than average
