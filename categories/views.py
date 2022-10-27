@@ -23,9 +23,14 @@ def index(request):
     # Retrieve current player´s ranking
     # Group by player
     # BACKUPranking_victories = Botgame.objects.filter(result='1').values('player_id').annotate(total=Sum('result')).order_by('-total')
-    ranking_victories = Botgame.objects.filter(result='1').annotate(total=Sum('player')).order_by('-total')    
+    ranking_victories = Botgame.objects.filter(result='1').values('player_id').order_by('-player').annotate(count=Count('player'))
+    # Need to COUNT appereances of usernames
+    
+    # WIP
+    users_db = User.objects.all()
 
-    # retrieve current user in order to dispay its perosnal records
+
+    # retrieve current user in order to display its personal records
     current_user = request.user 
 
     # TO DO need to join tables here?
@@ -39,8 +44,8 @@ def index(request):
         "ranking_victories":ranking_victories,
         "victories_current_player":victories_current_player,
         "defeats_current_player":defeats_current_player,
-        "draws_current_player":draws_current_player
-
+        "draws_current_player":draws_current_player,
+        "users_db":users_db
     })
 
 def login_view(request):

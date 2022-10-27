@@ -963,7 +963,7 @@ async function online_game_bot() {
     // Check Print letter
     // console.log(random_letter);
 
-    // Scrolling up bagain to show game results
+    // Scrolling up again to show game results
     document.body.scrollTop = document.documentElement.scrollTop = 0;
 
     // Update game result if victory or defeat
