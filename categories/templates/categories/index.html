@@ -38,26 +38,27 @@
 				</div>
 				<div class="row">
 					<div class="col-md">
-						<h3><b>Ranking Victories:</b></h3>
-						{% for x in ranking_victories %}
-						<h6>{{x}} / ??? {{x.player_id}} / {{x.player_id}} / {{ x.count }} victories</h6><br>
-						{% endfor %}
-						USERS: users_db
-						{% for x in users_db %}
-						<h6>{{x}} / {{x.id}} -> {{ x.username }}</h6><br>
-						{% endfor %}
-						
 						<!-- Show current user's "Record" (Victories / Defeats / Draws) unless user nol logged in -->
 						{% if user.is_anonymous %}
 							<h3><b>Your personal record:</b></h3>
-							<h6>You need to <a href="{% url 'login' %}"><b>log in</b></a> in order to start saving and diplaying your personal results!</h6>
+							<h4><br><i>You need to <a href="{% url 'login' %}"><b>log in</b></a> in order to start saving and diplaying your personal results!</i><br><br></h4>
 						{% else %}
-							<h3><b>Your personal record, {{current_user.username}}:</b></h3>
-							<h6>Victories: {{ victories_current_player }} - Defeats: {{ defeats_current_player }} - Draws: {{ draws_current_player }}</h6><br>
+							<h3><b>Your personal record, {{current_user.username}}:</b></h3><br>
+							<h4><span style="color: green;">Victories: {{ victories_current_player }}</span> - <span style="color: red;">Defeats: {{ defeats_current_player }}</span> - <span style="color: darkblue;">Draws: {{ draws_current_player }}</span></h4><br>
 						{% endif %}
+						<!-- Show last 5 game splayed by all users and display results -->
+						<h3><b>Last 5 games played:</b></h3><br>
+						
+						{% for x in last_games_played %}
+						<h5>Played by <b>{{x.player.username}}</b>.  Result: <b>{{x.result.outcome}}</b></h5><br>
+						{% endfor %}
+						
 
-						
-						
+						<h3><b>Most victories:</b></h3><br>
+						{% for x in most_victories %}
+						<h5>{{x}} -> {{x.player_id}} / {{x.count}}</b></h5><br>
+						{% endfor %}
+
 					</div>
 				</div>
 			</div>

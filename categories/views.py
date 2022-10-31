@@ -15,37 +15,34 @@ from datetime import datetime
 from django.db.models import Count, Sum
 from random import randrange
 
+
+
 from categories.models import Answer, Category, Letter, Test2, User, Possible_result, Botgame
 
 # Create your views here.
 
 def index(request):
-    # Retrieve current player´s ranking
-    # Group by player
-    # BACKUPranking_victories = Botgame.objects.filter(result='1').values('player_id').annotate(total=Sum('result')).order_by('-total')
-    ranking_victories = Botgame.objects.filter(result='1').values('player_id').order_by('-player').annotate(count=Count('player'))
-    # Need to COUNT appereances of usernames
-    
-    # WIP
-    users_db = User.objects.all()
 
-
+    # Dispay last 5 games played by all users
+    last_games_played = Botgame.objects.all().order_by('-id')[:5]
     # retrieve current user in order to display its personal records
     current_user = request.user 
 
-    # TO DO need to join tables here?
     # Information on personal record for CURRENT player
     victories_current_player = Botgame.objects.filter(player=current_user.id,result='1').count()
     defeats_current_player = Botgame.objects.filter(player=current_user.id,result='2').count()
     draws_current_player = Botgame.objects.filter(player=current_user.id,result='3').count()
 
+    # Players with most victories
+    most_victories = Botgame.objects.filter(result='1').values('player_id').annotate(count=Count('player_id')).order_by('-player_id')
+
     return render(request, "categories/index.html", {
         "current_user":current_user,
-        "ranking_victories":ranking_victories,
         "victories_current_player":victories_current_player,
         "defeats_current_player":defeats_current_player,
         "draws_current_player":draws_current_player,
-        "users_db":users_db
+        "last_games_played":last_games_played,
+        "most_victories":most_victories,
     })
 
 def login_view(request):
@@ -126,7 +123,7 @@ def update(request):
         )
 
 		# Avoid storing twice the samse answer
-		does_answer_already_exist = Answer.objects.filter(answer=answerok).count()
+		does_answer_already_exist = Answer.objects.filter(answer=answerok,category_played=category,letter_played=letter).count()
 		if (does_answer_already_exist == 0):
 			# Saving this answer if it is unique
 			newanswer.save()
