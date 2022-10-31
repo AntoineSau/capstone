@@ -15,7 +15,7 @@ All the API views use POST method and CSRF tokens, apart from /retrieve because 
 - views.py includes my main Python code and backend logic  
 The **index** view will retrieve the last games played by all players and the results on the logged-in user in order to pass context to the page and display customized content.  
 **Login, Logout,** ... follow a classic approach of logging in a user.  
-The **udpate** view will only add an entry if it doesn't exist in the database. I did this in order to avoid storing redundant data. It also capitalizes all answer, in order to have for example, as a "Name" with "H": "Harry" and "harry".  
+The **update** view will only add an entry if it doesn't exist in the database. I did this in order to avoid storing redundant data. It also capitalizes all answer, in order to have for example, as a "Name" with "H": "Harry" and "harry".  
 The *delete** view allows user to correct their wrong answers (misspellings, unfinished words, ...) or clean the database from "garbage answers" retrieved by bots. It works with POST method and uses CSRF token, because I wanted to avoid people to delete one by one all my user-generated database.  
 The **retrieve** starts with a filter checking is the user is rather good, bad, ...and compare the player score versus a random int. Depending on the result, the App will try to retrieve (or not) a random answer form the possible results. Here, I wanted to implement something that add randomness but also a different answer depending on the player's level, in order to keep the game interesting for all players. I did not think it was useful to protect this view with CSRF token, it's only a user-generated database that I don't mind sharing.  
 The **botgame** view will save the result and its details in order to summarize everything after for the logged-in users.  
@@ -64,7 +64,7 @@ I decided to do that in order to avoid limitations and allow everyone to have a 
 
 ## Distinctiveness
 
-The projects in CS50W are simplified versions of very popular Web Apps: (Front-end) for a **search engine**, **Wiki**, **ecommerce** platform, **email** Web App, and **social network**, which is great, but I wanted to do something totally different, so I tried to use what I learnt in this course and adapt it to my needs: a **game.**
+The projects in CS50W are simplified versions of very popular Web Apps: (Front-end) for a **search engine**, **Wiki**, **e-commerce** platform, **email** Web App, and **social network**, which is great, but I wanted to do something totally different, so I tried to use what I learnt in this course and adapt it to my needs: a **game.**
 
 **The idea:**  
 I liked to play **categories** game as a kid, and I wanted to see if I was able to implement it as a Web Application using Django and Javascript after this course, and here's the result!  
