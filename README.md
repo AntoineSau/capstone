@@ -7,21 +7,21 @@ This project is **mainly written in Javascript,** as I wanted to build a Web App
 My projects' folder follows a classic Django project structure, but just to be clear, here are the details:  
 - urls.py includes the classic "index", "login", "logout" and "register" urls, plus the API routes that I decided to create for this project: /update, /retrieve, /delete and /botgame
 /update will add to the database users's entries in case they are not already saved in the database, with the same "Letter" and category.  
-/retrieve will go and search a possible entry in the database in order to generate bot answers. The success of the "retrieve" action depends on the player's level.
-/delete wiht make delete a specific entry form the database
+/retrieve will go and search a possible entry in the database in order to generate bot answers. The success of the "retrieve" action depends on the player's level.  
+/delete view deletes a specific entry from the database.  
 /botgame will save the summary of the user's game against a bot, including the result, points scored, ...  
-All the API views use POST method and CSRF tokens, appart from /retrieve becasue I didn't consider it was needed to "protect" it.
+All the API views use POST method and CSRF tokens, apart from /retrieve because I didn't consider it was needed to "protect" it.
 
 - views.py includes my main Python code and backend logic  
-The **index** view will retrieve the last games played by all players and the reuslts on the logged-in user in order to pass context to the page and display customized content.  
+The **index** view will retrieve the last games played by all players and the results on the logged-in user in order to pass context to the page and display customized content.  
 **Login, Logout,** ... follow a classic approach of logging in a user.  
-The **udpate** view will only add an entry if it doesn´t exist in the databe. I did this in order to avoid storing redundant data. It also capitalizes all answer, in order to have for exmaple, as a "Name" with "H": "Harry" and "harry".  
+The **udpate** view will only add an entry if it doesn't exist in the database. I did this in order to avoid storing redundant data. It also capitalizes all answer, in order to have for example, as a "Name" with "H": "Harry" and "harry".  
 The *delete** view allows user to correct their wrong answers (misspellings, unfinished words, ...) or clean the database from "garbage answers" retrieved by bots. It works with POST method and uses CSRF token, because I wanted to avoid people to delete one by one all my user-generated database.  
-The **retrieve** starts with a filter checking is the user is rather good, bad, ...and compare the player score versus a random int. Depending on the result, the App will try to retireve (or not) a random answer form the possible results. Here, I wanted to implement something that add randomness but also a different answer depending on the player's level, in order to keep the game interesitng for all players. I did not think it was usefull to protect this view with CSRF token, it´s only a user-genrated databse that I don´t mind sharing.  
-The **botgame** view will save the result and its details in order to summarize everythign after for the logged-in users.  
+The **retrieve** starts with a filter checking is the user is rather good, bad, ...and compare the player score versus a random int. Depending on the result, the App will try to retrieve (or not) a random answer form the possible results. Here, I wanted to implement something that add randomness but also a different answer depending on the player's level, in order to keep the game interesting for all players. I did not think it was useful to protect this view with CSRF token, it's only a user-generated database that I don't mind sharing.  
+The **botgame** view will save the result and its details in order to summarize everything after for the logged-in users.  
 
 - models.py includes all the **additional Django Models** that I created on top of the pre-built AbstractUser: Category, Letter, Answer, Possible_result, and Botgame  
-Here, I tried to limit as much as possible the size of the databases by using foregin keys. For example, I don´t save the word "Victory" everytime a players wins a botgame, but only the int "1" which corresponds to "Victory" in the model "Possible_result".  
+Here, I tried to limit as much as possible the size of the databases by using foreign keys. For example, I don't save the word "Victory" every time a players wins a botgame, but only the int "1" which corresponds to "Victory" in the model "Possible_result".  
 - The biggest part of the work can be found in the file categories.js (in Static / categories).  
 I give a bit more details in the paragraph **Complexity**.
 
@@ -31,16 +31,16 @@ I give a bit more details in the paragraph **Complexity**.
 
 ## How to run the application  
 
-First, you need to migrate and make migratiosn for the models I created.
+First, you need to migrate and make migrations for the models I created.
 After that, you should run the server and open the index.
-You can play withou
 There is nothing additional to install, and all the Python packages I used are in views.py, but also saved for clarity on the file requirements.txt (main folder).  
+You can play with or without logging in, but in order to keep track of your results, you must be logged-in.
 
 ## How to use the application / What can the user do 
 
 The user can perform the 4 mains actions that appear in the menu:  
 1 - Check the rules / how to play the game.  
-Here, the user will see basic ifnormation orgnizaed in a **mobile-responsive** structure.  
+Here, the user will see basic information organized in a **mobile-responsive** structure.  
   
 2 - Play offline.  
 This feature is actually what made me think I should do this project.  
@@ -71,7 +71,7 @@ I liked to play **categories** game as a kid, and I wanted to see if I was able 
 *In case you are not familiar with this game, the rules are explained in my project.*  
 
 **The game is very customizable** via the letters to be excluded, the categories to play with, and the timer to play.  
-Additionally, **the behaviour of the bots depend on the player level,** and as the level will evolve, the bot level will keep evovling too.  
+Additionally, **the behaviour of the bots depend on the player level,** and as the level will evolve, the bot level will keep evolving too.  
 
 I think that I use a very different approach in selecting variables through button types, and this was not used to this extend in any other CS50W project.  
 
@@ -93,13 +93,13 @@ Other elements that I think make my project more complex:
 - I implemented an **algorithm** to create bot answers. Before a bot potentially retrieves an answer from the database, there is a filter. My app checks the current player's "level", depending on the rate of victories on total games played by this user. The better the player is, the better the bot will be. The worse the user plays, the worse the bot will play. **The objective here is to keep the game fun for all, no matter your level.** But, there is still a part of randomness because the calculation includes a random number, the game is just more *likely* to be more or less easy. If the user is not logged in, I decided to give by default the average player score: 5.  
 - I realized that I didn't implement correctly my API routes at the beginning, and that users could potentially delete entries or add fake game results with the right URL, so I implemented **CSRF tokens and POST methods** to the critical fetch requests.  
 - The main doubt I had when starting this project was "how to I find a database of all potential entries"? Querying a huge dictionary? Making requests to other sites? My conclusion is that the best approach is to have a **user-generated database**. In a few words, every time a user plays against a bot or uses training mode, their answers is saved into the database and can be reused by a bot later (or even in the same round, depending on JSON response).  
-- I never felt the need to publish doubts in forums until this project, where I asked the following [[https://mail.google.com/mail/u/0/#inbox/QgrcJHsbdKGFrLbJqrrHhnnZzTdGdtgFthq]]. I still haven´t recevied any answer, but it is not critical so I will update it in the next update :)  
+- I never felt the need to publish doubts in forums until this project, where I asked the following [[https://mail.google.com/mail/u/0/#inbox/QgrcJHsbdKGFrLbJqrrHhnnZzTdGdtgFthq]]. I still haven't received any answer, but it is not critical so I will update it in the next update :)  
 - All the variables are highly customizable before generating random selection (26 letters, 12 categories, timer). I tried to do everything through Javascript and fetch requests in order to give the user the smoothest experience possible, even if it meant a lot of work behind the scenes.    
 - Letters, timers and categories... are independent from one mode to another, because users may want to practice their speed (30 seconds) but play a game during a minute. Or practice hard categories and play on easier ones for them.  
 - In order to make the **timer** work, I had to understand how to implement **async functions**.  
 - "**Time is up warning**" is visual, with transition from white to black background (and inverted color for text), because I wanted users to see something was happening even if playing Offline and not looking directly at the screen. Here I first implemented a sound warning, but I finally did not use it because it felt more annoying than the visual warning (if you listen to music at the same time, for example).  
 - I used a function to **Scroll up** automatically to the summary of the game when the time is up, in order to give a better user experience.  
-- By default, ** 5 random categories** are pre-selected, in order to offer a new experience at each visit.
+- By default, **5 random categories** are pre-selected, in order to offer a new experience at each visit.
 - **Play again** button was added in order to have quicker option to start again, with same variables.  
 - More an informative note: **Submit button** is activated when all fields are filled,
 - I give the users a **possibility to correct their answers** and therefore modify the database. The reasons are that (1.) the timer is a "hard stop", so a user may be in the middle of typing a word when it stops, (2.) user can also delete wrong answers from bots after a game. **Important comment**: I decided to implement this possibility AFTER the game result is counted, because if not, users could potentially delete all bot answers and assure themselves victories all the time if the correction happened BEFORE the game result.  
